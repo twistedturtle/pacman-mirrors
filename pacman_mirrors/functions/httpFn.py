@@ -246,7 +246,7 @@ def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
     :rtype: boolean
     """
     util.msg(f"ping {host} x {count}", urgency=txt.INF_CLR, tty=tty)
-    return system_call("ping -c{} {} > /dev/null".format(count, host)) == 0
+    return subprocess.Popen("ping -c{} {} > /dev/null".format(count, host), shell=True) == 0
 
 
 def download_mirror_pool(config: object, tty: bool = False, quiet: bool = False) -> tuple:
