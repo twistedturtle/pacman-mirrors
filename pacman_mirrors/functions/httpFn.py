@@ -19,25 +19,20 @@
 
 """Manjaro-Mirrors HTTP Functions"""
 
-import collections
 import filecmp
 import json
 import os
 import ssl
 import time
-from os import system as system_call
-import socket
-from socket import timeout
-
 import shutil
 import urllib.request as request
 from contextlib import closing
 from urllib.error import URLError
 import requests
+import subprocess
 
 from pacman_mirrors import __version__
 from pacman_mirrors.config import configuration as conf
-from pacman_mirrors.constants import timezones
 from pacman_mirrors.constants import txt
 from pacman_mirrors.functions import fileFn
 from pacman_mirrors.functions import jsonFn
@@ -221,19 +216,20 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
     """
     resp = None
     hosts = conf.INET_CONN_CHECK_URLS
+    headers = {'user-agent': "PacmanMirrors/{__version__}"}
     for host in hosts:
         # noinspection PyBroadException
         try:
-            resp = requests.get(host, timeout=maxwait)
+            resp = requests.get(host, headers=headers, timeout=maxwait)
             break
 
-        except (requests.exceptions.ConnectionError,) as connError:
+        except requests.exceptions.ConnectionError as connError:
             message = f"Connection: {connError}"
-        except (requests.exceptions.SSLError,) as sslError:
+        except requests.exceptions.SSLError as sslError:
             message = f"Certificate: {sslError}"
-        except (requests.exceptions.Timeout,) as connTimeout:
+        except requests.exceptions.Timeout as connTimeout:
             message = f"Connection: {connTimeout}"
-        except (requests.exceptions.HTTPError,) as httpError:
+        except requests.exceptions.HTTPError as httpError:
             message = f"Connection {httpError}"
         except Exception as e:
             message = f"{e}"
