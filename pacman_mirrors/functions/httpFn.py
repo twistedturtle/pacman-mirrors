@@ -38,8 +38,9 @@ from pacman_mirrors.functions import fileFn
 from pacman_mirrors.functions import jsonFn
 from pacman_mirrors.functions import util
 
-USER_AGENT = {"User-Agent": "{}{}".format(conf.USER_AGENT, __version__)}
 
+def user_agent():
+    return {"User-Agent": f"{conf.USER_AGENT}/{__version__}"}
 
 def download_mirrors(config: object) -> tuple:
     """Retrieve mirrors from manjaro.org
@@ -54,7 +55,7 @@ def download_mirrors(config: object) -> tuple:
         # mirrors.json
         util.msg(message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR)
         resp = requests.get(url=config["url_mirrors_json"],
-                            headers=USER_AGENT,
+                            headers=user_agent(),
                             timeout=config["timeout"])
         resp.raise_for_status()
         mirrorlist = resp.json()
@@ -88,7 +89,7 @@ def download_mirrors(config: object) -> tuple:
         # status.json
         util.msg(message=f"=> Mirror status: {config['url_status_json']}", urgency=txt.INF_CLR)
         resp = requests.get(url=config["url_status_json"],
-                            headers=USER_AGENT,
+                            headers= user_agent(),
                             timeout=config["timeout"])
         # resp.raise_for_status()
         statuslist = resp.json()
@@ -133,7 +134,7 @@ def get_http_response(url: str, maxwait: int) -> str:
     """
     message = ""
     try:
-        resp = requests.get(url=url, headers=USER_AGENT, timeout=maxwait)
+        resp = requests.get(url=url, headers=user_agent(), timeout=maxwait)
         resp.raise_for_status()
         # _ = resp.text
     except (requests.exceptions.ConnectionError,) as connError:
@@ -216,11 +217,10 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
     """
     resp = None
     hosts = conf.INET_CONN_CHECK_URLS
-    headers = {'user-agent': "PacmanMirrors/{__version__}"}
     for host in hosts:
         # noinspection PyBroadException
         try:
-            resp = requests.get(host, headers=headers, timeout=maxwait)
+            resp = requests.get(host, headers=user_agent(), timeout=maxwait)
             break
 
         except requests.exceptions.ConnectionError as connError:
