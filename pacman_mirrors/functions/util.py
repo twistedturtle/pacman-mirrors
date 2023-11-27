@@ -22,8 +22,8 @@
 
 import platform
 import shutil
-from sys import stdout
-
+import subprocess
+import os
 from pacman_mirrors.api import apifn
 from pacman_mirrors.constants import txt
 
@@ -127,3 +127,35 @@ def terminal_size() -> tuple:
     lines = shutil.get_terminal_size().lines
     result = (cols, lines)
     return result
+
+def build_ping_url(): 
+    url = "http://ping.manjaro.org/pacmanmirrors"
+    def proc(cmd):
+        return subprocess.check_output(cmd).decode()
+    
+    info = proc(['hostnamectl']).split()   
+    def chassis():
+        for index, line in enumerate(info):
+           if "Chassis" in line:
+               return info[index + 1] + "/" 
+           
+    def vendor():
+        for index, line in enumerate(info):
+            if "Vendor" in line:
+                return info[index + 1]  
+
+    kernel = proc(['uname', '-r'])
+    arch = proc(['uname', '-m'])
+    branch = proc(['pacman-mirrors', '--get-branch']).replace("\n", "")
+    codename = proc(['lsb_release', '-c']).replace("Codename:\t", "").replace("\n", "")
+    version = proc(['lsb_release', '-r']).replace("Release:\t", "").replace("\n", "")  
+    session_type = os.getenv('XDG_SESSION_TYPE')
+    _os_ = f"{codename}-{version}"              
+    
+    if session_type != None:
+        session_type += "/"
+    else:
+        session_type = ""
+
+    host = url + "".join(f"/{arch}/{chassis()}{session_type}{_os_}/{branch}/{kernel}-{vendor()}".split())
+    return host 

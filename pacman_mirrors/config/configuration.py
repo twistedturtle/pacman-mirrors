@@ -16,15 +16,17 @@
 # along with pacman-mirrors.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Authors: Frede Hundewadt <echo ZmhAbWFuamFyby5vcmcK | base64 -d>
+from pacman_mirrors.functions.util import build_ping_url
 
 """Pacman-Mirrors Configuration Module"""
 
+
 # http constants
 TEST_FILE = "core.db.tar.gz"
-USER_AGENT = "Pacman-Mirrors/"
+USER_AGENT = "PacmanMirrors"
 URL_MIRROR_JSON = "https://repo.manjaro.org/mirrors.json"
 URL_STATUS_JSON = "https://repo.manjaro.org/status.json"
-INET_CONN_CHECK_URLS = ["https://repo.manjaro.org", "https://wikipedia.org", "https://bitbucket.org"]
+INET_CONN_CHECK_URLS = [build_ping_url()]
 # etc files
 CONFIG_FILE = "/etc/pacman-mirrors.conf"
 MIRROR_LIST = "/etc/pacman.d/mirrorlist"
