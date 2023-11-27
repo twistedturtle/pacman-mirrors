@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextConstants(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     def test_txt_houston(self):
@@ -39,7 +38,6 @@ class TestTextConstants(unittest.TestCase):
         assert txt.PREFIX_TIP is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

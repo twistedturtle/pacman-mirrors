@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextSpecialWords(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     # special words
@@ -76,7 +75,6 @@ class TestTextSpecialWords(unittest.TestCase):
         assert txt.URL is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

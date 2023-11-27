@@ -27,8 +27,6 @@ from pacman_mirrors.functions.pools import get_continent
 
 
 class Mirror:
-    """Mirror Class"""
-
     def __init__(self):
         self.country_pool = []
         self.mirror_pool = []

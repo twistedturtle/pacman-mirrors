@@ -28,8 +28,11 @@ from pacman_mirrors.functions import fileFn
 from pacman_mirrors.functions import util
 
 
-def set_config(self, set_pfx: str = None, set_branch: str = None,
-               re_branch: bool = False, set_protocols: bool = False, set_url: str = None) -> None:
+def set_config(
+    self, set_pfx: str = None, set_branch: str = None,
+    re_branch: bool = False, set_protocols: bool = False,
+    set_url: str = None
+    ) -> None:
     """
     Api configuration function
     :param self:
@@ -45,10 +48,8 @@ def set_config(self, set_pfx: str = None, set_branch: str = None,
     if set_pfx is None:
         set_pfx = ""
 
-    """
     # apply api configuration to internal configuration object
     # Apply prefix if present
-    """
     if set_pfx:
         set_pfx = apifn.sanitize_prefix(set_pfx)
         self.config["config_file"] = set_pfx + self.config["config_file"]
@@ -58,39 +59,25 @@ def set_config(self, set_pfx: str = None, set_branch: str = None,
         self.config["status_file"] = set_pfx + self.config["status_file"]
         self.config["work_dir"] = set_pfx + self.config["work_dir"]
 
-    """
     # First API task: Set branch
-    """
     if set_branch:
         # Apply branch to internal config
         self.config["branch"] = set_branch
         util.aarch64_check(self=self, write=False)
-        """
         # pacman-mirrors.conf could absent so check for it
-        """
         if not fileFn.check_file(filename=self.config["config_file"]):
-            """
             # Copy from host system
-            """
             fileFn.create_dir(set_pfx + "/etc")
             shutil.copyfile("/etc/pacman-mirrors.conf",
                             self.config["config_file"])
-            """
             # Normalize config
-            """
             apifn.normalize_config(filename=self.config["config_file"])
-        """
         # Write branch to config
-        """
         apifn.write_config_branch(
             branch=self.config["branch"], filename=self.config["config_file"], tty=self.tty, quiet=self.quiet)
-    """
     # Second API task: Create a mirror list
-    """
     if set_url:
-        """
         # mirror list dir could absent so check for it
-        """
         fileFn.create_dir(foldername=set_pfx + "/etc/pacman.d")
         mirror = [
             {
@@ -104,15 +91,11 @@ def set_config(self, set_pfx: str = None, set_branch: str = None,
             config=self.config, servers=mirror, tty=self.tty, quiet=self.quiet)
         # exit gracefully
         sys.exit(0)
-    """
     # Third API task: Write protocols to config
-    """
     if set_protocols:
         apifn.write_protocols(
             protocols=self.config["protocols"], filename=self.config["config_file"], tty=self.tty, quiet=self.quiet)
-    """
     # Fourth API task: Rebranch mirror list
-    """
     if re_branch:
         if not set_branch:
             util.msg(message=f"{txt.API_ERROR_BRANCH}", urgency=txt.ERR_CLR, tty=self.tty)

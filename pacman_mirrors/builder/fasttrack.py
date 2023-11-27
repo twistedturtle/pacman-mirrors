@@ -39,26 +39,14 @@ def build_mirror_list(self, limit: int) -> None:
       either mirrors.json or custom-mirrors.json
     """
     work_pool = build_pool(self)
-
-    """
-    Shuffle the list
-    """
     shuffle(work_pool)
-
-    """
     # probe the mirrors
-    """
     if limit <= 0 or limit > len(work_pool):
         limit = len(work_pool)
     work_pool = test_mirror_pool(self=self, worklist=work_pool, limit=limit)
-    """
-    Write mirrorlist
-    """
+    # Write mirrorlist
     try:
         _ = work_pool[0]
-        """
-        # sort the result
-        """
         work_pool = sort_mirror_pool(worklist=work_pool, field="resp_time", reverse=False)
         write_pacman_mirror_list(self=self, selected_servers=work_pool)
     except IndexError:

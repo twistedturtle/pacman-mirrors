@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextOptions(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     # options
@@ -28,7 +27,6 @@ class TestTextOptions(unittest.TestCase):
         assert txt.OPT_COUNTRY is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

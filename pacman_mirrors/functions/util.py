@@ -76,10 +76,11 @@ def location_from_url(url: str) -> str:
 def aarch64_check(self, write: bool = False) -> None:
     if platform.machine() == "aarch64":
         self.config["arm"] = True
-        if "arm" not in self.config["branch"]:
-            self.config["branch"] = "arm-{}".format(self.config["branch"])
+        branch = self.config["branch"]
+        if "arm" not in branch:
+            branch = f"arm-{branch}"
             if write:
-                apifn.write_config_branch(self.config["branch"], self.config["config_file"], quiet=True)
+                apifn.write_config_branch(branch, self.config["config_file"], quiet=True)
 
 
 def internet_message(tty: bool = False) -> None:

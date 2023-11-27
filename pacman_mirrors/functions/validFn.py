@@ -51,6 +51,6 @@ def country_list_is_valid(onlycountry: list, countrylist: list, tty: bool = Fals
             util.msg(message=f"{txt.AVAILABLE_COUNTRIES}",
                      urgency=txt.INF_CLR,
                      tty=tty)
-            print("{}".format(", ".join(countrylist)))
+            print(f'{", ".join(countrylist)}')
             sys.exit(1)  # exit gracefully
     return True

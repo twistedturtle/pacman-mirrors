@@ -26,7 +26,7 @@
 import importlib.util
 import sys
 
-import pacman_mirrors.functions.util
+from pacman_mirrors.functions import util
 from pacman_mirrors.builder import common, fasttrack, interactive
 from pacman_mirrors.config import configuration as conf
 from pacman_mirrors.functions import cliFn
@@ -34,8 +34,6 @@ from pacman_mirrors.functions import config_setup
 from pacman_mirrors.functions import defaultFn
 from pacman_mirrors.functions import fileFn
 from pacman_mirrors.functions import httpFn
-
-from pacman_mirrors.functions import util
 from pacman_mirrors.mirrors.mirror import Mirror
 from pacman_mirrors.translation import i18n
 
@@ -49,10 +47,7 @@ _ = i18n.language.gettext
 
 
 class PacmanMirrors:
-    """Class PacmanMirrors"""
-
     def __init__(self):
-        """Init"""
         self.config = {
             "config_file": conf.CONFIG_FILE
         }
@@ -75,7 +70,6 @@ class PacmanMirrors:
 
     def run(self):
         """
-        Run
         # Setup config: retunrs the config dictionary and true/false on custom
         # Parse commandline
         # i686 check - change branch to x32-$branch
@@ -102,19 +96,12 @@ class PacmanMirrors:
             sys.exit(0)
         if not self.network:
             if not self.quiet:
-                pacman_mirrors.functions.util.internet_message(tty=self.tty)
+                util.internet_message(tty=self.tty)
             self.config["method"] = "random"
             self.fasttrack = False
-        """
         # Load configured mirror pool
-        """
         defaultFn.load_config_mirror_pool(self)
-        """
-        # Decide which type of mirrorlist to create
-        * Fasttrack
-        * Interactive
-        * Default
-        """
+        # Decide which type of mirrorlist to create Fasttrack/Interactive/Default
         if self.fasttrack:
             fasttrack.build_mirror_list(self, limit=self.fasttrack)
         elif self.interactive:

@@ -28,7 +28,6 @@ from pacman_mirrors.functions.util import \
 def translate_interactive_to_pool(selection: list, mirror_pool: list) -> tuple:
     """
     Translate the interactive selection back to mirror pool
-    :param tty:
     :param selection: the custom mirror selection
     :param mirror_pool: the default mirror pool
     :return: tuple with custom mirror pool and mirrors for mirror list generation

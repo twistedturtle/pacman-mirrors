@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextMessages(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     def test_txt_msg_api_conf_rebranch(self):
@@ -199,7 +198,6 @@ class TestTextMessages(unittest.TestCase):
         assert txt.INTERACTIVE_ARGUMENTS_ERROR is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

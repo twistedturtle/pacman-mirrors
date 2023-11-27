@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextColors(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     def test_txt_err_color(self):
@@ -31,7 +30,6 @@ class TestTextColors(unittest.TestCase):
         assert txt.WRN_CLR is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

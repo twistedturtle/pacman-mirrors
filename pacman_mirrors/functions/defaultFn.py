@@ -26,9 +26,6 @@ from pacman_mirrors.functions import fileFn
 
 
 def load_config_mirror_pool(self) -> None:
-    """
-    Load mirrors from configured mirror pool
-    """
     if self.geoip or self.continent:
         customFn.delete_custom_pool(self)
     if customFn.check_custom_pool(self) and not self.config["country_pool"]:
@@ -38,24 +35,17 @@ def load_config_mirror_pool(self) -> None:
         if self.config["country_pool"]:
             self.selected_countries = self.config["country_pool"]
         load_default_mirror_pool(self)
-    """
-    Validate the list of selected countries
-    """
+    # Validate the list of selected countries
     self.selected_countries = pools.build_country_list(self)
 
 
 def load_default_mirror_pool(self) -> None:
-    """
-    Load all available mirrors
-    """
+    # Load all mirrors
     (file, status) = fileFn.return_mirror_filename(config=self.config, tty=self.tty)
     seed_mirrors(self, file, status)
 
 
 def seed_mirrors(self, file: str, status: bool = False) -> None:
-    """
-    Seed mirrors
-    """
     mirrors = fileFn.read_mirror_file(file)
     if status:
         self.mirrors.seed(mirrors, status=status)

@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextMirrorStatus(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     # mirror status constants
@@ -36,7 +35,6 @@ class TestTextMirrorStatus(unittest.TestCase):
         assert txt.SERVER_RES is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

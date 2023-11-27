@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextHelpArgMessages(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     def test_txt_help_arg_api_get_branch(self):
@@ -95,7 +94,6 @@ class TestTextHelpArgMessages(unittest.TestCase):
         assert txt.HLP_ARG_VERSION is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

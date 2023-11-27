@@ -19,10 +19,8 @@
 
 """Pacman-Mirrors Console UI Module"""
 
-import npyscreen
-
 from collections import namedtuple
-
+import npyscreen
 import pacman_mirrors.functions.conversion
 from pacman_mirrors.constants import txt
 from pacman_mirrors.translation import i18n
@@ -31,8 +29,6 @@ _ = i18n.language.gettext
 
 
 class ConsoleUI(npyscreen.NPSAppManaged):
-    """App"""
-
     def __init__(self, server_list: list, random: bool, default: bool):
         npyscreen.NPSAppManaged.__init__(self)
         self.title = txt.I_TITLE_RANDOM if random else txt.I_TITLE
@@ -65,8 +61,6 @@ class ConsoleUI(npyscreen.NPSAppManaged):
         del self.server_rows[0]
 
     def main(self):
-        """Main"""
-
         # setup form
         mainform = npyscreen.Form(name=self.title)
         mainform.add(npyscreen.TitleFixedText, name=self.list_title)
@@ -96,7 +90,6 @@ class ConsoleUI(npyscreen.NPSAppManaged):
 
 
 def run(server_list: list, random: bool, default: bool) -> object:
-    """Run"""
     app = ConsoleUI(server_list=server_list, random=random, default=default)
     app.run()
     return app

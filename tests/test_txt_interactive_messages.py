@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextInteractiveMessages(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     # interactive messages
@@ -68,7 +67,6 @@ class TestTextInteractiveMessages(unittest.TestCase):
         assert txt.I_USE_THESE_MIRRORS is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

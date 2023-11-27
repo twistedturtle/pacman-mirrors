@@ -40,7 +40,6 @@ test_conf = {
 class TestHttpFn(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     @patch("os.getuid")
@@ -85,7 +84,6 @@ class TestHttpFn(unittest.TestCase):
     #         assert app.selected_countries == app.mirrors.country_pool
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

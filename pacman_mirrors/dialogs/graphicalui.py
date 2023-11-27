@@ -19,14 +19,11 @@
 #          Hugo Posnic <huluti@manjaro.org>
 
 """Pacman-Mirrors GTK GUI Module"""
-
 import gi
-
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from operator import itemgetter
 from random import shuffle
-
 from pacman_mirrors.constants import txt
 from pacman_mirrors.translation import i18n
 
@@ -34,8 +31,6 @@ _ = i18n.language.gettext
 
 
 class GraphicalUI(Gtk.Window):
-    """Class GraphicalUI"""
-
     def __init__(self, server_list: list, random: bool, default: bool):
         title = txt.I_TITLE_RANDOM if random else txt.I_TITLE
         if default:
@@ -55,11 +50,9 @@ class GraphicalUI(Gtk.Window):
                     custom_mirrors.append(
                         (False, server["country"], server["last_sync"], server["url"]))
                 except IndexError as i:
-                    print("{} IndexError -> {}".format(txt.ERR_CLR, i))
-                    pass
+                    print(f"{txt.ERR_CLR} IndexError -> {i}")
                 except KeyError as k:
-                    print("{} KeyError -> {}".format(txt.ERR_CLR, k))
-                    pass
+                    print(f"{txt.ERR_CLR} KeyError -> {k}")
 
             self.store = Gtk.ListStore(bool, str, str, str)
             for mirror_ref in custom_mirrors:
@@ -170,7 +163,6 @@ class GraphicalUI(Gtk.Window):
 
 
 def run(server_list: list, random: bool, default: bool = False) -> object:
-    """Run"""
     window = GraphicalUI(server_list, random, default)
     if window.gtk_init:
         window.connect("delete-event", Gtk.main_quit)

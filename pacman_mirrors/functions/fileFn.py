@@ -22,8 +22,6 @@
 import datetime
 import os
 import sys
-
-import pacman_mirrors.functions.util
 from pacman_mirrors.constants import colors as color
 from pacman_mirrors.constants import txt
 from pacman_mirrors.functions import jsonFn
@@ -68,8 +66,8 @@ def return_mirror_filename(config: object, tty: bool = False) -> tuple:
     :returns tuple with file and status
     """
     filename = ""
-    status = False  # status.json or mirrors.json
-    # decision on file availablity
+    # status.json or mirrors.json exist?
+    status = False  
     if check_file(config["status_file"]):
         status = True
         filename = config["status_file"]
@@ -98,7 +96,7 @@ def write_mirror_list(config: object, servers: list, tty: bool = False, custom: 
                 util.msg(message=f"{txt.WRITING_MIRROR_LIST}", urgency=txt.INF_CLR, tty=tty)
             # write list header
             write_mirrorlist_header(outfile, custom=custom)
-            cols, lines = pacman_mirrors.functions.util.terminal_size()
+            cols, lines = util.terminal_size()
             for server in servers:
                 url = server["url"]
                 protocol = server["protocols"][0]

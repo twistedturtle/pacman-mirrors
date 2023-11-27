@@ -41,7 +41,6 @@ test_conf = {
 class TestPacmanMirrors(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     @patch("os.getuid")
@@ -103,7 +102,6 @@ class TestPacmanMirrors(unittest.TestCase):
             common.build_mirror_list(app)
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

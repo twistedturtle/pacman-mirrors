@@ -45,7 +45,6 @@ def build_country_list(self: list) -> list:
     :return: list of valid countries
     :rtype: list
     """
-    """
     # Dear Fellow Manjaro Maintainer:
     # When I wrote this code, only I knew how it worked.
     # Now, no one knows!
@@ -55,7 +54,6 @@ def build_country_list(self: list) -> list:
     # please increase this counter as a warning for the next maintainer.
     #
     # total_hours_wasted_here = 1
-    """
     result = []
     if self.selected_countries:
         if self.selected_countries == ["all"]:

@@ -15,7 +15,6 @@ from pacman_mirrors.constants import txt
 class TestTextErrorTypes(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     def test_txt_error_type_timeout(self):
@@ -27,7 +26,6 @@ class TestTextErrorTypes(unittest.TestCase):
         assert txt.HTTP_EXCEPTION is not None
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

@@ -41,38 +41,7 @@ test_conf = {
 class TestCommandLineParse(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
-
-    # @patch("os.getuid")
-    # @patch.object(configFn, "setup_config")
-    # def test_arg_branch_unstable(self, mock_build_config, mock_os_getuid):
-    #     """TEST: CLI config[branch] from ARG '-b unstable'"""
-    #     mock_os_getuid.return_value = 0
-    #     mock_build_config.return_value = test_conf
-    #     with unittest.mock.patch("sys.argv",
-    #                              ["pacman-mirrors",
-    #                               "-b", "unstable"]):
-    #         app = PacmanMirrors()
-    #         app.config["config_file"] = mock.CONFIG_FILE
-    #         app.config = configFn.setup_config()
-    #         cli.parse_command_line(app, True)
-    #         assert app.config["branch"] == "unstable"
-    #
-    # @patch("os.getuid")
-    # @patch.object(configFn, "setup_config")
-    # def test_arg_branch_testing(self, mock_build_config, mock_os_getuid):
-    #     """TEST: CLI config[branch] from ARG '-b testing'"""
-    #     mock_os_getuid.return_value = 0
-    #     mock_build_config.return_value = test_conf
-    #     with unittest.mock.patch("sys.argv",
-    #                              ["pacman-mirrors",
-    #                               "-b", "testing"]):
-    #         app = PacmanMirrors()
-    #         app.config["config_file"] = mock.CONFIG_FILE
-    #         app.config = configFn.setup_config()
-    #         cli.parse_command_line(app, True)
-    #         assert app.config["branch"] == "testing"
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")
@@ -180,7 +149,6 @@ class TestCommandLineParse(unittest.TestCase):
             assert app.quiet is True
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

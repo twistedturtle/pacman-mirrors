@@ -30,7 +30,9 @@ def json_dump_file(data: list, filename: str) -> None:
 
 def read_json_file(filename: str, dictionary: bool = True) -> list:
     """Read json data from file"""
-    result = list()
+    #TODO this is not a list but a tuple
+    # we have to check output and correct as needed
+    result = list() 
     try:
         if dictionary:
             with open(filename, "rb") as infile:

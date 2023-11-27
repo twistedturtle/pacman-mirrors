@@ -140,16 +140,12 @@ def get_http_response(url: str, maxwait: int) -> str:
         resp = requests.get(url=url, headers=headers(), timeout=maxwait)
         resp.raise_for_status()
         # _ = resp.text
-    except (requests.exceptions.ConnectionError,) as connError:
-        message = f"Connection: {connError}"
-    except (requests.exceptions.SSLError,) as sslError:
-        message = f"Certificate: {sslError}"
-    except (requests.exceptions.Timeout,) as connTimeout:
-        message = f"Connection: {connTimeout}"
-    except (requests.exceptions.HTTPError,) as httpError:
-        message = f"Connection {httpError}"
-    except Exception as e:
-        message = f"{e}"
+    except (requests.exceptions.ConnectionError,) as err:
+        message = f"Connection: {err}"
+    except (requests.exceptions.Timeout,) as err:
+        message = f"Connection: {err}"
+    except (requests.exceptions.HTTPError,) as err:
+        message = f"Connection {err}"
 
     return message
 
@@ -167,7 +163,7 @@ def get_ftp_response(url: str, maxwait: int) -> str:
             os.remove(conf.WORK_DIR + '/.testresponse')
     except URLError as e:
         if e.reason.find('No such file or directory') >= 0:
-            message = f"FileNotFound"
+            message = "FileNotFound"
         else:
             message = f"{e.reason}"
     return message
@@ -228,15 +224,11 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
         try:
             requests.get(host, headers=headers(), timeout=maxwait)
             return True
-        except requests.exceptions.SSLError as err:
-            output_err(host, err)
         except requests.exceptions.ConnectionError as err:
             output_err(host, err)
         except requests.exceptions.Timeout as err:
             output_err(host, err)
         except requests.exceptions.HTTPError as err:
-            output_err(host, err)
-        except Exception as err:
             output_err(host, err)
 
     return False
@@ -250,7 +242,7 @@ def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
     :rtype: boolean
     """
     util.msg(f"ping {host} x {count}", urgency=txt.INF_CLR, tty=tty)
-    return subprocess.Popen("ping -c{} {} > /dev/null".format(count, host), shell=True) == 0
+    return subprocess.Popen(f"ping -c{count} {host} > /dev/null", shell=True) == 0
 
 
 def download_mirror_pool(config: object, tty: bool = False, quiet: bool = False) -> tuple:

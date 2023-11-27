@@ -36,10 +36,8 @@ def build_mirror_list(self) -> None:
     """
     work_pool = build_pool(self)
 
-    """
-    Check the length of selected_countries against the full countrylist
-    If selected_countries is the lesser then we build a custom pool file
-    """
+    # Check the length of selected_countries against the full countrylist
+    # If selected_countries is the lesser then we build a custom pool file
     if len(self.selected_countries) < len(self.mirrors.country_pool):
         try:
             _ = self.selected_countries[0]
@@ -53,9 +51,7 @@ def build_mirror_list(self) -> None:
     else:
         shuffle(work_pool)
 
-    """
-    Write mirrorlist
-    """
+    # Write mirrorlist
     try:
         _ = work_pool[0]
         write_pacman_mirror_list(self=self, selected_servers=work_pool)

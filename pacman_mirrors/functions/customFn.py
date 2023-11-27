@@ -48,8 +48,7 @@ def apply_status_to_custom_pool(config: object, custom_pool: list) -> list:
 
 def check_custom_pool(self) -> bool:
     """
-    Custom mirror pool or countries from CLI
-    :return: True/False
+    pool or countries from CLI
     """
     self.custom = validFn.custom_config_is_valid()
     if not self.custom:
@@ -58,19 +57,12 @@ def check_custom_pool(self) -> bool:
 
 
 def delete_custom_pool(self) -> None:
-    """
-    Delete custom mirror pool
-    """
     self.custom = False
     self.config["country_pool"] = []
     fileFn.delete_file(self.config["custom_file"])
 
 
 def load_custom_pool(self) -> None:
-    """
-    Load available custom mirrors and update their status from status.json
-    If user request reset (--default) load the default pool
-    """
     if self.default:
         defaultFn.load_default_mirror_pool(self)
     else:

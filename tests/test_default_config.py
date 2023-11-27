@@ -40,7 +40,6 @@ test_conf = {
 class TestDefaultConfig(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
-        """Setup tests"""
         pass
 
     @patch("os.getuid")
@@ -138,7 +137,6 @@ class TestDefaultConfig(unittest.TestCase):
             assert app.config["country_pool"] == []
 
     def tearDown(self):
-        """Tear down"""
         pass
 
 

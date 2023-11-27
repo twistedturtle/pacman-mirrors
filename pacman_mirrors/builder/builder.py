@@ -31,38 +31,26 @@ def build_pool(self) -> list:
     :return: filtered list of available mirrors
     """
 
-    """
-    remove known bad mirrors - last sync 9999:99
-    """
+    # remove known bad mirrors - last sync 9999:99
     work_pool = filter_bad_mirrors(mirror_pool=self.mirrors.mirror_pool)
 
-    """
-    remove known error mirrors - response time 99.99
-    """
+    # remove known error mirrors - response time 99.99
     work_pool = filter_error_mirrors(mirror_pool=work_pool)
 
-    """
-    Apply country filter if not fasttrack
-    """
+    # Apply country filter if not fasttrack
     if not self.fasttrack:
         work_pool = filter_mirror_country(mirror_pool=work_pool, country_pool=self.selected_countries)
 
-    """
-    Apply protocol filter
-    """
+    # Apply protocol filter
     try:
         _ = self.config["protocols"][0]
         work_pool = filter_mirror_protocols(mirror_pool=work_pool, protocols=self.config["protocols"])
     except IndexError:
         pass
 
-    """
-    Apply --no-status argument if applicable
-    """
+    # Apply --no-status argument if applicable
     if self.no_status:
-        """
-        Apply interval filter
-        """
+        # Apply interval filter
         if self.interval:
             work_pool = filter_poor_mirrors(mirror_pool=work_pool, interval=self.interval)
     else:

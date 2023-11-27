@@ -37,23 +37,14 @@ from pacman_mirrors.translation.custom_help_formatter \
 def parse_command_line(self, gtk_available: bool) -> None:
     """Read the arguments of the command line"""
 
-    args_summary = "[-h] [-f [{}]] [-i [-d]] [-m {}] [--status]\n" \
-                   "\t\t[-c {} [{}...] | [--geoip] | [--continent]]\n" \
-                   "\t\t[-l] [-lc] [-q] [-t {}] [-v] [-n]\n" \
-                   "\t\t[--api] [-S/-B {}] [-p {}]\n" \
-                   "\t\t\t[-P {} [{}...]] [-R] [-U {}]".format(txt.NUMBER,
-                                                               txt.METHOD,
-                                                               txt.COUNTRY,
-                                                               txt.COUNTRY,
-                                                               txt.SECONDS,
-                                                               txt.BRANCH,
-                                                               txt.PREFIX,
-                                                               txt.PROTO,
-                                                               txt.PROTO,
-                                                               txt.URL)
+    args_summary = f"[-h] [-f [{txt.NUMBER}]] [-i [-d]] [-m {txt.METHOD}] [--status]\n" \
+                   f"\t\t[-c {txt.COUNTRY} [{txt.COUNTRY}...] | [--geoip] | [--continent]]\n" \
+                   f"\t\t[-l] [-lc] [-q] [-t {txt.SECONDS}] [-v] [-n]\n" \
+                   f"\t\t[--api] [-S/-B {txt.BRANCH}] [-p {txt.PREFIX}]\n" \
+                   f"\t\t\t[-P {txt.PROTO} [{txt.PROTO}...]] [-R] [-U {txt.URL}]"
 
-    nusage = "\rVersion {}\n{}:\n pacman-mirrors".format(__version__, txt.USAGE)
-    usage = "{} {}".format(nusage, args_summary)
+    nusage = f"\rVersion {__version__}\n{txt.USAGE}:\n pacman-mirrors"
+    usage = f"{nusage} {args_summary}"
 
     parser = argparse.ArgumentParser(formatter_class=CustomHelpFormatter,
                                      add_help=False, usage=usage)
@@ -112,9 +103,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
                      metavar=txt.URL,
                      help="{}: {}".format(
                          txt.API, txt.HLP_ARG_API_URL))
-    """
-    Misc arguments
-    """
+    # Misc arguments
     misc = parser.add_argument_group(txt.MISC)
     misc.add_argument("-G", "--get-branch",
                       action="store_true",
@@ -166,11 +155,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
 
     args = parser.parse_args()
 
-    """
-    #############################################################
-    No root required
-    #############################################################
-    """
+    # No root required
     if len(sys.argv) == 1:
         printFn.blue_msg(f"Pacman-mirrors version {__version__}")
         exit_code = mirror_status.print_status(self)
@@ -181,7 +166,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
         sys.exit(0)
 
     if args.version:
-        print("Version {}".format(__version__))
+        print("Version {__version__}")
         sys.exit(0)
 
     if args.list:
@@ -204,42 +189,28 @@ def parse_command_line(self, gtk_available: bool) -> None:
         exit_code = mirror_status.print_status(self)
         sys.exit(exit_code)
 
-    """
-    #############################################################
-    Validate arg combinations
-    #############################################################
-    """
-    """
-    If --set-branch, --protocols, --url, --prefix and not --api reject
-    """
+    # Validate arg combinations
+    # If --set-branch, --protocols, --url, --prefix and not --api reject
     if args.set_branch or args.proto or args.url or args.prefix:
         if not args.api:
             print("Version {}\nUSAGE:\n {} {}".format(__version__, "pacman-mirrors", args_summary))
             print("{}".format(txt.API_ARGUMENTS_ERROR))
             sys.exit(1)
 
-    """
-    If --default and not --interactive reject
-    """
+    # If --default and not --interactive reject
     if args.default:
         if not args.interactive:
             print("Version {}\nUSAGE:\n {} {}".format(__version__, "pacman-mirrors", args_summary))
             print("{}".format(txt.INTERACTIVE_ARGUMENTS_ERROR))
             sys.exit(1)
 
-    """
-    If --interval and not --no-status reject
-    """
+    # If --interval and not --no-status reject
     if args.interval and not args.no_status:
         print("Version {}\nUSAGE:\n {} {}".format(__version__, "pacman-mirrors", args_summary))
         print("Invalid arguments: `--interval` argument only valid with `-s`")
         sys.exit(1)
 
-    """
-    #############################################################
-    Root required
-    #############################################################
-    """
+    # Root required
     if os.getuid() != 0:
         print(".: {} {}".format(
             txt.ERR_CLR, txt.MUST_BE_ROOT))
@@ -272,9 +243,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
     else:
         self.interval = None
 
-    """
-    Generation methods
-    """
+    # Generation methods
     if args.country:
         self.geoip = False
         if "," in args.country[0]:
@@ -287,8 +256,8 @@ def parse_command_line(self, gtk_available: bool) -> None:
 
     if args.fasttrack is not None:
         if args.no_status:
-            print("Version {}\nUSAGE:\n {} {}".format(__version__, "pacman-mirrors", args_summary))
-            print("{}".format(txt.FASTTRACK_ARGUMENTS_ERROR))
+            print(f"Version {__version__}\nUSAGE:\n pacman-mirrors {args_summary}")
+            print(f"{txt.FASTTRACK_ARGUMENTS_ERROR}")
             sys.exit(1)
 
         self.fasttrack = args.fasttrack
@@ -310,10 +279,8 @@ def parse_command_line(self, gtk_available: bool) -> None:
     if args.fc:
         self.no_display = True
 
-    """
-    API handling
-    Setup variables for passing to the api_config function
-    """
+    # API handling
+    # Setup variables for passing to the api_config function
     if args.api:
         rebranch = False
         url = args.url

@@ -16,7 +16,6 @@ class TestTextMessageTypes(unittest.TestCase):
     """Pacman Mirrors Test suite"""
     def setUp(self):
         """Setup tests"""
-        pass
 
     def test_txt_msg_type_error(self):
         """TEST: txt MESSAGE TYPE ERROR"""
@@ -32,7 +31,6 @@ class TestTextMessageTypes(unittest.TestCase):
 
     def tearDown(self):
         """Tear down"""
-        pass
 
 
 if __name__ == "__main__":

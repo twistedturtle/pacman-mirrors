@@ -123,13 +123,11 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
             result.append(probed_mirror)
         else:
             result.append(probed_mirror)
-        """
-        Equality check will stop execution
-        when the desired number is reached.
-        In the possible event the first mirror's
-        response time exceeds the predefined response time,
-        the loop would stop execution if the check for zero is not present
-        """
+        # Equality check will stop execution
+        # when the desired number is reached.
+        # In the possible event the first mirror's
+        # response time exceeds the predefined response time,
+        # the loop would stop execution if the check for zero is not present
         if limit is not None and counter != 0 and counter == limit:
             break
 

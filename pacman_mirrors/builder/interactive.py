@@ -50,17 +50,15 @@ def build_mirror_list(self) -> None:
         else:
             shuffle(worklist)
 
-    """
-    Create a list for display in ui.
-    The gui and the console ui expect the supplied list
-    to be in the old country dictionary format.
-    {
-        "country": "country_name",
-        "resp_time": "m.sss",
-        "last_sync": "HHh MMm",
-        "url": "http://server/repo/"
-    }
-    """
+    # Create a list for display in ui.
+    # The gui and the console ui expect the supplied list
+    # to be in the old country dictionary format.
+    #{
+    #    "country": "country_name",
+    #    "resp_time": "m.sss",
+    #    "last_sync": "HHh MMm",
+    #    "url": "http://server/repo/"
+    #}
     interactive_list = translate_pool_to_interactive(mirror_pool=worklist, tty=self.tty)
 
     # import the correct ui
@@ -76,15 +74,13 @@ def build_mirror_list(self) -> None:
 
     # process user choices
     if interactive.is_done:
-        """
-        translate interactive list back to our json format
-        """
-        custom_pool, mirror_list = translate_interactive_to_pool(selection=interactive.custom_list,
-                                                                 mirror_pool=self.mirrors.mirror_pool)
+        # translate interactive list back to our json format
+        custom_pool, mirror_list = translate_interactive_to_pool(
+            selection=interactive.custom_list,
+            mirror_pool=self.mirrors.mirror_pool
+            )
 
-        """
-        Try selected method on the mirrorlist
-        """
+        # Try selected method on the mirrorlist
         try:
             _ = mirror_list[0]
             # using the default runs method after selection
@@ -97,34 +93,25 @@ def build_mirror_list(self) -> None:
         except IndexError:
             pass
 
-        """
-        Write custom mirror pool
-        Write mirrorlist
-        """
+        # Write custom mirror pool
+        # Write mirrorlist
         try:
             _ = custom_pool[0]
             self.custom = True
             self.config["country_pool"] = ["Custom"]
-
-            """
-            Writing the custom mirror pool file
-            """
+            # Writing the custom mirror pool file
             write_custom_mirrors_json(self=self, selected_mirrors=custom_pool)
-
-            """
-            Writing mirrorlist
-            If the mirror list is empty because
-            no up-to-date mirrors exist for users branch
-            raise IndexError to the outer try-catch
-            """
+            # Writing mirrorlist
+            # If the mirror list is empty because
+            # no up-to-date mirrors exist for user branch
             try:
                 _ = mirror_list[0]
                 write_pacman_mirror_list(self, mirror_list)
                 if self.no_status:
                     util.msg(message=f"{txt.OVERRIDE_STATUS_CHOICE}", urgency=txt.WRN_CLR, tty=self.tty)
                     util.msg(message=f"{txt.OVERRIDE_STATUS_MIRROR}", urgency=txt.WRN_CLR, tty=self.tty)
-            except IndexError:
-                raise IndexError
+            except IndexError as e:
+                util.msg(message=str(e), urgency=txt.WRN_CLR, tty=self.tty)
         except IndexError:
             util.msg(message=f"{txt.NO_SELECTION}", urgency=txt.WRN_CLR, tty=self.tty)
             util.msg(message=f"{txt.NO_CHANGE}", urgency=txt.INF_CLR, tty=self.tty)
