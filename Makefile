@@ -38,6 +38,7 @@ lint:
 	flake8 pacman_mirrors tests
 
 unit-test:
+    poetry shell
 	poetry run pytest
 
 coverage:
