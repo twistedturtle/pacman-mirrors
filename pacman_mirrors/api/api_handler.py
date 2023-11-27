@@ -111,7 +111,7 @@ def set_config(self, set_pfx: str = None, set_branch: str = None,
         apifn.write_protocols(
             protocols=self.config["protocols"], filename=self.config["config_file"], tty=self.tty, quiet=self.quiet)
     """
-    # Fourth API task: Rebranch the mirrorl ist
+    # Fourth API task: Rebranch mirror list
     """
     if re_branch:
         if not set_branch:

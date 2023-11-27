@@ -22,17 +22,12 @@
 from random import shuffle
 
 from pacman_mirrors.builder.builder import build_pool
-from pacman_mirrors.functions.filter_mirror_status_functions import \
-    filter_error_mirrors
-
 from pacman_mirrors.constants import txt
-
+from pacman_mirrors.functions import util
 from pacman_mirrors.functions.outputFn import \
     write_pacman_mirror_list, write_custom_mirrors_json
-
 from pacman_mirrors.functions.sortMirrorFn import sort_mirror_pool
 from pacman_mirrors.functions.testMirrorFn import test_mirror_pool
-from pacman_mirrors.functions import util
 
 
 def build_mirror_list(self) -> None:

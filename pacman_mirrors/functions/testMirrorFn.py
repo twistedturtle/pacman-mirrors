@@ -20,11 +20,11 @@
 """Pacman-Mirrors Test Mirror Functions"""
 
 import sys
-import time
 from operator import itemgetter
+
 from pacman_mirrors.constants import txt, colors as color
-from pacman_mirrors.functions.httpFn import get_mirror_response
 from pacman_mirrors.functions import util
+from pacman_mirrors.functions.httpFn import get_mirror_response
 
 
 def test_mirror_pool(self, worklist: list, limit=None) -> list:

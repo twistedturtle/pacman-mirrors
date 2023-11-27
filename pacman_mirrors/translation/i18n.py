@@ -30,32 +30,34 @@ APP_NAME = "pacman_mirrors"
 APP_DIR = os.path.join(sys.prefix, "share")
 LOCALE_DIR = os.path.join(APP_DIR, "locale")
 
+
 def get_language():
     if locale.getlocale()[0] is not None:
-       return locale.getlocale()[0]
-    
+        return locale.getlocale()[0]
+
     elif os.environ.get("LC_ALL") is not None:
         return os.environ.get("LC_ALL").split(".")[0]
-    
+
     elif os.environ.get("LANGUAGE") is not None:
         return os.environ.get("LANGUAGE").split(".")[0]
-    
+
     elif os.environ.get("LANG") is not None:
         return os.environ.get("LANG").split(".")[0]
-    
+
     elif os.environ.get("GDM_LANG") is not None:
         return os.environ.get("GDM_LANG").split(".")[0]
-    
+
     else:
         print("No translations found for your language, using english")
         return "en_US"
-    
+
+
 # debug variable output
-#print()
-#print("APP_DIR", APP_DIR)
-#print("LOCALE_DIR", LOCALE_DIR)
-#print("LOCALE",  get_language())
-#print()
+# print()
+# print("APP_DIR", APP_DIR)
+# print("LOCALE_DIR", LOCALE_DIR)
+# print("LOCALE",  get_language())
+# print()
 
 # Lets tell those details to gettext
 #  (nothing to change here for you)

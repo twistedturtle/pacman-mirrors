@@ -19,13 +19,13 @@
 
 """Pacman-Mirrors Converter Functions"""
 import json
-
 from pacman_mirrors.constants import txt
+from pacman_mirrors.functions import util
 from pacman_mirrors.functions.util import \
-    get_country, get_protocol, get_protocol_from_url, location_from_url
+    get_protocol_from_url, location_from_url
 
 
-def translate_interactive_to_pool(selection: list, mirror_pool: list, tty: bool = False) -> tuple:
+def translate_interactive_to_pool(selection: list, mirror_pool: list) -> tuple:
     """
     Translate the interactive selection back to mirror pool
     :param tty:
@@ -77,7 +77,7 @@ def translate_pool_to_interactive(mirror_pool: list, tty: bool = False) -> list:
                     "url": f"{protocol}{mirror_url}"
                 })
         except (KeyError, IndexError):
-            msg(
+            util.msg(
                 message=f"{txt.HOUSTON}! {txt.MIRROR_POOL_EMPTY}!", urgency=txt.WRN_CLR, tty=tty)
             break
     return interactive_list

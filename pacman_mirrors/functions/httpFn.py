@@ -42,6 +42,7 @@ from pacman_mirrors.functions import util
 def headers():
     return {"User-Agent": f"{conf.USER_AGENT}/{__version__}"}
 
+
 def download_mirrors(config: object) -> tuple:
     """Retrieve mirrors from manjaro.org
     :param config:
@@ -88,9 +89,11 @@ def download_mirrors(config: object) -> tuple:
     try:
         # status.json
         util.msg(message=f"=> Mirror status: {config['url_status_json']}", urgency=txt.INF_CLR)
-        resp = requests.get(url=config["url_status_json"],
-                            headers= headers(),
-                            timeout=config["timeout"])
+        resp = requests.get(
+            url=config["url_status_json"],
+            headers=headers(),
+            timeout=config["timeout"]
+        )
         # resp.raise_for_status()
         statuslist = resp.json()
         jsonFn.write_json_file(statuslist, config["status_file"])
@@ -215,18 +218,19 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
     :param maxwait:
     :param tty:
     """
+
     def output_err(host, err):
         print("")
         util.msg(f"{host} '{err}'", urgency=txt.WRN_CLR, tty=tty)
         print("")
-     
+
     for host in conf.INET_CONN_CHECK_URLS:
         try:
             requests.get(host, headers=headers(), timeout=maxwait)
             return True
-        except requests.exceptions.ConnectionError as err:
-            output_err(host, err)
         except requests.exceptions.SSLError as err:
+            output_err(host, err)
+        except requests.exceptions.ConnectionError as err:
             output_err(host, err)
         except requests.exceptions.Timeout as err:
             output_err(host, err)
@@ -234,7 +238,7 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
             output_err(host, err)
         except Exception as err:
             output_err(host, err)
-       
+
     return False
 
 

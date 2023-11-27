@@ -21,7 +21,7 @@
 from pacman_mirrors.constants.timezones import countries
 
 from pacman_mirrors.functions.httpFn import get_ip_country
-from pacman_mirrors.functions.validFn import country_list_is_valid, custom_config_is_valid
+from pacman_mirrors.functions.validFn import country_list_is_valid
 
 
 def wash_country_list(country_list: list):
@@ -62,9 +62,11 @@ def build_country_list(self: list) -> list:
             result = self.mirrors.country_pool
         else:
             self.selected_countries = wash_country_list(self.selected_countries)
-            if country_list_is_valid(onlycountry=self.selected_countries,
-                                     countrylist=self.mirrors.country_pool,
-                                     tty=self.tty):
+            if country_list_is_valid(
+                onlycountry=self.selected_countries,
+                countrylist=self.mirrors.country_pool,
+                tty=self.tty
+            ):
                 result = self.selected_countries
     # this executes when geoip or continent is True
     if not result:

@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
-from subprocess import PIPE, run, CalledProcessError
 import unittest
+from subprocess import run, CalledProcessError
 
 branches = ("stable", "testing", "unstable")
 
+
 def _test_command_works_properly(args):
-    cmd = "sudo /usr/bin/python /usr/bin/pacman-mirrors "
+    cmd = "sudo poetry run pacman-mirrors "
     try:
         result = run(
             cmd + args,
@@ -14,14 +15,15 @@ def _test_command_works_properly(args):
             capture_output=True,
             text=True,
             shell=True
-            )
-        
+        )
+
         return result.stdout
     except CalledProcessError as error:
         print(error.stdout)
         print(error.stderr)
         raise error
-    
+
+
 class TestDefaultConfig(unittest.TestCase):
     # TODO implement mirrorlist outputcheck using test-checkpoints.md guidelines
 

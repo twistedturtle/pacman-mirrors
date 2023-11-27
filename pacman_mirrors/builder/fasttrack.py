@@ -23,14 +23,10 @@ from random import shuffle
 
 from pacman_mirrors.builder.builder import build_pool
 from pacman_mirrors.constants import txt
-
-from pacman_mirrors.functions.filter_mirror_pool_functions import \
-    filter_user_branch
-
-from pacman_mirrors.functions.outputFn import write_pacman_mirror_list
-from pacman_mirrors.functions.testMirrorFn import test_mirror_pool
 from pacman_mirrors.functions import util
+from pacman_mirrors.functions.outputFn import write_pacman_mirror_list
 from pacman_mirrors.functions.sortMirrorFn import sort_mirror_pool
+from pacman_mirrors.functions.testMirrorFn import test_mirror_pool
 
 
 def build_mirror_list(self, limit: int) -> None:

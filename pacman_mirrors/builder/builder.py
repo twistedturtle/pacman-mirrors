@@ -23,8 +23,6 @@ from pacman_mirrors.functions.filter_mirror_pool_functions import \
 from pacman_mirrors.functions.filter_mirror_status_functions import \
     filter_bad_mirrors, filter_error_mirrors, filter_poor_mirrors
 
-from pacman_mirrors.functions.outputFn import write_custom_mirrors_json
-
 
 def build_pool(self) -> list:
     """

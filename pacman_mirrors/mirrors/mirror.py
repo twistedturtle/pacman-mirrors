@@ -20,6 +20,8 @@
 
 """Pacman-Mirrors Mirror Class Module"""
 
+from decimal import Decimal
+
 from pacman_mirrors.constants import txt
 from pacman_mirrors.functions.pools import get_continent
 
@@ -49,7 +51,8 @@ class Mirror:
         if resp_time is None:
             resp_time = 0
         else:
-            resp_time = dec(resp_time)
+            resp_time = Decimal(resp_time)
+
         if country not in self.country_pool:
             self.country_pool.append(country)
         # translate negative integer in status.json
