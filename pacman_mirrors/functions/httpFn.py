@@ -39,7 +39,7 @@ from pacman_mirrors.functions import jsonFn
 from pacman_mirrors.functions import util
 
 
-def user_agent():
+def headers():
     return {"User-Agent": f"{conf.USER_AGENT}/{__version__}"}
 
 def download_mirrors(config: object) -> tuple:
@@ -55,7 +55,7 @@ def download_mirrors(config: object) -> tuple:
         # mirrors.json
         util.msg(message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR)
         resp = requests.get(url=config["url_mirrors_json"],
-                            headers=user_agent(),
+                            headers=headers(),
                             timeout=config["timeout"])
         resp.raise_for_status()
         mirrorlist = resp.json()
@@ -89,7 +89,7 @@ def download_mirrors(config: object) -> tuple:
         # status.json
         util.msg(message=f"=> Mirror status: {config['url_status_json']}", urgency=txt.INF_CLR)
         resp = requests.get(url=config["url_status_json"],
-                            headers= user_agent(),
+                            headers= headers(),
                             timeout=config["timeout"])
         # resp.raise_for_status()
         statuslist = resp.json()
@@ -134,7 +134,7 @@ def get_http_response(url: str, maxwait: int) -> str:
     """
     message = ""
     try:
-        resp = requests.get(url=url, headers=user_agent(), timeout=maxwait)
+        resp = requests.get(url=url, headers=headers(), timeout=maxwait)
         resp.raise_for_status()
         # _ = resp.text
     except (requests.exceptions.ConnectionError,) as connError:
@@ -215,27 +215,27 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
     :param maxwait:
     :param tty:
     """
-    resp = None
-    hosts = conf.INET_CONN_CHECK_URLS
-    for host in hosts:
-        # noinspection PyBroadException
+    def output_err(host, err):
+        print("")
+        util.msg(f"{host} '{err}'", urgency=txt.WRN_CLR, tty=tty)
+        print("")
+     
+    for host in conf.INET_CONN_CHECK_URLS:
         try:
-            resp = requests.get(host, headers=user_agent(), timeout=maxwait)
-            break
-
-        except requests.exceptions.ConnectionError as connError:
-            message = f"Connection: {connError}"
-        except requests.exceptions.SSLError as sslError:
-            message = f"Certificate: {sslError}"
-        except requests.exceptions.Timeout as connTimeout:
-            message = f"Connection: {connTimeout}"
-        except requests.exceptions.HTTPError as httpError:
-            message = f"Connection {httpError}"
-        except Exception as e:
-            message = f"{e}"
-
-        util.msg(f"{host} '{message}'", urgency=txt.WRN_CLR, tty=tty)
-    return bool(resp)
+            requests.get(host, headers=headers(), timeout=maxwait)
+            return True
+        except requests.exceptions.ConnectionError as err:
+            output_err(host, err)
+        except requests.exceptions.SSLError as err:
+            output_err(host, err)
+        except requests.exceptions.Timeout as err:
+            output_err(host, err)
+        except requests.exceptions.HTTPError as err:
+            output_err(host, err)
+        except Exception as err:
+            output_err(host, err)
+       
+    return False
 
 
 def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
