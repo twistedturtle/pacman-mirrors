@@ -129,8 +129,8 @@ def terminal_size() -> tuple:
     return result
 
 
-def build_ping_url():
-    url = "http://ping.manjaro.org/pacmanmirrors"
+def build_ping_url() -> str:
+    url = "http://ping.manjaro.org/pacmanmirrors/"
 
     def proc(cmd):
         return subprocess.check_output(cmd).decode()
@@ -140,7 +140,7 @@ def build_ping_url():
     def chassis():
         for index, line in enumerate(info):
             if "Chassis" in line:
-                return info[index + 1] + "/"
+                return info[index + 1]
 
     def vendor():
         for index, line in enumerate(info):
@@ -153,6 +153,7 @@ def build_ping_url():
     codename = proc(['lsb_release', '-c']).replace("Codename:\t", "").replace("\n", "")
     version = proc(['lsb_release', '-r']).replace("Release:\t", "").replace("\n", "")
     session_type = os.getenv('XDG_SESSION_TYPE')
+    de = os.getenv('XDG_CURRENT_DESKTOP')
     _os_ = f"{codename}-{version}"
 
     if session_type is not None:
@@ -160,5 +161,5 @@ def build_ping_url():
     else:
         session_type = ""
 
-    host = url + "".join(f"/{arch}/{chassis()}{session_type}{_os_}/{branch}/{kernel}-{vendor()}".split())
+    host = url + "".join(f"{arch}/{session_type}{_os_}/{branch}/{de}/{kernel}/{chassis()}-{vendor()}".split())
     return host
