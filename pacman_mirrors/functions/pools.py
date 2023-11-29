@@ -33,8 +33,10 @@ def wash_country_list(country_list: list):
         for s in search:
             if s is not None:
                 r = s["name"]
+
         if r not in washed:
             washed.append(r)
+            
     return washed
 
 
@@ -73,15 +75,18 @@ def build_country_list(self: list) -> list:
             country = get_geo_country(self.mirrors.country_pool)
             if country:
                 result.append(country)
+
         # get country list for continent
         if self.continent:
             continent_mirror_countries = get_continent_countries(get_geo_continent(), self.mirrors.mirror_pool)
             if continent_mirror_countries:
                 result = continent_mirror_countries
+        
         # validate result
         # do not return an empty list
         if not result:
             result = self.mirrors.country_pool
+            
     return result
 
 
@@ -93,6 +98,7 @@ def get_continent(country: str) -> str:
     continent = (x for x in countries if country in x["name"])
     for x in continent:
         return x["continent"].strip().replace(" ", "_")
+    
     return ""
 
 
@@ -108,6 +114,7 @@ def get_continent_countries(continent: str, mirror_pool: list) -> list:
     for m in mirror_countries:
         if m["country"] not in result:
             result.append(m["country"])
+
     return result
 
 
@@ -129,6 +136,7 @@ def get_geo_country(country_pool: list) -> str:
     selection = (x for x in country_pool if geo_country in x)
     for c in selection:
         return c
+    
     return ""
 
 
@@ -149,4 +157,5 @@ def _get_ip_continent() -> str:
     continents = (x for x in countries if country in x["name"])
     for continent in continents:
         return continent["continent"].strip()
+    
     return ""

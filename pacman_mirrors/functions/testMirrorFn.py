@@ -36,12 +36,18 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
                  urgency=f"{txt.INF_CLR}",
                  tty=self.tty)
     else:
-        util.msg(message=f"{txt.USING_DEFAULT_FILE}",
-                 urgency=f"{txt.INF_CLR}",
-                 tty=self.tty)
-    util.msg(message=f"{txt.QUERY_MIRRORS} - {txt.TAKES_TIME}",
-             urgency=f"{txt.INF_CLR}",
-             tty=self.tty)
+        util.msg(
+            message=f"{txt.USING_DEFAULT_FILE}",
+            urgency=f"{txt.INF_CLR}",
+            tty=self.tty
+        )
+
+    util.msg(
+        message=f"{txt.QUERY_MIRRORS} - {txt.TAKES_TIME}",
+        urgency=f"{txt.INF_CLR}",
+        tty=self.tty
+    )
+
     counter = 0
     cols, lines = util.terminal_size()
     # set connection timeouts
@@ -49,6 +55,7 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
     ssl_wait = self.max_wait_time * 2
     ssl_verify = self.config["ssl_verify"]
     result = []
+
     for mirror in worklist:
         # get a list of mirror dictionaries ordered by protocol descending
         # mirror_protocols is monkey patched to return only the first
@@ -59,13 +66,12 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
         work_mirror = mirror_protocols(mirror)
         colon = work_mirror[0]["url"].find(":")
         url = work_mirror[0]["url"][colon:]
+
         for mirror_proto in work_mirror:
             # get protocol
             proto = mirror_proto["protocols"][0]
-
             # generate url with protocol
             mirror_proto["url"] = f"{proto}{url}"
-
             # create message for later display
             message = f'  ..... {mirror_proto["country"]:<15}: {mirror_proto["url"]}'
 
@@ -85,8 +91,10 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
 
             # let's see how responsive you are
             mirror_proto["resp_time"] = get_mirror_response(
-                url=mirror_proto["url"], config=self.config, tty=self.tty,
-                maxwait=self.max_wait_time, quiet=self.quiet, ssl_verify=ssl_verify)
+                url=mirror_proto["url"], config=self.config,
+                tty=self.tty,maxwait=self.max_wait_time,
+                quiet=self.quiet, ssl_verify=ssl_verify
+            )
 
             # create a printable string version from the response with appended zeroes
             r_str = str(mirror_proto["resp_time"])
@@ -119,6 +127,7 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
         if limit is not None:
             if mirror["resp_time"] == txt.SERVER_RES:
                 continue
+
             counter += 1
             result.append(probed_mirror)
         else:
@@ -172,11 +181,14 @@ def filter_bad_http(work: list) -> dict:
         "resp_time": "",
         "url": work[0]["url"]
     }
+    
     if len(work) > 1:
         for item in work:
             if item["protocols"][0].endswith("tps") and item["resp_time"] == txt.SERVER_RES:
                 continue
             result["protocols"].append(item["protocols"][0])
             result["resp_time"] = item["resp_time"]
+
         return result
+    
     return work[0]

@@ -3,11 +3,11 @@
 from urllib import request
 from urllib import error
 import json
+from datetime import datetime
 from pacman_mirrors.constants import colors
 from pacman_mirrors.functions import printFn
 from pacman_mirrors.functions.util import strip_protocol
 from pacman_mirrors.functions.util import msg
-from datetime import datetime
 from pacman_mirrors.functions.jsonFn import read_json_file
 
 C_KO = colors.RED
@@ -29,7 +29,9 @@ def get_local_mirrors() -> tuple:
                 mirror_branch = mirror_url.pop()
                 line = "/".join(mirror_url)
                 urls.append(line + "/",)
+
         return mirror_branch, urls
+    
     except (FileNotFoundError, UnboundLocalError):
         return "", []
 
@@ -40,14 +42,18 @@ def get_state(states: list, branch: str) -> tuple:
     x = states[0]
     if branch == "testing":
         x = states[1]
+
     if branch == "unstable":
         x = states[2]
+
     if x == 0:
         ret_color = C_KO
         status_text = "--"
+        
     if x == -1:
         ret_color = C_KO
         status_text = "--"
+
     return ret_color, status_text
 
 
@@ -57,7 +63,6 @@ def print_status(self) -> int:
     :param self:
     :return:
     """
-    # // --- BEGING ---------------------------------------------------------------------
     # If configuration urls are missing - show only first mirror from mirror pool
     if not self.config["url_mirrors_json"] or not self.config["url_status_json"]:
         color = C_OK
@@ -65,9 +70,11 @@ def print_status(self) -> int:
         now = datetime.now()
         fake = now.strftime("00:%M")
         mirror = get_static_mirror(self.config["mirror_file"])
-        print(f"Mirror #1", color, f"{text}", C_NONE, f"{fake} {mirror['country']} {mirror['url']}")
+        print(
+            "Mirror #1", color, f"{text}", C_NONE, 
+            f"{fake} {mirror['country']} {mirror['url']}"
+        )
         return 0
-    # // --- END ---------------------------------------------------------------------
 
     system_branch, mirrors_pacman = get_local_mirrors()
     # bug out when no local mirrorlist exist or branch is deprecated
@@ -76,14 +83,14 @@ def print_status(self) -> int:
         return 1
 
     try:
-        # // --- DEBUG ---------------------------------------------------------------
-        # with request.urlopen('http://localhost:8000/status.json') as f_url:
         with request.urlopen('https://repo.manjaro.org/status.json') as f_url:
             req = f_url.read()
+
     except error.URLError:
         msg("Downloading status failed!", color=colors.BLUE)
         msg("Please check you network connection ...", color=colors.YELLOW)
-        return 1  # return failure
+        return 1
+
     json_data = json.loads(req)
     mirrors = []
     for mirror in json_data:
@@ -93,10 +100,11 @@ def print_status(self) -> int:
             mirrors.append(temp)
 
     mirrors = [m for m in mirrors if m['url'] in mirrors_pacman]
-
     printFn.yellow_msg(f"Local mirror status for {system_branch} branch")
-    exit_code = 0  # up-to-date
-    for i, url in enumerate(mirrors_pacman):  # same order as pacman-conf
+    exit_code = 0  # up-to-
+    
+    for i, url in enumerate(mirrors_pacman):  
+        # same order as pacman-conf
         try:
             mirror = [m for m in mirrors if m['url'] == url][0]
             color, text = get_state(mirror["branches"], system_branch)
@@ -106,13 +114,20 @@ def print_status(self) -> int:
                 last_sync = "--:--"
                 color = C_KO
                 text = "--"
-            print(f"Mirror #{str(i + 1):2}", color, f"{text}", C_NONE,
-                  f"{last_sync:7} {mirror['country']:{len_country}} {mirror['url']}")
+
+            print(
+                f"Mirror #{str(i + 1):2}", color, f"{text}", C_NONE,
+                f"{last_sync:7} {mirror['country']:{len_country}} {mirror['url']}"
+            )
+           
             if i == 0 and color == C_KO:
-                exit_code = 4  # first mirror not sync !
+                # first mirror not sync !
+                exit_code = 4
+
         except IndexError:
+            # not found
             print(C_KO, f"Mirror #{i + 1:2}", f"{url} does not exist{C_NONE}")
-            exit_code = 5  # not found
+            exit_code = 5
 
     return exit_code
 

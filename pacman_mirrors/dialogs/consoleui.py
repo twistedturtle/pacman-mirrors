@@ -21,7 +21,7 @@
 
 from collections import namedtuple
 import npyscreen
-import pacman_mirrors.functions.conversion
+from pacman_mirrors.functions import conversion
 from pacman_mirrors.constants import txt
 from pacman_mirrors.translation import i18n
 
@@ -42,22 +42,32 @@ class ConsoleUI(npyscreen.NPSAppManaged):
         self.random = random
         self.default = default
 
-        header_cols = {"country": txt.I_COUNTRY,
-                       "resp_time": txt.I_RESPONSE,
-                       "last_sync": txt.I_LAST_SYNC,
-                       "url": txt.I_URL}
-        template = namedtuple("Server", ["country",
-                                         "resp_time",
-                                         "last_sync",
-                                         "url"])
+        header_cols = {
+            "country": txt.I_COUNTRY,
+            "resp_time": txt.I_RESPONSE,
+            "last_sync": txt.I_LAST_SYNC,
+            "url": txt.I_URL
+            }
+        
+        template = namedtuple("Server", [
+            "country",
+            "resp_time",
+            "last_sync",
+            "url"
+            ])
 
         main_server_list = [header_cols]
         main_server_list.extend(server_list)
-        servers = pacman_mirrors.functions.conversion.list_to_tuple(list_data=main_server_list, named_tuple=template)
+        servers = conversion.list_to_tuple(
+            list_data=main_server_list, named_tuple=template
+            )
         self.list_title = txt.I_LIST_TITLE
-        self.server_rows = pacman_mirrors.functions.conversion.rows_from_tuple(servers=servers)
-        self.header_row = ("{:<5}".format(txt.I_USE) +
-                           (self.server_rows[0].replace("|", " ").strip()))
+        self.server_rows = conversion.rows_from_tuple(servers=servers)
+        self.header_row = (
+            "{:<5}".format(txt.I_USE) +
+            (self.server_rows[0].replace("|", " ").strip())
+            )
+        
         del self.server_rows[0]
 
     def main(self):
@@ -65,14 +75,17 @@ class ConsoleUI(npyscreen.NPSAppManaged):
         mainform = npyscreen.Form(name=self.title)
         mainform.add(npyscreen.TitleFixedText, name=self.list_title)
         mainform.add(npyscreen.TitleFixedText, name=self.header_row)
-        selected_servers = mainform.add(npyscreen.MultiSelect,
-                                        max_height=0,
-                                        name=self.list_title,
-                                        value=[],
-                                        values=self.server_rows,
-                                        scroll_exit=True)
+        selected_servers = mainform.add(
+            npyscreen.MultiSelect,
+            max_height=0,
+            name=self.list_title,
+            value=[],
+            values=self.server_rows,
+            scroll_exit=True
+            )
+        
         mainform.edit()  # activate form
-        self.done(selection=selected_servers.get_selected_objects())  # done
+        self.done(selection=selected_servers.get_selected_objects())
 
     def done(self, selection: list) -> None:
         """After editing
@@ -81,15 +94,24 @@ class ConsoleUI(npyscreen.NPSAppManaged):
         if selection:
             for mirror in selection:
                 server = mirror.split("|")
-                self.custom_list.append({"country": server[0].strip(),
-                                         "resp_time": server[1].strip(),
-                                         "last_sync": server[2].strip(),
-                                         "url": server[3].strip()})
+                self.custom_list.append(
+                    {
+                        "country": server[0].strip(),
+                        "resp_time": server[1].strip(),
+                        "last_sync": server[2].strip(),
+                        "url": server[3].strip()
+                    })
+                
         self.is_done = True
         self.setNextForm(None)
 
 
 def run(server_list: list, random: bool, default: bool) -> object:
-    app = ConsoleUI(server_list=server_list, random=random, default=default)
+    app = ConsoleUI(
+        server_list=server_list, 
+        random=random,
+        default=default
+        )
+    
     app.run()
     return app

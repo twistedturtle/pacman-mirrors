@@ -19,10 +19,11 @@
 
 """Pacman-Mirrors Command Line Parser"""
 
+# TODO add missing translations to help section
+
 import argparse
 import os
 import sys
-
 from pacman_mirrors import __version__
 from pacman_mirrors.api import api_handler
 from pacman_mirrors.functions import customFn
@@ -46,112 +47,181 @@ def parse_command_line(self, gtk_available: bool) -> None:
     nusage = f"\rVersion {__version__}\n{txt.USAGE}:\n pacman-mirrors"
     usage = f"{nusage} {args_summary}"
 
-    parser = argparse.ArgumentParser(formatter_class=CustomHelpFormatter,
-                                     add_help=False, usage=usage)
+    parser = argparse.ArgumentParser(
+        formatter_class=CustomHelpFormatter,
+        add_help=False, usage=usage
+        )
 
     # Method arguments
     methods = parser.add_argument_group(txt.METHODS)
-    methods.add_argument("-i", "--interactive",
-                         action="store_true",
-                         help=txt.HLP_ARG_INTERACTIVE)
+    methods.add_argument(
+        "-i", "--interactive",
+        action="store_true",
+        help=txt.HLP_ARG_INTERACTIVE
+        )
+    
     methods_exclusive = methods.add_mutually_exclusive_group()
-    methods_exclusive.add_argument("-f", "--fasttrack",
-                                   nargs="?",
-                                   const=-1,
-                                   type=int,
-                                   # default=0,
-                                   metavar=txt.NUMBER,
-                                   help="{} {}".format(txt.HLP_ARG_FASTTRACK, txt.OVERRIDE_OPT))
-    methods_exclusive.add_argument("-c", "--country",
-                                   type=str,
-                                   nargs="+",
-                                   metavar=txt.COUNTRY,
-                                   help=txt.HLP_ARG_COUNTRY)
-    methods_exclusive.add_argument("--geoip",
-                                   action="store_true",
-                                   help=txt.HLP_ARG_GEOIP)
-    methods_exclusive.add_argument("--continent",
-                                   action="store_true",
-                                   help=txt.HLP_ARG_CONTINENT)
-    # Api arguments
+    methods_exclusive.add_argument(
+        "-f", "--fasttrack",
+        nargs="?",
+        const=-1,
+        type=int,
+        metavar=txt.NUMBER,
+        help=f"{txt.HLP_ARG_FASTTRACK} {txt.OVERRIDE_OPT}"
+        )
+
+    methods_exclusive.add_argument(
+        "-c", "--country",
+        type=str,
+        nargs="+",
+        metavar=txt.COUNTRY,
+        help=txt.HLP_ARG_COUNTRY
+        )
+    
+    methods_exclusive.add_argument(
+        "--geoip",
+        action="store_true",
+        help=txt.HLP_ARG_GEOIP
+        )
+    
+    methods_exclusive.add_argument(
+        "--continent",
+        action="store_true",
+        help=txt.HLP_ARG_CONTINENT
+        )
+    
     api = parser.add_argument_group(txt.API)
-    api.add_argument("-a", "--api",
-                     action="store_true",
-                     help="[-p {}][-R][-S/-B|-G {}][-P {} [{} ...]]".format(
-                         txt.PREFIX, txt.BRANCH, txt.PROTO, txt.PROTO))
-    api.add_argument("-S", "-B", "--set-branch",
-                     choices=["stable", "testing", "unstable"],
-                     help="{}: {}".format(
-                         txt.API, txt.HLP_ARG_API_SET_BRANCH))
-    api.add_argument("-p", "--prefix",
-                     type=str,
-                     metavar=txt.PREFIX,
-                     help="{}: {} {}".format(
-                         txt.API, txt.HLP_ARG_API_PREFIX, txt.PREFIX_TIP))
-    api.add_argument("-P", "--proto", "--protocols",
-                     choices=["all", "http", "https", "ftp", "ftps"],
-                     type=str,
-                     nargs="+",
-                     help="{}: {}".format(
-                         txt.API, txt.HLP_ARG_API_PROTOCOLS))
-    api.add_argument("-R", "--re-branch",
-                     action="store_true",
-                     help="{}: {}".format(
-                         txt.API, txt.HLP_ARG_API_RE_BRANCH))
-    api.add_argument("-U", "--url",
-                     type=str,
-                     metavar=txt.URL,
-                     help="{}: {}".format(
-                         txt.API, txt.HLP_ARG_API_URL))
-    # Misc arguments
+    api.add_argument(
+        "-a", "--api",
+         action="store_true",
+         help=f"[-p {txt.PREFIX}][-R][-S/-B|-G {txt.BRANCH}][-P {txt.PROTO} [{txt.PROTO} ...]]"
+         )
+    
+    api.add_argument(
+        "-S", "-B", "--set-branch",
+        choices=["stable", "testing", "unstable"],
+        help=f"{txt.API}: {txt.HLP_ARG_API_SET_BRANCH}"
+        )
+
+    api.add_argument(
+        "-p", "--prefix",
+        type=str,
+        metavar=txt.PREFIX,
+        help=f"{txt.API}: {txt.HLP_ARG_API_PREFIX} {txt.PREFIX_TIP}"
+        )
+    
+    api.add_argument(
+        "-P", "--proto", "--protocols",
+        choices=["all", "http", "https", "ftp", "ftps"],
+        type=str,
+        nargs="+",
+        help=f"{txt.API}: {txt.HLP_ARG_API_PROTOCOLS}"
+        )
+    
+    api.add_argument(
+        "-R", "--re-branch",
+        action="store_true",
+        help=f"{txt.API}: {txt.HLP_ARG_API_RE_BRANCH}"
+        )
+    
+    api.add_argument(
+        "-U", "--url",
+        type=str,
+        metavar=txt.URL,
+        help=f"{txt.API}: {txt.HLP_ARG_API_URL}"
+        )
+    
     misc = parser.add_argument_group(txt.MISC)
-    misc.add_argument("-G", "--get-branch",
-                      action="store_true",
-                      help="{}".format(txt.HLP_ARG_API_GET_BRANCH))
-    misc.add_argument("-d", "--default",
-                      action="store_true",
-                      help="INTERACTIVE: " + txt.HLP_ARG_DEFAULT)
-    misc.add_argument("-h", "--help",
-                      action="store_true")
-    misc.add_argument("-l", "--list", "--country-list",
-                      action="store_true",
-                      help=txt.HLP_ARG_LIST)
-    misc.add_argument("-lc", "--country-config",
-                      action="store_true",
-                      help="lists configured mirror countries")
-    misc.add_argument("-m", "--method",
-                      type=str,
-                      choices=["rank", "random"],
-                      help=txt.HLP_ARG_METHOD)
-    misc.add_argument("-n", "--no-mirrorlist",
-                      action="store_true",
-                      help=txt.HLP_ARG_NO_MIRRORLIST)
-    misc.add_argument("-q", "--quiet",
-                      action="store_true",
-                      help=txt.HLP_ARG_QUIET)
-    misc.add_argument("-s", "--no-status",
-                      action="store_true",
-                      help=txt.HLP_ARG_STATUS)
-    misc.add_argument("-t", "--timeout",
-                      type=int,
-                      metavar=txt.SECONDS,
-                      help=txt.HLP_ARG_TIMEOUT)
-    misc.add_argument("-v", "--version",
-                      action="store_true",
-                      help=txt.HLP_ARG_VERSION)
-    misc.add_argument("--no-color",
-                      action="store_true")
-    misc.add_argument("--interval",
-                      type=int,
-                      help="Max. number of hours since last sync")
-    misc.add_argument("-g",
-                      action="store_true",
-                      help="Create mirror list from active pool.")
-    misc.add_argument("--status",
-                      action="store_true",
-                      help="Status for the current mirror list.")
-    misc.add_argument("-fc",
-                      action="store_true")
+    misc.add_argument(
+        "-G", "--get-branch",
+        action="store_true",
+        help=txt.HLP_ARG_API_GET_BRANCH
+        )
+    
+    misc.add_argument(
+        "-d", "--default",
+        action="store_true",
+        help=f"INTERACTIVE: {txt.HLP_ARG_DEFAULT}"
+        )
+    
+    misc.add_argument("-h", "--help", action="store_true")
+    misc.add_argument(
+        "-l", "--list", "--country-list",
+        action="store_true",
+        help=txt.HLP_ARG_LIST
+        )
+    
+    misc.add_argument(
+        "-lc", "--country-config",
+        action="store_true",
+        help="lists configured mirror countries"
+        )
+    
+    misc.add_argument(
+        "-m", "--method",
+        type=str,
+        choices=["rank", "random"],
+        help=txt.HLP_ARG_METHOD
+        )
+    
+    misc.add_argument(
+        "-n", "--no-mirrorlist",
+        action="store_true",
+        help=txt.HLP_ARG_NO_MIRRORLIST
+        )
+    
+    misc.add_argument(
+        "-q", "--quiet",
+        action="store_true",
+        help=txt.HLP_ARG_QUIET
+        )
+    
+    misc.add_argument(
+        "-s", "--no-status",
+        action="store_true",
+        help=txt.HLP_ARG_STATUS
+        )
+    
+    misc.add_argument(
+        "-t", "--timeout",
+        type=int,
+        metavar=txt.SECONDS,
+        help=txt.HLP_ARG_TIMEOUT
+        )
+    
+    misc.add_argument(
+        "-v", "--version",
+        action="store_true",
+        help=txt.HLP_ARG_VERSION
+        )
+    
+    misc.add_argument(
+        "--no-color",
+        action="store_true"
+        )
+    
+    misc.add_argument(
+        "--interval",
+        type=int,
+        help="Max. number of hours since last sync"
+        )
+    
+    misc.add_argument(
+        "-g",
+        action="store_true",
+        help="Create mirror list from active pool."
+        )
+    
+    misc.add_argument(
+        "--status",
+        action="store_true",
+        help="Status for the current mirror list."
+        )
+    
+    misc.add_argument(
+        "-fc",
+        action="store_true"
+        )
 
     args = parser.parse_args()
 
@@ -193,27 +263,26 @@ def parse_command_line(self, gtk_available: bool) -> None:
     # If --set-branch, --protocols, --url, --prefix and not --api reject
     if args.set_branch or args.proto or args.url or args.prefix:
         if not args.api:
-            print("Version {}\nUSAGE:\n {} {}".format(__version__, "pacman-mirrors", args_summary))
+            print(f"Version {__version__}\nUSAGE:\n pacman-mirrors {args_summary}")
             print("{}".format(txt.API_ARGUMENTS_ERROR))
             sys.exit(1)
 
     # If --default and not --interactive reject
     if args.default:
         if not args.interactive:
-            print("Version {}\nUSAGE:\n {} {}".format(__version__, "pacman-mirrors", args_summary))
-            print("{}".format(txt.INTERACTIVE_ARGUMENTS_ERROR))
+            print(f"Version {__version__}\nUSAGE:\n pacman-mirrors {args_summary}")
+            print(txt.INTERACTIVE_ARGUMENTS_ERROR)
             sys.exit(1)
 
     # If --interval and not --no-status reject
     if args.interval and not args.no_status:
-        print("Version {}\nUSAGE:\n {} {}".format(__version__, "pacman-mirrors", args_summary))
+        print(f"Version {__version__}\nUSAGE:\n pacman-mirrors {args_summary}")
         print("Invalid arguments: `--interval` argument only valid with `-s`")
         sys.exit(1)
 
     # Root required
     if os.getuid() != 0:
-        print(".: {} {}".format(
-            txt.ERR_CLR, txt.MUST_BE_ROOT))
+        print(f".: {txt.ERR_CLR} {txt.MUST_BE_ROOT}")
         sys.exit(1)
 
     if args.continent:
@@ -274,6 +343,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
                 or os.environ.get("XDG_SESSION_TYPE") == "tty" \
                 or not os.environ.get("DISPLAY") \
                 or not gtk_available:
+            
             self.no_display = True
 
     if args.fc:
@@ -298,6 +368,8 @@ def parse_command_line(self, gtk_available: bool) -> None:
                 else:
                     self.config["protocols"] = args.proto
 
-        api_handler.set_config(self, set_pfx=args.prefix,
-                               set_branch=setbranch, re_branch=rebranch,
-                               set_protocols=setprotocols, set_url=url)
+        api_handler.set_config(
+            self, set_pfx=args.prefix,
+            set_branch=setbranch, re_branch=rebranch,
+            set_protocols=setprotocols, set_url=url
+            )

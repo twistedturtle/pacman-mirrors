@@ -37,6 +37,7 @@ def check_file(filename: str, folder: bool = False) -> bool:
     """
     if folder:
         return os.path.isdir(filename)
+    
     return os.path.isfile(filename)
 
 
@@ -73,14 +74,19 @@ def return_mirror_filename(config: object, tty: bool = False) -> tuple:
         filename = config["status_file"]
     elif check_file(filename=config["mirror_file"]):
         filename = config["mirror_file"]
+
     if not filename:
         util.msg(message=f"\n{txt.HOUSTON}\n", tty=tty, color=color.RED)
         sys.exit(3)
+
     return filename, status
 
 
-def write_mirror_list(config: object, servers: list, tty: bool = False, custom: bool = False,
-                      quiet: bool = False, interactive: bool = False) -> None:
+def write_mirror_list(
+        config: object, servers: list,
+        tty: bool = False, custom: bool = False,
+        quiet: bool = False, interactive: bool = False
+    ) -> None:
     """
     Write servers to /etc/pacman.d/mirrorlist
     :param config: configuration dictionary
@@ -93,7 +99,10 @@ def write_mirror_list(config: object, servers: list, tty: bool = False, custom: 
     try:
         with open(config["mirror_list"], "w") as outfile:
             if not quiet:
-                util.msg(message=f"{txt.WRITING_MIRROR_LIST}", urgency=txt.INF_CLR, tty=tty)
+                util.msg(
+                    message=f"{txt.WRITING_MIRROR_LIST}", 
+                    urgency=txt.INF_CLR, tty=tty
+                )
             # write list header
             write_mirrorlist_header(outfile, custom=custom)
             cols, lines = util.terminal_size()
@@ -102,14 +111,15 @@ def write_mirror_list(config: object, servers: list, tty: bool = False, custom: 
                 protocol = server["protocols"][0]
                 pos = url.find(":")
                 server["url"] = f'{protocol}{url[pos:]}{config["branch"]}{config["repo_arch"]}'
+               
                 if server["resp_time"] == 99.99:
                     # do not write bad servers to mirrorlist
                     continue
+
                 if interactive:
                     if not quiet:
                         message = f'{server["country"]:<15} : {server["url"]}'
                         util.msg(message=f"{message:.{cols}}", tty=tty)
-                        # print()
                 else:
                     msg_url = f'{protocol}{url[pos:]}{config["branch"]}'
                     if not quiet:
@@ -118,11 +128,18 @@ def write_mirror_list(config: object, servers: list, tty: bool = False, custom: 
 
                 # write list entry
                 write_mirrorlist_entry(outfile, server)
+
             if not quiet:
                 util.msg(
-                    message=f'{txt.MIRROR_LIST_SAVED}: {config["mirror_list"]}', urgency=txt.INF_CLR, tty=tty)
+                    message=f'{txt.MIRROR_LIST_SAVED}: {config["mirror_list"]}',
+                    urgency=txt.INF_CLR, tty=tty
+                )
+
     except OSError as err:
-        util.msg(message=f"{txt.CANNOT_WRITE_FILE}: {err.filename}: {err.strerror}", urgency=txt.ERR_CLR, tty=tty)
+        util.msg(
+            message=f"{txt.CANNOT_WRITE_FILE}: {err.filename}: {err.strerror}", 
+            urgency=txt.ERR_CLR, tty=tty
+        )
 
         sys.exit(2)
 
@@ -148,18 +165,23 @@ def write_mirrorlist_header(handle: object, custom: bool = False) -> None:
     generated_timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     handle.write("##\n")
     if custom:
-        handle.write(f"## Manjaro Linux {txt.MIRROR_LIST_CUSTOM_HEADER}\n"
-                     f"## {txt.MIRROR_LIST_GENERATED_ON} {generated_timestamp}\n"
-                     "##\n"
-                     f"## {txt.PLEASE_USE} '{txt.MODIFY_CUSTOM}' {txt.MIRROR_LIST_CUSTOM_RESET}\n"
-                     f"## {txt.PLEASE_USE} '{txt.RESET_ALL}' {txt.MIRROR_LIST_CUSTOM_RESET}\n"
-                     f"## {txt.REMOVE_CUSTOM_CONFIG} '{txt.RESET_ALL}'\n")
+        handle.write(
+            f"## Manjaro Linux {txt.MIRROR_LIST_CUSTOM_HEADER}\n"
+            f"## {txt.MIRROR_LIST_GENERATED_ON} {generated_timestamp}\n"
+            "##\n"
+            f"## {txt.PLEASE_USE} '{txt.MODIFY_CUSTOM}' {txt.MIRROR_LIST_CUSTOM_RESET}\n"
+            f"## {txt.PLEASE_USE} '{txt.RESET_ALL}' {txt.MIRROR_LIST_CUSTOM_RESET}\n"
+            f"## {txt.REMOVE_CUSTOM_CONFIG} '{txt.RESET_ALL}'\n"
+        )
     else:
-        handle.write(f"## Manjaro Linux {txt.MIRROR_LIST_DEFAULT_HEADER}\n"
-                     f"## {txt.MIRROR_LIST_GENERATED_ON} {generated_timestamp}\n"
-                     "##\n"
-                     f"## {txt.PLEASE_USE} '{txt.MODIFY_DEFAULT} [{txt.NUMBER}]' {txt.MIRROR_LIST_DEFAULT_MODIFY}\n"
-                     f"## ({txt.USE_ZERO_FOR_ALL})\n")
+        handle.write(
+            f"## Manjaro Linux {txt.MIRROR_LIST_DEFAULT_HEADER}\n"
+            f"## {txt.MIRROR_LIST_GENERATED_ON} {generated_timestamp}\n"
+            "##\n"
+            f"## {txt.PLEASE_USE} '{txt.MODIFY_DEFAULT} [{txt.NUMBER}]' {txt.MIRROR_LIST_DEFAULT_MODIFY}\n"
+            f"## ({txt.USE_ZERO_FOR_ALL})\n"
+        )
+
     handle.write("##\n\n")
 
 

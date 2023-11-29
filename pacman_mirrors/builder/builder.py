@@ -39,12 +39,17 @@ def build_pool(self) -> list:
 
     # Apply country filter if not fasttrack
     if not self.fasttrack:
-        work_pool = filter_mirror_country(mirror_pool=work_pool, country_pool=self.selected_countries)
+        work_pool = filter_mirror_country(
+            mirror_pool=work_pool, country_pool=self.selected_countries
+            )
 
     # Apply protocol filter
     try:
         _ = self.config["protocols"][0]
-        work_pool = filter_mirror_protocols(mirror_pool=work_pool, protocols=self.config["protocols"])
+        work_pool = filter_mirror_protocols(
+            mirror_pool=work_pool, protocols=self.config["protocols"]
+            )
+
     except IndexError:
         pass
 
@@ -52,8 +57,12 @@ def build_pool(self) -> list:
     if self.no_status:
         # Apply interval filter
         if self.interval:
-            work_pool = filter_poor_mirrors(mirror_pool=work_pool, interval=self.interval)
+            work_pool = filter_poor_mirrors(
+                mirror_pool=work_pool, interval=self.interval
+                )
     else:
-        work_pool = filter_user_branch(mirror_pool=work_pool, config=self.config)
+        work_pool = filter_user_branch(
+            mirror_pool=work_pool, config=self.config
+            )
 
     return work_pool

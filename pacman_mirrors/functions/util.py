@@ -39,6 +39,7 @@ def get_country(data: str) -> str:
     line = data.strip()
     if line.startswith("[") and line.endswith("]"):
         return line[1:-1]
+    
     elif line.startswith("## Country") or line.startswith("## Location"):
         return line[19:]
 
@@ -58,6 +59,7 @@ def get_protocol_from_url(url: str) -> str:
     colon = url.find(":")
     if colon:
         return url[:colon]
+    
     return url
 
 
@@ -70,6 +72,7 @@ def location_from_url(url: str) -> str:
     colon = url.find(":")
     if colon:
         return url[colon:]
+    
     return url
 
 
@@ -80,7 +83,9 @@ def aarch64_check(self, write: bool = False) -> None:
         if "arm" not in branch:
             branch = f"arm-{branch}"
             if write:
-                apifn.write_config_branch(branch, self.config["config_file"], quiet=True)
+                apifn.write_config_branch(
+                    branch, self.config["config_file"], quiet=True
+                )
 
 
 def internet_message(tty: bool = False) -> None:
@@ -104,15 +109,20 @@ def msg(message: str, urgency: str = "", tty: bool = False, color: str = "", new
     if tty:
         if newline:
             print("\n")
+
         print(f"::{message}")
+
     else:
         if urgency:
             if newline:
                 print("\n")
+
             print(f"::{urgency} {message}")
+
         else:
             if newline:
                 print("\n")
+                
             print(f"::{color}{message}{reset}")
 
 

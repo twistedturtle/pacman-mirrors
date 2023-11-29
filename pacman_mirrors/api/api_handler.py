@@ -29,10 +29,10 @@ from pacman_mirrors.functions import util
 
 
 def set_config(
-    self, set_pfx: str = None, set_branch: str = None,
-    re_branch: bool = False, set_protocols: bool = False,
-    set_url: str = None
-    ) -> None:
+        self, set_pfx: str = None, set_branch: str = None,
+        re_branch: bool = False, set_protocols: bool = False,
+        set_url: str = None
+   ) -> None:
     """
     Api configuration function
     :param self:
@@ -94,12 +94,21 @@ def set_config(
     # Third API task: Write protocols to config
     if set_protocols:
         apifn.write_protocols(
-            protocols=self.config["protocols"], filename=self.config["config_file"], tty=self.tty, quiet=self.quiet)
+            protocols=self.config["protocols"],
+            filename=self.config["config_file"],
+            tty=self.tty, quiet=self.quiet
+            )
     # Fourth API task: Rebranch mirror list
     if re_branch:
         if not set_branch:
-            util.msg(message=f"{txt.API_ERROR_BRANCH}", urgency=txt.ERR_CLR, tty=self.tty)
+            util.msg(
+                message=f"{txt.API_ERROR_BRANCH}",
+                urgency=txt.ERR_CLR, tty=self.tty
+            )
             # print(".: {} {}".format(txt.ERR_CLR, txt.API_ERROR_BRANCH))
             sys.exit(1)
         apifn.write_mirrorlist_branch(
-            newbranch=self.config["branch"], filename=self.config["config_file"], tty=self.tty, quiet=self.quiet)
+            newbranch=self.config["branch"],
+            filename=self.config["config_file"],
+            tty=self.tty, quiet=self.quiet
+            )

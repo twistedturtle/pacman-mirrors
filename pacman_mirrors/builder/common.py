@@ -20,14 +20,15 @@
 """Pacman-Mirrors Common Mirror List Builder Module"""
 
 from random import shuffle
-
 from pacman_mirrors.builder.builder import build_pool
 from pacman_mirrors.constants import txt
 from pacman_mirrors.functions import util
-from pacman_mirrors.functions.outputFn import \
-    write_pacman_mirror_list, write_custom_mirrors_json
 from pacman_mirrors.functions.sortMirrorFn import sort_mirror_pool
 from pacman_mirrors.functions.testMirrorFn import test_mirror_pool
+from pacman_mirrors.functions.outputFn import (
+    write_pacman_mirror_list,
+    write_custom_mirrors_json
+)
 
 
 def build_mirror_list(self) -> None:
@@ -46,8 +47,12 @@ def build_mirror_list(self) -> None:
             pass
 
     if self.config["method"] == "rank":
+        # TODO variables mirror function local and each other
         work_pool = test_mirror_pool(self=self, worklist=work_pool)
-        work_pool = sort_mirror_pool(worklist=work_pool, field="resp_time", reverse=False)
+        work_pool = sort_mirror_pool(
+            worklist=work_pool, field="resp_time",
+            reverse=False
+            )
     else:
         shuffle(work_pool)
 
@@ -56,13 +61,33 @@ def build_mirror_list(self) -> None:
         _ = work_pool[0]
         write_pacman_mirror_list(self=self, selected_servers=work_pool)
         if self.custom:
-            util.msg(message=f"{txt.MIRROR_LIST_CUSTOM_RESET} 'sudo {txt.MODIFY_CUSTOM}'",
-                     urgency=txt.INF_CLR, tty=self.tty)
-            util.msg(message=f"{txt.REMOVE_CUSTOM_CONFIG} 'sudo {txt.RESET_ALL}'",
-                     urgency=txt.INF_CLR, tty=self.tty)
+            util.msg(
+                message=f"{txt.MIRROR_LIST_CUSTOM_RESET} 'sudo {txt.MODIFY_CUSTOM}'",
+                urgency=txt.INF_CLR,
+                tty=self.tty
+            )
+            util.msg(
+                message=f"{txt.REMOVE_CUSTOM_CONFIG} 'sudo {txt.RESET_ALL}'",
+                urgency=txt.INF_CLR, tty=self.tty
+            )
+
         if self.no_status:
-            util.msg(message=f"{txt.OVERRIDE_STATUS_CHOICE}", urgency=txt.WRN_CLR, tty=self.tty)
-            util.msg(message=f"{txt.OVERRIDE_STATUS_MIRROR}", urgency=txt.WRN_CLR, tty=self.tty)
+            util.msg(
+                message=f"{txt.OVERRIDE_STATUS_CHOICE}",
+                urgency=txt.WRN_CLR, tty=self.tty
+            )
+            util.msg(
+                message=f"{txt.OVERRIDE_STATUS_MIRROR}",
+                urgency=txt.WRN_CLR, tty=self.tty
+            )
+
     except IndexError:
-        util.msg(message=f"{txt.NO_SELECTION}", urgency=txt.WRN_CLR, tty=self.tty)
-        util.msg(message=f"{txt.NO_CHANGE}", urgency=txt.INF_CLR, tty=self.tty)
+        util.msg(
+            message=f"{txt.NO_SELECTION}",
+            urgency=txt.WRN_CLR, tty=self.tty
+        )
+        util.msg(
+            message=f"{txt.NO_CHANGE}",
+            urgency=txt.INF_CLR,
+            tty=self.tty
+        )

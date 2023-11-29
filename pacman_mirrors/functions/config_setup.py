@@ -61,23 +61,29 @@ def setup_config(self) -> tuple:
                 line = line.strip()
                 if line.startswith("#") or "=" not in line:
                     continue
+
                 (key, value) = line.split("=", 1)
                 key = key.rstrip()
                 value = value.lstrip()
                 if key and value:
                     if value.startswith("\"") and value.endswith("\""):
                         value = value[1:-1]
+
                     if key == "Method":
                         config["method"] = value
+
                     if key == "Branch":
                         config["branch"] = value
+
                     if key == "Protocols":
                         if "," in value:
                             config["protocols"] = value.split(",")
                         else:
                             config["protocols"] = value.split(" ")
+
                     if key == "SSLVerify":
                         config["ssl_verify"] = value.lower().capitalize()
+
                     if key == "TestFile":
                         config["test_file"] = value
                         if not config["test_file"]:
@@ -85,8 +91,13 @@ def setup_config(self) -> tuple:
 
     except (PermissionError, OSError) as err:
         util.msg(
-            message=f"{txt.CANNOT_READ_FILE}: {err.filename}: {err.strerror}", urgency=txt.ERR_CLR, tty=self.tty)
+            message=f"{txt.CANNOT_READ_FILE}: {err.filename}: {err.strerror}", 
+            urgency=txt.ERR_CLR,
+            tty=self.tty
+        )
+
         sys.exit(2)
+
     return config, custom
 
 
@@ -96,31 +107,35 @@ def sanitize_config(config: object) -> bool:
     :param config:
     """
     errors = []
-    header = f".: {txt.ERR_CLR}: {txt.INVALID_SETTING_IN} `{conf.CONFIG_FILE}`"
-    # Check Method
     if config["method"] not in conf.METHODS:
-        errors.append("     'Method = {}'; {} {}".format(
-            config["method"], txt.EXP_CLR, "|".join(conf.METHODS)))
-    # Check Branch
+        errors.append(
+            f"     'Method = {config['method']}'; {txt.EXP_CLR} {'|'.join(conf.METHODS)}"
+        )
+
     if config["arm"]:
         if config["branch"] not in conf.ARM_BRANCHES:
             errors.append("     'Branch = {}'; {} {}".format(
-                config["branch"], txt.EXP_CLR, "|".join(conf.ARM_BRANCHES)))
+                config["branch"], txt.EXP_CLR, "|".join(conf.ARM_BRANCHES))
+                )
     else:
         if config["branch"] not in conf.BRANCHES:
             errors.append("     'Branch = {}'; {} {}".format(
-                config["branch"], txt.EXP_CLR, "|".join(conf.BRANCHES)))
-    # Check SSLVerify
+                config["branch"], txt.EXP_CLR, "|".join(conf.BRANCHES))
+                )
+
     if str(config["ssl_verify"]) not in conf.SSL:
         errors.append("     'SSLVerify = {}'; {} {}".format(
-            config["ssl_verify"], txt.EXP_CLR, "|".join(conf.SSL)))
-    # Check Protocols
+            config["ssl_verify"], txt.EXP_CLR, "|".join(conf.SSL))
+            )
+
     for p in config["protocols"]:
         if p not in conf.PROTOCOLS:
             errors.append("     'Protocols = {}'; {} {}".format(
-                config["protocols"], txt.EXP_CLR, ",".join(conf.PROTOCOLS)))
-    if len(errors):
-        print(header)
+                config["protocols"], txt.EXP_CLR, ",".join(conf.PROTOCOLS))
+                )
+            
+    if len(errors) != 0:
+        print(f".: {txt.ERR_CLR}: {txt.INVALID_SETTING_IN} `{conf.CONFIG_FILE}`")
         for e in errors:
             print(e)
         return False

@@ -34,6 +34,7 @@ def load_config_mirror_pool(self) -> None:
     else:
         if self.config["country_pool"]:
             self.selected_countries = self.config["country_pool"]
+
         load_default_mirror_pool(self)
     # Validate the list of selected countries
     self.selected_countries = pools.build_country_list(self)
@@ -41,7 +42,10 @@ def load_config_mirror_pool(self) -> None:
 
 def load_default_mirror_pool(self) -> None:
     # Load all mirrors
-    (file, status) = fileFn.return_mirror_filename(config=self.config, tty=self.tty)
+    (file, status) = fileFn.return_mirror_filename(
+        config=self.config, tty=self.tty
+    )
+
     seed_mirrors(self, file, status)
 
 
@@ -51,10 +55,13 @@ def seed_mirrors(self, file: str, status: bool = False) -> None:
         self.mirrors.seed(mirrors, status=status)
     else:
         self.mirrors.seed(mirrors)
+
     sort_mirror_countries(self)
 
 
 def sort_mirror_countries(self) -> None:
-    self.mirrors.mirror_pool = sorted(self.mirrors.mirror_pool, key=itemgetter("country"))
-    self.mirrors.country_pool = sorted(self.mirrors.country_pool)
+    self.mirrors.mirror_pool = sorted(
+        self.mirrors.mirror_pool, key=itemgetter("country")
+    )
 
+    self.mirrors.country_pool = sorted(self.mirrors.country_pool)

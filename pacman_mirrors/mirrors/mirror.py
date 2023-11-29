@@ -44,8 +44,10 @@ class Mirror:
         """
         if branches is None:
             branches = [-1, -1, -1]
+
         if last_sync is None:
             last_sync = "00:00"
+
         if resp_time is None:
             resp_time = 0
         else:
@@ -53,13 +55,16 @@ class Mirror:
 
         if country not in self.country_pool:
             self.country_pool.append(country)
+
         # translate negative integer in status.json
         if last_sync == -1:
             last_sync = txt.SERVER_BAD  # "9999:99"
             resp_time = txt.SERVER_RES  # 99.99
+
         # sort protocols in reversed order https,http,ftps,ftp
         protocols = sorted(protocols, reverse=True)
         continent = get_continent(country.replace("_", " "))
+
         # add to pool
         self.mirror_pool.append({
             "continent": continent,
@@ -81,14 +86,19 @@ class Mirror:
         if custom:  # clear previous data
             self.country_pool = []
             self.mirror_pool = []
+
         for server in servers:
             if status:
-                self.add(server["country"],
-                         server["url"],
-                         server["protocols"],
-                         server["branches"],
-                         server["last_sync"])
+                self.add(
+                    server["country"],
+                    server["url"],
+                    server["protocols"],
+                    server["branches"],
+                    server["last_sync"]
+                )
             else:
-                self.add(server["country"],
-                         server["url"],
-                         server["protocols"])
+                self.add(
+                    server["country"],
+                    server["url"],
+                    server["protocols"]
+                )

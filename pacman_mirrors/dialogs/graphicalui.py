@@ -35,6 +35,7 @@ class GraphicalUI(Gtk.Window):
         title = txt.I_TITLE_RANDOM if random else txt.I_TITLE
         if default:
             title = "Manjaro Mirrors"
+
         try:
             self.gtk_init = True
             Gtk.Window.__init__(self, title=title)
@@ -48,7 +49,10 @@ class GraphicalUI(Gtk.Window):
                 try:
                     _ = server_list[0]
                     custom_mirrors.append(
-                        (False, server["country"], server["last_sync"], server["url"]))
+                        (False, server["country"],
+                        server["last_sync"], server["url"])
+                        )
+                    
                 except IndexError as i:
                     print(f"{txt.ERR_CLR} IndexError -> {i}")
                 except KeyError as k:
@@ -59,59 +63,43 @@ class GraphicalUI(Gtk.Window):
                 self.store.append(list(mirror_ref))
 
             scrolled_tree = Gtk.ScrolledWindow()
-
             self.tree = Gtk.TreeView(self.store, vexpand=True)
-
             renderer = Gtk.CellRendererToggle()
             renderer.connect("toggled", self.on_toggle)
-
             column = Gtk.TreeViewColumn(txt.I_USE, renderer, active=0)
-
             self.tree.append_column(column)
-
             renderer = Gtk.CellRendererText()
             column = Gtk.TreeViewColumn(txt.I_COUNTRY, renderer, text=1)
             column.set_sort_column_id(1)
             self.tree.append_column(column)
-
             renderer = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(txt.I_LAST_SYNC,
-                                        renderer,
-                                        text=2)
+            column = Gtk.TreeViewColumn(txt.I_LAST_SYNC, renderer, text=2)
             column.set_sort_column_id(2)
             self.tree.append_column(column)
-
             renderer = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(txt.I_URL,
-                                        renderer,
-                                        text=3)
+            column = Gtk.TreeViewColumn(txt.I_URL, renderer, text=3)
             column.set_sort_column_id(3)
             self.tree.append_column(column)
-
             scrolled_tree.add(self.tree)
-
             header = Gtk.Label(txt.I_LIST_TITLE)
             button_cancel = Gtk.Button(txt.I_CANCEL)
             button_cancel.connect("clicked", self.cancel)
-            self.button_done = Gtk.Button(txt.I_CONFIRM,
-                                          sensitive=False)
+            self.button_done = Gtk.Button(txt.I_CONFIRM, sensitive=False)
             self.button_done.connect("clicked", self.done)
-
-            grid = Gtk.Grid(column_homogeneous=True,
-                            column_spacing=10,
-                            row_spacing=10)
+            grid = Gtk.Grid(
+                column_homogeneous=True,
+                column_spacing=10,
+                row_spacing=10
+                )
             grid.attach(header, 0, 0, 2, 1)
             grid.attach(scrolled_tree, 0, 1, 2, 1)
             grid.attach(button_cancel, 0, 2, 1, 1)
             grid.attach(self.button_done, 1, 2, 1, 1)
-
             self.add(grid)
-
-            # Server lists
             self.server_list = server_list
             self.custom_list = []
-
             self.is_done = False
+
         except RuntimeError:
             self.gtk_init = False
 
@@ -126,6 +114,7 @@ class GraphicalUI(Gtk.Window):
             for server in self.custom_list:
                 if server["url"] == self.store[path][3]:
                     self.custom_list.remove(server)
+
         self.button_done.set_sensitive(bool(self.custom_list))
 
     def cancel(self, button):
@@ -136,9 +125,14 @@ class GraphicalUI(Gtk.Window):
 
     def done(self, button):
         """Confirm choice"""
-        dialog = Gtk.Dialog(txt.I_CONFIRM_SELECTION, None, 0, (
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        dialog = Gtk.Dialog(
+            txt.I_CONFIRM_SELECTION, None, 0, (
+                Gtk.STOCK_CANCEL, 
+                Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_OK, 
+                Gtk.ResponseType.OK
+                ))
+        
         dialog.set_transient_for(self)
         dialog.set_border_width(10)
         box = dialog.get_content_area()
@@ -152,12 +146,15 @@ class GraphicalUI(Gtk.Window):
             dialog.destroy()
             for line in self.custom_list:
                 line["last_sync"] = line["last_sync"].replace(" ", ":").replace("h", "").replace("m", "")
+           
             if self.random:
                 shuffle(self.custom_list)
             else:
                 self.custom_list.sort(key=itemgetter("resp_time"))
+
             self.is_done = True
             Gtk.main_quit()
+
         elif response == Gtk.ResponseType.CANCEL:
             dialog.destroy()  # Go back to selection
 
@@ -169,4 +166,5 @@ def run(server_list: list, random: bool, default: bool = False) -> object:
         window.show_all()
         Gtk.main()
         return window
+    
     return window

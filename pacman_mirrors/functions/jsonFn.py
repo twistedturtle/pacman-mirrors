@@ -30,20 +30,21 @@ def json_dump_file(data: list, filename: str) -> None:
 
 def read_json_file(filename: str, dictionary: bool = True) -> list:
     """Read json data from file"""
-    #TODO this is not a list but a tuple
-    # we have to check output and correct as needed
-    result = list() 
+    #TODO does this var has a purpuse
+    result = list()
     try:
         if dictionary:
             with open(filename, "rb") as infile:
                 result = json.loads(
                     infile.read().decode("utf8"),
-                    object_pairs_hook=collections.OrderedDict)
+                    object_pairs_hook=collections.OrderedDict
+                )
         else:
             with open(filename, "r") as infile:
                 result = json.load(infile)
     except OSError:
         pass
+
     return result
 
 
@@ -60,6 +61,8 @@ def write_json_file(data: list, filename: str, dictionary: bool = False) -> bool
         else:
             with open(filename, "w") as outfile:
                 json.dump(data, outfile, sort_keys=True, indent=4)
+
         return True
+    
     except OSError:
         return False

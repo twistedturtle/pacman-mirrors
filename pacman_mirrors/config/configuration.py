@@ -18,8 +18,6 @@
 # Authors: Frede Hundewadt <echo ZmhAbWFuamFyby5vcmcK | base64 -d>
 from pacman_mirrors.functions.util import build_ping_url
 
-"""Pacman-Mirrors Configuration Module"""
-
 
 # http constants
 TEST_FILE = "core.db.tar.gz"

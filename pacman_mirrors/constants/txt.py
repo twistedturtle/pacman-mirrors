@@ -143,7 +143,7 @@ HOUSTON = "Houston?! We have a problem."
 OVERRIDE_OPT = ": --geoip, --method"
 REPO_SERVER = "repo.manjaro.org"
 MODIFY_CUSTOM = "pacman-mirrors -id"
-MODIFY_DEFAULT = "pacman-mirrors -f [{}]".format(NUMBER)
+MODIFY_DEFAULT = f"pacman-mirrors -f [{NUMBER}]"
 RESET_ALL = "pacman-mirrors -c all"
 PREFIX_TIP = ": $mnt | /mnt/install"
 # OPTIONS
@@ -155,17 +155,18 @@ LASTSYNC_NA = "9800:00"  # last syncronization not available
 SERVER_BAD = "9999:99"  # default last syncronization status
 SERVER_RES = 99.99  # default response status
 # MESSAGE WITH COLOR
-ERR_CLR = "\033[1;31m{}\033[1;m".format(ERROR)
-INF_CLR = "\033[1;37m{}\033[1;m".format(INFO)
-WRN_CLR = "\033[1;33m{}\033[1;m".format(WARN)
-EXP_CLR = "\033[1;33m{}\033[1;m".format(EXPECTED)
-API_ARGUMENTS_ERROR = "{} {}.".format(ARGUMENT_API, MISSING_ARGUMENT)
-INTERACTIVE_ARGUMENTS_ERROR = "{} {}.".format(ARGUMENT_INTERACTIVE, MISSING_ARGUMENT)
+ERR_CLR = f"\033[1;31m{ERROR}\033[1;m"
+INF_CLR = f"\033[1;37m{INFO}\033[1;m"
+WRN_CLR = f"\033[1;33m{WARN}\033[1;m"
+EXP_CLR = f"\033[1;33m{EXPECTED}\033[1;m"
+API_ARGUMENTS_ERROR = f"{ARGUMENT_API} {MISSING_ARGUMENT}."
+INTERACTIVE_ARGUMENTS_ERROR = f"{ARGUMENT_INTERACTIVE} {MISSING_ARGUMENT}."
 FASTTRACK_ARGUMENTS_ERROR = "pacman-mirrors: error: argument -s/--no-status: " \
                             "not allowed with argument -f/--fasttrack"
-ASYNC_DISCLAIM = [f"{WRN_CLR}",
-                  f"{WRN_CLR} THE ASYNC ARGUMENT IS EXPERIMENTAL",
-                  f"{WRN_CLR} PROCESS MAY HANG - USE CTRL+C OR CTRL+D",
-                  "REPORT URL: https://gitlab.manjaro.org/applications/pacman-mirrors/issues/",
-                  f"{WRN_CLR} Acknowledge and continue? (Y/n) \r"
-                  ]
+ASYNC_DISCLAIM = [
+    f"{WRN_CLR}",
+    f"{WRN_CLR} THE ASYNC ARGUMENT IS EXPERIMENTAL",
+    f"{WRN_CLR} PROCESS MAY HANG - USE CTRL+C OR CTRL+D",
+    "REPORT URL: https://gitlab.manjaro.org/applications/pacman-mirrors/issues/",
+    f"{WRN_CLR} Acknowledge and continue? (Y/n) \r"
+    ]

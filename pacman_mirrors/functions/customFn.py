@@ -41,7 +41,9 @@ def apply_status_to_custom_pool(config: object, custom_pool: list) -> list:
                 if custom["url"] in status["url"]:
                     custom["last_sync"] = status["last_sync"]
                     custom["branches"] = status["branches"]
+
         return list(custom_list)
+    
     except (IndexError, KeyError):
         return custom_pool
 
@@ -53,6 +55,7 @@ def check_custom_pool(self) -> bool:
     self.custom = validFn.custom_config_is_valid()
     if not self.custom:
         self.selected_countries = self.config["country_pool"]
+
     return self.custom
 
 
@@ -68,5 +71,6 @@ def load_custom_pool(self) -> None:
     else:
         defaultFn.seed_mirrors(self, self.config["custom_file"])
         self.mirrors.mirror_pool = apply_status_to_custom_pool(
-            config=self.config, custom_pool=self.mirrors.mirror_pool)
+            config=self.config, custom_pool=self.mirrors.mirror_pool
+        )
 

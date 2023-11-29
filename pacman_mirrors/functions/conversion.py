@@ -101,11 +101,12 @@ def rows_from_tuple(servers: list, join_string: str = " | ") -> list:
     """
     rows = []
     if servers:
-
-        # calculate max col width
         col_width = [max(len(text) for text in col) for col in zip(*servers)]
-        # generate linies
         for line in servers:
-            rows.append(join_string.join("{:{}}".format(text, col_width[i])
-                                         for i, text in enumerate(line)))
+            rows.append(
+                join_string.join(
+                    "{:{}}".format(text, col_width[i]) 
+                    for i, text in enumerate(line)
+                    )
+                )
     return rows
