@@ -2,15 +2,16 @@
 
 import unittest
 from subprocess import run, CalledProcessError
+from . import mock_configuration as mock
+from pacman_mirrors import __version__
+
 
 branches = ("stable", "testing", "unstable")
 
-
 def _test_command_works_properly(args):
-    cmd = "sudo poetry run pacman-mirrors "
     try:
         result = run(
-            cmd + args,
+            f"sudo {mock.TEST_CMD} {args}",
             check=True,
             capture_output=True,
             text=True,
@@ -26,7 +27,6 @@ def raise_error(return_code, error):
 
 class TestDefaultConfig(unittest.TestCase):
     # TODO implement mirrorlist outputcheck using test-checkpoints.md guidelines
-
     def test_branch(self):
         args = "--api --get-branch"
         res = _test_command_works_properly(args)

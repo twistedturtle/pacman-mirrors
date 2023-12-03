@@ -93,7 +93,10 @@ class PacmanMirrors:
         if self.config["url_mirrors_json"] and self.config["url_status_json"]:
             # only fetch data files if configuration url are valid
             if self.network:
-                httpFn.download_mirror_pool(config=self.config, tty=self.tty, quiet=self.quiet)
+                httpFn.download_mirror_pool(
+                    config=self.config,
+                    tty=self.tty, quiet=self.quiet
+                    )
         
         if self.no_mirrorlist:
             sys.exit(0)

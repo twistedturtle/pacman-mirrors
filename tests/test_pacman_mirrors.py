@@ -15,6 +15,7 @@ from pacman_mirrors.functions import httpFn
 from pacman_mirrors.pacman_mirrors import PacmanMirrors
 from . import mock_configuration as mock
 
+
 test_conf = {
     "branch": "stable",
     "branches": mock.BRANCHES,
@@ -45,15 +46,17 @@ class TestPacmanMirrors(unittest.TestCase):
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")
-    def test_full_run_fasttrack(self,
-                                mock_build_config,
-                                mock_os_getuid):
+    def test_full_run_fasttrack(
+        self,
+        mock_build_config,
+        mock_os_getuid
+        ):
         """TEST: pacman-mirrors -f5"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-f5"]):
+        args = "-f5"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config = config_setup.setup_config()
             fileFn.create_dir(test_conf["work_dir"])
@@ -64,16 +67,17 @@ class TestPacmanMirrors(unittest.TestCase):
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")
-    def test_full_run_random(self,
-                             mock_build_config,
-                             mock_os_getuid):
+    def test_full_run_random(
+        self,
+        mock_build_config,
+        mock_os_getuid
+        ):
         """TEST: pacman-mirrors -c all -m random"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-c", "all",
-                                  "-m", "random"]):
+        args = "-c all -m random"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config = config_setup.setup_config()
             fileFn.create_dir(test_conf["work_dir"])
@@ -84,15 +88,17 @@ class TestPacmanMirrors(unittest.TestCase):
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")
-    def test_full_run_rank(self,
-                           mock_build_config,
-                           mock_os_getuid):
+    def test_full_run_rank(
+        self,
+        mock_build_config,
+        mock_os_getuid
+        ):
         """TEST: pacman-mirrors -c all"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-c", "all"]):
+        args = "-c all"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config = config_setup.setup_config()
             fileFn.create_dir(test_conf["work_dir"])

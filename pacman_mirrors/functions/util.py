@@ -23,6 +23,7 @@ import platform
 import shutil
 import subprocess
 import os
+import configparser
 from pacman_mirrors.api import apifn
 from pacman_mirrors.constants import txt
 
@@ -156,10 +157,21 @@ def build_ping_url() -> str:
         for index, line in enumerate(info):
             if "Vendor" in line:
                 return info[index + 1]
+    
+    def branch():
+        # TODO port pacman-mirrors config to a standard file format
+        config = configparser.ConfigParser()
+        with open("/etc/pacman-mirrors.conf") as stream:
+            config.read_string("[default]\n" + stream.read())
+        
+        try:
+            branch = config["default"]["branch"]
+        except KeyError:
+            branch = "stable"
+        return branch
 
     kernel = proc(['uname', '-r'])
     arch = proc(['uname', '-m'])
-    branch = proc(['pacman-mirrors', '--get-branch']).replace("\n", "")
     codename = proc(['lsb_release', '-c']).replace("Codename:\t", "").replace("\n", "")
     version = proc(['lsb_release', '-r']).replace("Release:\t", "").replace("\n", "")
     session_type = os.getenv('XDG_SESSION_TYPE')
@@ -171,5 +183,5 @@ def build_ping_url() -> str:
     else:
         session_type = ""
 
-    host = url + "".join(f"{arch}/{session_type}{_os_}/{branch}/{de}/{kernel}/{chassis()}-{vendor()}".split())
+    host = url + "".join(f"{arch}/{session_type}{_os_}/{branch()}/{de}/{kernel}/{chassis()}-{vendor()}".split())
     return host

@@ -15,6 +15,7 @@ from pacman_mirrors.functions import config_setup
 from pacman_mirrors.pacman_mirrors import PacmanMirrors
 from . import mock_configuration as mock
 
+
 test_conf = {
     "branch": "stable",
     "branches": mock.BRANCHES,
@@ -49,9 +50,9 @@ class TestCommandLineParse(unittest.TestCase):
         """TEST: CLI config[method] from ARG '-m random'"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-m", "random"]):
+        args = "-m random"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()
@@ -64,9 +65,9 @@ class TestCommandLineParse(unittest.TestCase):
         """TEST: CLI config[only_country] from ARG '-c France,Germany'"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-c", "France,Germany"]):
+        args = "-c France,Germany"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()
@@ -79,9 +80,9 @@ class TestCommandLineParse(unittest.TestCase):
         """TEST: CLI geoip is True from ARG '--geoip'"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "--geoip"]):
+        args = "--geoip"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()
@@ -94,9 +95,9 @@ class TestCommandLineParse(unittest.TestCase):
         """TEST: CLI fasttrack is 5 from ARG '-f 5'"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-f5"]):
+        args = "-f5"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()
@@ -109,9 +110,9 @@ class TestCommandLineParse(unittest.TestCase):
         """TEST: CLI interactive is true from ARG '-i'"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-i"]):
+        args = "-i"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()
@@ -124,9 +125,9 @@ class TestCommandLineParse(unittest.TestCase):
         """TEST: CLI max_wait_time is 5 from ARG '-t 5'"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-t5"]):
+        args = "-t5"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()
@@ -139,9 +140,9 @@ class TestCommandLineParse(unittest.TestCase):
         """TEST: CLI quiet is True from ARG '-q'"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        with unittest.mock.patch("sys.argv",
-                                 ["pacman-mirrors",
-                                  "-q"]):
+        args = "-q"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()

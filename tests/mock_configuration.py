@@ -21,3 +21,4 @@ REPO_ARCH = "/$repo/$arch"
 # special cases
 O_CUST_FILE = "tests/mock/var/Custom"
 TO_BE_REMOVED = "tests/mock/var/mirrors.json"
+TEST_CMD = "pacman-mirrors "

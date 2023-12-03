@@ -40,5 +40,3 @@ def red_msg(message: str) -> None:
 
 def yellow_msg(message: str) -> None:
     print(f"{color.YELLOW}{message}{color.RESET}")
-
-
