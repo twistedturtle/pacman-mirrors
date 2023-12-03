@@ -236,7 +236,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
         sys.exit(0)
 
     if args.version:
-        print("Version {__version__}")
+        print(__version__)
         sys.exit(0)
 
     if args.list:
