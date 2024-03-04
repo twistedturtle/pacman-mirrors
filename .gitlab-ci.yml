@@ -1,0 +1,29 @@
+variables:
+  PIP_CACHE_DIR: "${CI_PROJECT_DIR}/.cache/pip"
+
+cache:
+  key: "${CI_JOB_NAME}"
+  paths:
+    - .cache/pip
+    - .venv
+
+stages:
+  - quality
+  - tests
+
+.install-deps-template: &install-deps
+  before_script:
+    - pip install poetry
+    - poetry --version
+    - poetry config settings.virtualenvs.in-project true
+    - poetry install -vv
+
+lint:
+  extends: .install-deps-template
+  stage: quality
+  script: make lint
+
+test:
+  extends: .install-deps-template
+  stage: tests
+  script: make tests
