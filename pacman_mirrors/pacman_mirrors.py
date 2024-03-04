@@ -46,6 +46,7 @@ else:
     GTK_AVAILABLE = True
 _ = i18n.language.gettext
 
+
 class PacmanMirrors:
     def __init__(self):
         self.config = {
