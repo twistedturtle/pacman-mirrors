@@ -51,6 +51,7 @@ def get_language():
         print("No translations found for your language, using english")
         return "en_US"
 
+
 gettext.install(APP_NAME, LOCALE_DIR)
 gettext.bindtextdomain(APP_NAME, LOCALE_DIR)
 gettext.textdomain(APP_NAME)
