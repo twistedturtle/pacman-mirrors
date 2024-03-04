@@ -30,7 +30,7 @@ def json_dump_file(data: list, filename: str) -> None:
 
 def read_json_file(filename: str, dictionary: bool = True) -> list:
     """Read json data from file"""
-    #TODO does this var has a purpuse
+    # TODO does this var has a purpuse
     result = list()
     try:
         if dictionary:
@@ -55,14 +55,15 @@ def write_json_file(data: list, filename: str, dictionary: bool = False) -> bool
     :param dictionary:
     """
     try:
+        # TODO what was the purpose of dictionary?
         if dictionary:
-            with open(filename, "wb") as outfile:
+            with open(filename, "w") as outfile:
                 json.dump(data, outfile)
         else:
             with open(filename, "w") as outfile:
                 json.dump(data, outfile, sort_keys=True, indent=4)
 
         return True
-    
+
     except OSError:
         return False
