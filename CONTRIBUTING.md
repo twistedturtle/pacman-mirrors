@@ -53,8 +53,8 @@ If you are proposing a feature:
 ## Get Started!
 
 - An editor of choice e.g.
-   - Visual Studio Code `pacman -Syu code`
-   - PyCharm Community `pacman -Syu pycharm-community`
+  - Visual Studio Code `pacman -Syu code`
+  - PyCharm Community `pacman -Syu pycharm-community`
 
 ## Python environment
 
@@ -64,6 +64,7 @@ Poetry will setup your environment and any dependencies you need
 git clone https://gitlab.manjaro.org/applications/pacman-mirrors.git
 cd pacman-mirrors
 sudo pacman -Syu python-poetry make
+yay/paru transifex-client
 poetry install
 poetry shell
 poetry run pacman-mirrors
@@ -101,9 +102,9 @@ git push origin name-of-your-bugfix-or-feature
 
 - Submit a pull request through GitLab.
 
-### Generated Mirrorlist Verification
+### Generated Mirror-list Verification
 
-From experience it is so easy to forget verification of the generated mirrorlists.
+From experience it is so easy to forget verification of the generated mirror-lists.
 
 As the mirrorlists can be generated in a variety of ways - a list of verifications is presented here.
 
@@ -117,7 +118,7 @@ As the mirrorlists can be generated in a variety of ways - a list of verificatio
 8. `sudo pacman-mirrors -aP https http -c Germany`
 9. `sudo pacman-mirrors -aP http https -c Germany`
 
-All urls in the mirrorlist **must** end with **$repo/$arch**
+All urls in the mirror-list **must** end with **$repo/$arch**
 
 ## Pull Request Guidelines
 
