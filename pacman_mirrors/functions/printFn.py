@@ -21,11 +21,6 @@
 
 from pacman_mirrors.constants import colors as color
 
-
-def debug_msg(where: str, what: str, value: str) -> None:
-    print(f"{color.DBG_CLR} {where} >>>> '{what} = {value}'")
-
-
 def blue_msg(message: str) -> None:
     print(f"{color.BLUE}{message}{color.RESET}")
 

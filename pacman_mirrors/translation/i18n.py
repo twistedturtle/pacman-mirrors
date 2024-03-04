@@ -23,13 +23,13 @@ import os
 import sys
 import locale
 import gettext
+import logging
 
 #  The translation files will be under
 #  @LOCALE_DIR@/@LANGUAGE@/LC_MESSAGES/@APP_NAME@.mo
 APP_NAME = "pacman_mirrors"
 APP_DIR = os.path.join(sys.prefix, "share")
 LOCALE_DIR = os.path.join(APP_DIR, "locale")
-
 
 def get_language():
     if locale.getlocale()[0] is not None:
@@ -48,7 +48,7 @@ def get_language():
         return os.environ.get("GDM_LANG").split(".")[0]
 
     else:
-        print("No translations found for your language, using english")
+        logging.warn("No translations found for your language. Falling back to english.")
         return "en_US"
 
 
