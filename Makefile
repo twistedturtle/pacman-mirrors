@@ -35,10 +35,13 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 pacman_mirrors tests
+	poetry shell && poetry run black --check pacman_mirrors tests
+
+format:
+	poetry shell && poetry run black pacman_mirrors tests
 
 unit-test:
-	poetry shell & poetry run pytest
+	poetry shell && poetry run pytest
 
 coverage:
 	coverage run pacman_mirrors tests

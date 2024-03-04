@@ -19,39 +19,11 @@ If you are reporting a bug, please include:
 
 ## Coding style
 
-### Use PyCharm default
+### Use Black
 
-* Tabs and Indents
-  - Use spaces - not tabs for indentation
-  - Indentation: 4 (four) spaces
-  - Continuation indent: 8 (eight) spaces
-* Keep maximum empty lines
-  - in declaration: 1 (one)
-  - in code: 1 (one)
-* Minimum blank lines
-  - After top-level imports: 1 (one)
-  - Around class: 1 (one)
-  - Around method: 1 (one)
-  - Around top-level classes and functions: 2 (two)
-  - After local imports: 0 (zero)
-  - Before the first method: 0 (zero)
-* Spaces
-  - Around operators (=, +=, ...)
-  - Equality operators (==, !=)
-  - Relational operators(<, >, <=, >=)
-  - Bitwise operators (&, |, ^^
-  - Additive operators (+, k-)
-  - Multiplicative oprators (*, @, /, %)
-  - Shift operators (<<, >>, >>>)
-  - Power operator (**)
-  - After comma
-  - After ':'
-  - Before '\'
-  - Before '#'
-  - After '#'
-* Wrapping and Braces
-  - Wrap at 120 chars
-
+```shell
+poetry run black pacman_mirrors tests
+```
 
 ### Fix Bugs
 
@@ -91,12 +63,13 @@ If you are proposing a feature:
    * PyCharm Community `pacman -Syu pycharm-community`
 
 ## Python environment
-Poetry will setup your enviroment and any dependecies you need
 
-```
+Poetry will setup your environment and any dependencies you need
+
+```shell
 git clone https://gitlab.manjaro.org/applications/pacman-mirrors.git
 cd pacman-mirrors
-sudo pacman -Syu python-poetry make transifex-client
+sudo pacman -Syu python-poetry make
 poetry install
 poetry shell
 poetry run pacman-mirrors
@@ -107,19 +80,19 @@ Ready to contribute? Here's how to set up `pacman-mirrors` for local development
 * Fork the `pacman-mirrors` repo on GitHub.
 * Clone your fork locally:
 
-```
+```shell
 git clone https://gitlab.manjaro.org/your-name-here/pacman-mirrors.git
 ```
 
 * Create a branch for local development:
 
-```
-$ git checkout -b name-of-your-bugfix-or-feature
+```shell
+git checkout -b name-of-your-bugfix-or-feature
 ```
 
 * Make your changes localy When you're done, check that your changes pass flake8 and unitest:
 
-```
+```shell
 flake8 pacman-mirrors tests
 poetry run pytests
 ```
@@ -127,15 +100,16 @@ poetry run pytests
 * To get flake8, just pip install it into your virtualenv (see notes below).
 * Commit your changes and push your branch to GitHub:
 
-```
-$ git add
-$ git commit -m "Your detailed description of your changes."
-$ git push origin name-of-your-bugfix-or-feature
+```shell
+git add
+git commit -m "Your detailed description of your changes."
+git push origin name-of-your-bugfix-or-feature
 ```
 
 * Submit a pull request through the GitHub website.
 
 ### Generated Mirrorlist Verification
+
 From experience it is so easy to forget verification of the generated mirrorlists.
 
 As the mirrorlists can be generated in a variety of ways - a list of verifications is presented here.
@@ -161,7 +135,8 @@ Before you submit a pull request, check that it meets these guidelines:
    your new functionality into a function with a docstring, and add the
    feature to the list in README.md.
 
-# Using make
-```
+## Using make
+
+```shell
 make -h
 ```
