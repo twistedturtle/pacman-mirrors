@@ -17,6 +17,42 @@ If you are reporting a bug, please include:
 - Any details about your local setup that might be helpful in troubleshooting.
 - Detailed steps to reproduce the bug.
 
+## Coding style
+
+### Use PyCharm default
+
+* Tabs and Indents
+  - Use spaces - not tabs for indentation
+  - Indentation: 4 (four) spaces
+  - Continuation indent: 8 (eight) spaces
+* Keep maximum empty lines
+  - in declaration: 1 (one)
+  - in code: 1 (one)
+* Minimum blank lines
+  - After top-level imports: 1 (one)
+  - Around class: 1 (one)
+  - Around method: 1 (one)
+  - Around top-level classes and functions: 2 (two)
+  - After local imports: 0 (zero)
+  - Before the first method: 0 (zero)
+* Spaces
+  - Around operators (=, +=, ...)
+  - Equality operators (==, !=)
+  - Relational operators(<, >, <=, >=)
+  - Bitwise operators (&, |, ^^
+  - Additive operators (+, k-)
+  - Multiplicative oprators (*, @, /, %)
+  - Shift operators (<<, >>, >>>)
+  - Power operator (**)
+  - After comma
+  - After ':'
+  - Before '\'
+  - Before '#'
+  - After '#'
+* Wrapping and Braces
+  - Wrap at 120 chars
+  
+
 ### Fix Bugs
 
 Look through the Gitlab issues for bugs. Anything tagged with "bug"
