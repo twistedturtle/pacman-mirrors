@@ -31,6 +31,7 @@ APP_NAME = "pacman_mirrors"
 APP_DIR = os.path.join(sys.prefix, "share")
 LOCALE_DIR = os.path.join(APP_DIR, "locale")
 
+
 def get_language():
     if locale.getlocale()[0] is not None:
         return locale.getlocale()[0]
@@ -48,16 +49,16 @@ def get_language():
         return os.environ.get("GDM_LANG").split(".")[0]
 
     else:
-        logging.warn("No translations found for your language. Falling back to english.")
+        logging.warn(
+            "No translations found for your language. Falling back to english."
+        )
         return "en_US"
 
 
 gettext.install(APP_NAME, LOCALE_DIR)
 gettext.bindtextdomain(APP_NAME, LOCALE_DIR)
 gettext.textdomain(APP_NAME)
-language = gettext.translation(
-    APP_NAME, LOCALE_DIR, [get_language()], fallback=True
-)
+language = gettext.translation(APP_NAME, LOCALE_DIR, [get_language()], fallback=True)
 
 # Add this to every module:
 #

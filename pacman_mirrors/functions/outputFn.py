@@ -34,19 +34,16 @@ def write_custom_mirrors_json(self, selected_mirrors: list) -> None:
     :param selected_mirrors:
     :return:
     """
-    util.msg(
-        message=f"{txt.CUSTOM_MIRROR_LIST}", urgency=txt.INF_CLR, tty=self.tty
-    )
+    util.msg(message=f"{txt.CUSTOM_MIRROR_LIST}", urgency=txt.INF_CLR, tty=self.tty)
     util.msg(
         message="------------------------------------------------------------",
-        tty=self.tty
+        tty=self.tty,
     )
-    jsonFn.write_json_file(
-        data=selected_mirrors, filename=self.config["custom_file"]
-    )
+    jsonFn.write_json_file(data=selected_mirrors, filename=self.config["custom_file"])
     util.msg(
         message=f'{txt.CUSTOM_MIRROR_FILE_SAVED}: {self.config["custom_file"]}',
-        urgency=txt.INF_CLR, tty=self.tty
+        urgency=txt.INF_CLR,
+        tty=self.tty,
     )
 
 
@@ -58,14 +55,16 @@ def write_pacman_mirror_list(self, selected_servers) -> None:
     """
     if self.custom:
         fileFn.write_mirror_list(
-            config=self.config, servers=selected_servers,
-            tty=self.tty, custom=self.custom,
-            quiet=self.quiet, interactive=True
+            config=self.config,
+            servers=selected_servers,
+            tty=self.tty,
+            custom=self.custom,
+            quiet=self.quiet,
+            interactive=True,
         )
     else:
         fileFn.write_mirror_list(
-            config=self.config, servers=selected_servers,
-            tty=self.tty, quiet=self.quiet
+            config=self.config, servers=selected_servers, tty=self.tty, quiet=self.quiet
         )
 
 
@@ -83,5 +82,3 @@ def tty_default_pool(self) -> None:
     """
     defaultFn.load_default_mirror_pool(self)
     print("{}".format("\n".join(self.mirrors.country_pool)))
-
-

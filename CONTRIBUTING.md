@@ -50,7 +50,7 @@ If you are proposing a feature:
 - Remember that this is a volunteer-driven project, and that contributions
   are welcome :)
 
-## Get Started!
+## Getting Started
 
 - An editor of choice e.g.
   - Visual Studio Code `pacman -Syu code`

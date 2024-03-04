@@ -36,12 +36,13 @@ test_conf = {
     "test_file": mock.TEST_FILE,
     "url_mirrors_json": mock.URL_MIRROR_JSON,
     "url_status_json": mock.URL_STATUS_JSON,
-    "timeout": 2
+    "timeout": 2,
 }
 
 
 class TestDefaultConfig(unittest.TestCase):
     """Pacman Mirrors Test suite"""
+
     def setUp(self):
         pass
 

@@ -53,13 +53,13 @@ def download_mirrors(config: object) -> tuple:
     message = ""
     try:
         # mirrors.json
-        util.msg(message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR)
+        util.msg(
+            message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR
+        )
         resp = requests.get(
-            url=config["url_mirrors_json"],
-            headers=headers(),
-            timeout=config["timeout"]
-            )
-        
+            url=config["url_mirrors_json"], headers=headers(), timeout=config["timeout"]
+        )
+
         resp.raise_for_status()
         mirrorlist = resp.json()
         tempfile = config["work_dir"] + "/.temp.file"
@@ -90,13 +90,11 @@ def download_mirrors(config: object) -> tuple:
 
     try:
         util.msg(
-            message=f"=> Mirror status: {config['url_status_json']}", 
-            urgency=txt.INF_CLR
+            message=f"=> Mirror status: {config['url_status_json']}",
+            urgency=txt.INF_CLR,
         )
         resp = requests.get(
-            url=config["url_status_json"],
-            headers=headers(),
-            timeout=config["timeout"]
+            url=config["url_status_json"], headers=headers(), timeout=config["timeout"]
         )
 
         statuslist = resp.json()
@@ -110,7 +108,7 @@ def download_mirrors(config: object) -> tuple:
         message = f"Connection: {err}"
     except (requests.exceptions.HTTPError,) as err:
         message = f"Connection {err}"
-    
+
     if message != "":
         fetchstatus = False
         util.msg(message=message, urgency=txt.ERR_CLR, newline=True)
@@ -130,7 +128,7 @@ def get_ip_country(maxwait: int = 2) -> str:
 
     except requests.exceptions.ConnectionError:
         return ""
-   
+
     return resp.text
 
 
@@ -162,13 +160,13 @@ def get_ftp_response(url: str, maxwait: int) -> str:
     message = ""
     try:
         with closing(request.urlopen(url, timeout=maxwait)) as ftpReq:
-            with open(conf.WORK_DIR + '/.testresponse', 'wb') as testFile:
+            with open(conf.WORK_DIR + "/.testresponse", "wb") as testFile:
                 shutil.copyfileobj(ftpReq, testFile)
 
-            os.remove(conf.WORK_DIR + '/.testresponse')
+            os.remove(conf.WORK_DIR + "/.testresponse")
 
     except URLError as e:
-        if e.reason.find('No such file or directory') >= 0:
+        if e.reason.find("No such file or directory") >= 0:
             message = "FileNotFound"
         else:
             message = f"{e.reason}"
@@ -177,10 +175,14 @@ def get_ftp_response(url: str, maxwait: int) -> str:
 
 
 def get_mirror_response(
-        url: str, config: object, tty: bool = False,
-        maxwait: int = 2, count: int = 1, quiet: bool = False,
-        ssl_verify: bool = True
-    ) -> float:
+    url: str,
+    config: object,
+    tty: bool = False,
+    maxwait: int = 2,
+    count: int = 1,
+    quiet: bool = False,
+    ssl_verify: bool = True,
+) -> float:
     """Query mirror by downloading a file and measuring the time taken
     :param config:
     :param ssl_verify:
@@ -211,14 +213,13 @@ def get_mirror_response(
         message = get_http_response(url=probe_url, maxwait=maxwait)
         probe_stop = time.time()
 
-
     if probe_url.startswith("ftp"):
         message = get_ftp_response(url=probe_url, maxwait=maxwait)
         probe_stop = time.time()
 
     if message and not quiet:
         util.msg(message=f"{message}", urgency=txt.ERR_CLR, tty=tty, newline=True)
-   
+
     if probe_stop and not message:
         response_time = round((probe_stop - probe_start), 3)
 
@@ -261,7 +262,9 @@ def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
     return subprocess.Popen(f"ping -c{count} {host} > /dev/null", shell=True) == 0
 
 
-def download_mirror_pool(config: object, tty: bool = False, quiet: bool = False) -> tuple:
+def download_mirror_pool(
+    config: object, tty: bool = False, quiet: bool = False
+) -> tuple:
     """Download updates from repo.manjaro.org
     :param config:
     :param quiet:
@@ -273,30 +276,34 @@ def download_mirror_pool(config: object, tty: bool = False, quiet: bool = False)
     connected = check_internet_connection(tty=tty)
     if connected:
         if not quiet:
-            util.msg(message=f"{txt.DOWNLOADING_MIRROR_FILE} Manjaro",
-                     urgency=txt.INF_CLR,
-                     tty=tty)
-           
+            util.msg(
+                message=f"{txt.DOWNLOADING_MIRROR_FILE} Manjaro",
+                urgency=txt.INF_CLR,
+                tty=tty,
+            )
+
         result = download_mirrors(config)
     else:
         if not fileFn.check_file(config["status_file"]):
             if not quiet:
-                util.msg(message=f"{txt.MIRROR_FILE} {config['status_file']} {txt.IS_MISSING}",
-                         urgency=txt.WRN_CLR,
-                         tty=tty)
-               
-                util.msg(message=f"{txt.FALLING_BACK} {conf.MIRROR_FILE}",
-                         urgency=txt.WRN_CLR,
-                         tty=tty)
-               
+                util.msg(
+                    message=f"{txt.MIRROR_FILE} {config['status_file']} {txt.IS_MISSING}",
+                    urgency=txt.WRN_CLR,
+                    tty=tty,
+                )
+
+                util.msg(
+                    message=f"{txt.FALLING_BACK} {conf.MIRROR_FILE}",
+                    urgency=txt.WRN_CLR,
+                    tty=tty,
+                )
+
             result = (True, False)
 
         if not fileFn.check_file(config["mirror_file"]):
             if not quiet:
-                util.msg(message=f"{txt.HOUSTON}",
-                         urgency=txt.HOUSTON,
-                         tty=tty)
-               
+                util.msg(message=f"{txt.HOUSTON}", urgency=txt.HOUSTON, tty=tty)
+
             result = (False, False)
 
     return result

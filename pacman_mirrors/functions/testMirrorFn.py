@@ -32,20 +32,18 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
     Query server for response time
     """
     if self.custom:
-        util.msg(message=f"{txt.USING_CUSTOM_FILE}",
-                 urgency=f"{txt.INF_CLR}",
-                 tty=self.tty)
+        util.msg(
+            message=f"{txt.USING_CUSTOM_FILE}", urgency=f"{txt.INF_CLR}", tty=self.tty
+        )
     else:
         util.msg(
-            message=f"{txt.USING_DEFAULT_FILE}",
-            urgency=f"{txt.INF_CLR}",
-            tty=self.tty
+            message=f"{txt.USING_DEFAULT_FILE}", urgency=f"{txt.INF_CLR}", tty=self.tty
         )
 
     util.msg(
         message=f"{txt.QUERY_MIRRORS} - {txt.TAKES_TIME}",
         urgency=f"{txt.INF_CLR}",
-        tty=self.tty
+        tty=self.tty,
     )
 
     counter = 0
@@ -91,9 +89,12 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
 
             # let's see how responsive you are
             mirror_proto["resp_time"] = get_mirror_response(
-                url=mirror_proto["url"], config=self.config,
-                tty=self.tty,maxwait=self.max_wait_time,
-                quiet=self.quiet, ssl_verify=ssl_verify
+                url=mirror_proto["url"],
+                config=self.config,
+                tty=self.tty,
+                maxwait=self.max_wait_time,
+                quiet=self.quiet,
+                ssl_verify=ssl_verify,
             )
 
             # create a printable string version from the response with appended zeroes
@@ -152,13 +153,13 @@ def mirror_protocols(mirror: dict) -> list:
     result = []
     for idx, protocol in enumerate(mirror["protocols"]):
         m = {
-                "branches": mirror["branches"],
-                "country": mirror["country"],
-                "last_sync": mirror["last_sync"],
-                "protocols": [protocol],
-                "resp_time": mirror["resp_time"],
-                "url": mirror["url"],
-            }
+            "branches": mirror["branches"],
+            "country": mirror["country"],
+            "last_sync": mirror["last_sync"],
+            "protocols": [protocol],
+            "resp_time": mirror["resp_time"],
+            "url": mirror["url"],
+        }
         result.append(m)
     # -------------------------------------------------
     # monkey patch - sort by protocol desc
@@ -179,16 +180,19 @@ def filter_bad_http(work: list) -> dict:
         "last_sync": work[0]["last_sync"],
         "protocols": [],
         "resp_time": "",
-        "url": work[0]["url"]
+        "url": work[0]["url"],
     }
-    
+
     if len(work) > 1:
         for item in work:
-            if item["protocols"][0].endswith("tps") and item["resp_time"] == txt.SERVER_RES:
+            if (
+                item["protocols"][0].endswith("tps")
+                and item["resp_time"] == txt.SERVER_RES
+            ):
                 continue
             result["protocols"].append(item["protocols"][0])
             result["resp_time"] = item["resp_time"]
 
         return result
-    
+
     return work[0]

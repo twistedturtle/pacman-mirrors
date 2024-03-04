@@ -29,14 +29,16 @@ def wash_country_list(country_list: list):
     for p in country_list:
         c = p.lower()
         r = p
-        search = (r for r in countries if r["code"].lower() == c or r["name"].lower() == c)
+        search = (
+            r for r in countries if r["code"].lower() == c or r["name"].lower() == c
+        )
         for s in search:
             if s is not None:
                 r = s["name"]
 
         if r not in washed:
             washed.append(r)
-            
+
     return washed
 
 
@@ -65,7 +67,7 @@ def build_country_list(self: list) -> list:
             if country_list_is_valid(
                 onlycountry=self.selected_countries,
                 countrylist=self.mirrors.country_pool,
-                tty=self.tty
+                tty=self.tty,
             ):
                 result = self.selected_countries
     # this executes when geoip or continent is True
@@ -78,15 +80,17 @@ def build_country_list(self: list) -> list:
 
         # get country list for continent
         if self.continent:
-            continent_mirror_countries = get_continent_countries(get_geo_continent(), self.mirrors.mirror_pool)
+            continent_mirror_countries = get_continent_countries(
+                get_geo_continent(), self.mirrors.mirror_pool
+            )
             if continent_mirror_countries:
                 result = continent_mirror_countries
-        
+
         # validate result
         # do not return an empty list
         if not result:
             result = self.mirrors.country_pool
-            
+
     return result
 
 
@@ -98,7 +102,7 @@ def get_continent(country: str) -> str:
     continent = (x for x in countries if country in x["name"])
     for x in continent:
         return x["continent"].strip().replace(" ", "_")
-    
+
     return ""
 
 
@@ -136,7 +140,7 @@ def get_geo_country(country_pool: list) -> str:
     selection = (x for x in country_pool if geo_country in x)
     for c in selection:
         return c
-    
+
     return ""
 
 
@@ -157,5 +161,5 @@ def _get_ip_continent() -> str:
     continents = (x for x in countries if country in x["name"])
     for continent in continents:
         return continent["continent"].strip()
-    
+
     return ""

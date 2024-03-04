@@ -29,10 +29,13 @@ from pacman_mirrors.functions import util
 
 
 def set_config(
-        self, set_pfx: str = None, set_branch: str = None,
-        re_branch: bool = False, set_protocols: bool = False,
-        set_url: str = None
-   ) -> None:
+    self,
+    set_pfx: str = None,
+    set_branch: str = None,
+    re_branch: bool = False,
+    set_protocols: bool = False,
+    set_url: str = None,
+) -> None:
     """
     Api configuration function
     :param self:
@@ -68,13 +71,16 @@ def set_config(
         if not fileFn.check_file(filename=self.config["config_file"]):
             # Copy from host system
             fileFn.create_dir(set_pfx + "/etc")
-            shutil.copyfile("/etc/pacman-mirrors.conf",
-                            self.config["config_file"])
+            shutil.copyfile("/etc/pacman-mirrors.conf", self.config["config_file"])
             # Normalize config
             apifn.normalize_config(filename=self.config["config_file"])
         # Write branch to config
         apifn.write_config_branch(
-            branch=self.config["branch"], filename=self.config["config_file"], tty=self.tty, quiet=self.quiet)
+            branch=self.config["branch"],
+            filename=self.config["config_file"],
+            tty=self.tty,
+            quiet=self.quiet,
+        )
     # Second API task: Create a mirror list
     if set_url:
         # mirror list dir could absent so check for it
@@ -83,12 +89,13 @@ def set_config(
             {
                 "url": apifn.sanitize_url(set_url),
                 "country": "BUILDMIRROR",
-                "protocols": [set_url[:set_url.find(":")]],
-                "resp_time": "00.00"
+                "protocols": [set_url[: set_url.find(":")]],
+                "resp_time": "00.00",
             }
         ]
         fileFn.write_mirror_list(
-            config=self.config, servers=mirror, tty=self.tty, quiet=self.quiet)
+            config=self.config, servers=mirror, tty=self.tty, quiet=self.quiet
+        )
         # exit gracefully
         sys.exit(0)
     # Third API task: Write protocols to config
@@ -96,19 +103,20 @@ def set_config(
         apifn.write_protocols(
             protocols=self.config["protocols"],
             filename=self.config["config_file"],
-            tty=self.tty, quiet=self.quiet
-            )
+            tty=self.tty,
+            quiet=self.quiet,
+        )
     # Fourth API task: Rebranch mirror list
     if re_branch:
         if not set_branch:
             util.msg(
-                message=f"{txt.API_ERROR_BRANCH}",
-                urgency=txt.ERR_CLR, tty=self.tty
+                message=f"{txt.API_ERROR_BRANCH}", urgency=txt.ERR_CLR, tty=self.tty
             )
             # print(".: {} {}".format(txt.ERR_CLR, txt.API_ERROR_BRANCH))
             sys.exit(1)
         apifn.write_mirrorlist_branch(
             newbranch=self.config["branch"],
             filename=self.config["config_file"],
-            tty=self.tty, quiet=self.quiet
-            )
+            tty=self.tty,
+            quiet=self.quiet,
+        )

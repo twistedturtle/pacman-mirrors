@@ -40,7 +40,7 @@ def get_country(data: str) -> str:
     line = data.strip()
     if line.startswith("[") and line.endswith("]"):
         return line[1:-1]
-    
+
     elif line.startswith("## Country") or line.startswith("## Location"):
         return line[19:]
 
@@ -60,7 +60,7 @@ def get_protocol_from_url(url: str) -> str:
     colon = url.find(":")
     if colon:
         return url[:colon]
-    
+
     return url
 
 
@@ -73,7 +73,7 @@ def location_from_url(url: str) -> str:
     colon = url.find(":")
     if colon:
         return url[colon:]
-    
+
     return url
 
 
@@ -96,7 +96,13 @@ def internet_message(tty: bool = False) -> None:
     msg(f"{txt.INTERNET_ALTERNATIVE}", urgency=txt.INF_CLR, tty=tty)
 
 
-def msg(message: str, urgency: str = "", tty: bool = False, color: str = "", newline: bool = False) -> None:
+def msg(
+    message: str,
+    urgency: str = "",
+    tty: bool = False,
+    color: str = "",
+    newline: bool = False,
+) -> None:
     """Helper for printing messages
     :param message:
     :param urgency:
@@ -123,7 +129,7 @@ def msg(message: str, urgency: str = "", tty: bool = False, color: str = "", new
         else:
             if newline:
                 print("\n")
-                
+
             print(f"::{color}{message}{reset}")
 
 
@@ -146,7 +152,7 @@ def build_ping_url() -> str:
     def proc(cmd):
         return subprocess.check_output(cmd).decode()
 
-    info = proc(['hostnamectl']).split()
+    info = proc(["hostnamectl"]).split()
 
     def chassis():
         for index, line in enumerate(info):
@@ -157,25 +163,25 @@ def build_ping_url() -> str:
         for index, line in enumerate(info):
             if "Vendor" in line:
                 return info[index + 1]
-    
+
     def branch():
         # TODO port pacman-mirrors config to a standard file format
         config = configparser.ConfigParser()
         with open("/etc/pacman-mirrors.conf") as stream:
             config.read_string("[default]\n" + stream.read())
-        
+
         try:
             branch = config["default"]["branch"]
         except KeyError:
             branch = "stable"
         return branch
 
-    kernel = proc(['uname', '-r'])
-    arch = proc(['uname', '-m'])
-    codename = proc(['lsb_release', '-c']).replace("Codename:\t", "").replace("\n", "")
-    version = proc(['lsb_release', '-r']).replace("Release:\t", "").replace("\n", "")
-    session_type = os.getenv('XDG_SESSION_TYPE')
-    de = os.getenv('XDG_CURRENT_DESKTOP')
+    kernel = proc(["uname", "-r"])
+    arch = proc(["uname", "-m"])
+    codename = proc(["lsb_release", "-c"]).replace("Codename:\t", "").replace("\n", "")
+    version = proc(["lsb_release", "-r"]).replace("Release:\t", "").replace("\n", "")
+    session_type = os.getenv("XDG_SESSION_TYPE")
+    de = os.getenv("XDG_CURRENT_DESKTOP")
     _os_ = f"{codename}-{version}"
 
     if session_type is not None:
@@ -183,5 +189,7 @@ def build_ping_url() -> str:
     else:
         session_type = ""
 
-    host = url + "".join(f"{arch}/{session_type}{_os_}/{branch()}/{de}/{kernel}/{chassis()}-{vendor()}".split())
+    host = url + "".join(
+        f"{arch}/{session_type}{_os_}/{branch()}/{de}/{kernel}/{chassis()}-{vendor()}".split()
+    )
     return host

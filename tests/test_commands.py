@@ -8,6 +8,7 @@ from pacman_mirrors import __version__
 
 branches = ("stable", "testing", "unstable")
 
+
 def _test_command_works_properly(args):
     try:
         result = run(
@@ -15,15 +16,17 @@ def _test_command_works_properly(args):
             check=True,
             capture_output=True,
             text=True,
-            shell=True
+            shell=True,
         )
         return (result.returncode, result.stdout)
     except CalledProcessError as error:
         return (1, error)
 
+
 def raise_error(return_code, error):
     if return_code != 0:
         raise error
+
 
 class TestDefaultConfig(unittest.TestCase):
     # TODO implement mirrorlist outputcheck using test-checkpoints.md guidelines
@@ -66,7 +69,7 @@ class TestDefaultConfig(unittest.TestCase):
         raise_error(res[0], res[1])
 
     # we cannot automatize UI tests
-    #def test_interactive_country(self):
+    # def test_interactive_country(self):
     #    args = "-i -c Italy --api -B stable"
     #    _test_command_works_properly(args)
 
@@ -81,6 +84,7 @@ class TestDefaultConfig(unittest.TestCase):
         if res[0] == 0:
             # test must fail
             raise res[1]
+
 
 if __name__ == "__main__":
     unittest.main()

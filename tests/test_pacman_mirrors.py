@@ -35,22 +35,19 @@ test_conf = {
     "url_mirrors_json": mock.URL_MIRROR_JSON,
     "url_status_json": mock.URL_STATUS_JSON,
     "arm": False,
-    "timeout": 2
+    "timeout": 2,
 }
 
 
 class TestPacmanMirrors(unittest.TestCase):
     """Pacman Mirrors Test suite"""
+
     def setUp(self):
         pass
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")
-    def test_full_run_fasttrack(
-        self,
-        mock_build_config,
-        mock_os_getuid
-        ):
+    def test_full_run_fasttrack(self, mock_build_config, mock_os_getuid):
         """TEST: pacman-mirrors -f5"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
@@ -67,11 +64,7 @@ class TestPacmanMirrors(unittest.TestCase):
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")
-    def test_full_run_random(
-        self,
-        mock_build_config,
-        mock_os_getuid
-        ):
+    def test_full_run_random(self, mock_build_config, mock_os_getuid):
         """TEST: pacman-mirrors -c all -m random"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
@@ -88,11 +81,7 @@ class TestPacmanMirrors(unittest.TestCase):
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")
-    def test_full_run_rank(
-        self,
-        mock_build_config,
-        mock_os_getuid
-        ):
+    def test_full_run_rank(self, mock_build_config, mock_os_getuid):
         """TEST: pacman-mirrors -c all"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf

@@ -46,28 +46,22 @@ class ConsoleUI(npyscreen.NPSAppManaged):
             "country": txt.I_COUNTRY,
             "resp_time": txt.I_RESPONSE,
             "last_sync": txt.I_LAST_SYNC,
-            "url": txt.I_URL
-            }
-        
-        template = namedtuple("Server", [
-            "country",
-            "resp_time",
-            "last_sync",
-            "url"
-            ])
+            "url": txt.I_URL,
+        }
+
+        template = namedtuple("Server", ["country", "resp_time", "last_sync", "url"])
 
         main_server_list = [header_cols]
         main_server_list.extend(server_list)
         servers = conversion.list_to_tuple(
             list_data=main_server_list, named_tuple=template
-            )
+        )
         self.list_title = txt.I_LIST_TITLE
         self.server_rows = conversion.rows_from_tuple(servers=servers)
-        self.header_row = (
-            "{:<5}".format(txt.I_USE) +
-            (self.server_rows[0].replace("|", " ").strip())
-            )
-        
+        self.header_row = "{:<5}".format(txt.I_USE) + (
+            self.server_rows[0].replace("|", " ").strip()
+        )
+
         del self.server_rows[0]
 
     def main(self):
@@ -81,9 +75,9 @@ class ConsoleUI(npyscreen.NPSAppManaged):
             name=self.list_title,
             value=[],
             values=self.server_rows,
-            scroll_exit=True
-            )
-        
+            scroll_exit=True,
+        )
+
         mainform.edit()  # activate form
         self.done(selection=selected_servers.get_selected_objects())
 
@@ -99,19 +93,16 @@ class ConsoleUI(npyscreen.NPSAppManaged):
                         "country": server[0].strip(),
                         "resp_time": server[1].strip(),
                         "last_sync": server[2].strip(),
-                        "url": server[3].strip()
-                    })
-                
+                        "url": server[3].strip(),
+                    }
+                )
+
         self.is_done = True
         self.setNextForm(None)
 
 
 def run(server_list: list, random: bool, default: bool) -> object:
-    app = ConsoleUI(
-        server_list=server_list, 
-        random=random,
-        default=default
-        )
-    
+    app = ConsoleUI(server_list=server_list, random=random, default=default)
+
     app.run()
     return app
