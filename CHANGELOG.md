@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [4.25.0] 2023-03-12
+* [ping url configuration](https://gitlab.manjaro.org/applications/pacman-mirrors/-/blame/master/pacman_mirrors/functions/util.py)
+
 ## [4.23.2] 2021-12-30
 * [178](https://gitlab.manjaro.org/applications/pacman-mirrors/-/issues/178)
 
