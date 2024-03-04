@@ -37,11 +37,11 @@ clean-test:
 
 lint:
 	poetry shell && poetry run black --check pacman_mirrors tests
-	pymarkdown scan pacman_mirrors tests
+	pymarkdown scan .
 
 format:
 	poetry shell && poetry run black pacman_mirrors tests
-	pymarkdown fix pacman_mirrors tests
+	pymarkdown fix .
 
 unit-test:
 	poetry shell && poetry run pytest
