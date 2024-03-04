@@ -19,12 +19,6 @@ If you are reporting a bug, please include:
 
 ## Coding style
 
-### Use Black
-
-```shell
-poetry run black pacman_mirrors tests
-```
-
 ### Fix Bugs
 
 Look through the Gitlab issues for bugs. Anything tagged with "bug"
@@ -51,16 +45,16 @@ The best way to send feedback is to file an issue at [Manjaro Gitlab](https://gi
 
 If you are proposing a feature:
 
-* Explain in detail how it would work.
-* Keep the scope as narrow as possible, to make it easier to implement.
-* Remember that this is a volunteer-driven project, and that contributions
+- Explain in detail how it would work.
+- Keep the scope as narrow as possible, to make it easier to implement.
+- Remember that this is a volunteer-driven project, and that contributions
   are welcome :)
 
 ## Get Started!
 
-* An editor of choice e.g.
-   * Visual Studio Code `pacman -Syu code`
-   * PyCharm Community `pacman -Syu pycharm-community`
+- An editor of choice e.g.
+   - Visual Studio Code `pacman -Syu code`
+   - PyCharm Community `pacman -Syu pycharm-community`
 
 ## Python environment
 
@@ -77,28 +71,27 @@ poetry run pacman-mirrors
 
 Ready to contribute? Here's how to set up `pacman-mirrors` for local development.
 
-* Fork the `pacman-mirrors` repo on GitHub.
-* Clone your fork locally:
+- Fork the `pacman-mirrors` repo on GitHub.
+- Clone your fork locally:
 
 ```shell
 git clone https://gitlab.manjaro.org/your-name-here/pacman-mirrors.git
 ```
 
-* Create a branch for local development:
+- Create a branch for local development:
 
 ```shell
 git checkout -b name-of-your-bugfix-or-feature
 ```
 
-* Make your changes localy When you're done, check that your changes pass flake8 and unitest:
+- Make your changes locally When you're done, check that your changes pass linting and unit-tests:
 
 ```shell
-flake8 pacman-mirrors tests
-poetry run pytests
+make format
+make test
 ```
 
-* To get flake8, just pip install it into your virtualenv (see notes below).
-* Commit your changes and push your branch to GitHub:
+- Commit your changes and push your branch:
 
 ```shell
 git add
@@ -106,7 +99,7 @@ git commit -m "Your detailed description of your changes."
 git push origin name-of-your-bugfix-or-feature
 ```
 
-* Submit a pull request through the GitHub website.
+- Submit a pull request through GitLab.
 
 ### Generated Mirrorlist Verification
 
@@ -130,8 +123,8 @@ All urls in the mirrorlist **must** end with **$repo/$arch**
 
 Before you submit a pull request, check that it meets these guidelines:
 
-* The pull request should include tests.
-* If the pull request adds functionality, the docs should be updated. Put
+- The pull request should include tests.
+- If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.md.
 
