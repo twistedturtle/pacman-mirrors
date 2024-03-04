@@ -25,6 +25,7 @@
 
 import importlib.util
 import sys
+import logging
 
 from pacman_mirrors.functions import util
 from pacman_mirrors.builder import common, fasttrack, interactive
@@ -44,7 +45,6 @@ except ImportError:
 else:
     GTK_AVAILABLE = True
 _ = i18n.language.gettext
-
 
 class PacmanMirrors:
     def __init__(self):
@@ -97,7 +97,7 @@ class PacmanMirrors:
                     config=self.config,
                     tty=self.tty, quiet=self.quiet
                     )
-        
+
         if self.no_mirrorlist:
             sys.exit(0)
 
@@ -106,7 +106,7 @@ class PacmanMirrors:
                 util.internet_message(tty=self.tty)
             self.config["method"] = "random"
             self.fasttrack = False
-            
+
         # Load configured mirror pool
         defaultFn.load_config_mirror_pool(self)
         # Decide which type of mirrorlist to create Fasttrack/Interactive/Default
