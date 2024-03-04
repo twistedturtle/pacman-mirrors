@@ -56,10 +56,14 @@ HLP_ARG_API_RE_BRANCH = _("Replace branch in mirrorlist")
 HLP_ARG_API_SET_BRANCH = _("Replace branch in configuration")
 HLP_ARG_API_URL = _("Replace mirror url in mirrorlist")
 HLP_ARG_BRANCH = _("Branch name")
-HLP_ARG_COUNTRY = _("Comma separated list of countries, from which mirrors will be used")
+HLP_ARG_COUNTRY = _(
+    "Comma separated list of countries, from which mirrors will be used"
+)
 HLP_ARG_CONTINENT = _("Use continent from geolocation")
 HLP_ARG_DEFAULT = _("Load default mirror file")
-HLP_ARG_FASTTRACK = _("Generate mirrorlist with a number of up-to-date mirrors. Overrides")
+HLP_ARG_FASTTRACK = _(
+    "Generate mirrorlist with a number of up-to-date mirrors. Overrides"
+)
 HLP_ARG_GENERATE = _("Generate mirrorlist with defaults")
 HLP_ARG_GEOIP = _("Get current country using geolocation")
 HLP_ARG_LIST = _("List all available countries")
@@ -108,7 +112,9 @@ MUST_BE_ROOT = _("Must have root privileges")
 NO_CHANGE = _("The mirrors has not changed")
 NO_SELECTION = _("No mirrors in selection")
 OPTION = _("Option")
-OVERRIDE_STATUS_CHOICE = _("You have chosen to override the status for your system branch.")
+OVERRIDE_STATUS_CHOICE = _(
+    "You have chosen to override the status for your system branch."
+)
 OVERRIDE_STATUS_MIRROR = _("Servers in the mirror list might not be up-to-date.")
 PLEASE_USE = _("Please use")
 QUERY_MIRRORS = _("Querying mirrors")
@@ -161,12 +167,14 @@ WRN_CLR = f"\033[1;33m{WARN}\033[1;m"
 EXP_CLR = f"\033[1;33m{EXPECTED}\033[1;m"
 API_ARGUMENTS_ERROR = f"{ARGUMENT_API} {MISSING_ARGUMENT}."
 INTERACTIVE_ARGUMENTS_ERROR = f"{ARGUMENT_INTERACTIVE} {MISSING_ARGUMENT}."
-FASTTRACK_ARGUMENTS_ERROR = "pacman-mirrors: error: argument -s/--no-status: " \
-                            "not allowed with argument -f/--fasttrack"
+FASTTRACK_ARGUMENTS_ERROR = (
+    "pacman-mirrors: error: argument -s/--no-status: "
+    "not allowed with argument -f/--fasttrack"
+)
 ASYNC_DISCLAIM = [
     f"{WRN_CLR}",
     f"{WRN_CLR} THE ASYNC ARGUMENT IS EXPERIMENTAL",
     f"{WRN_CLR} PROCESS MAY HANG - USE CTRL+C OR CTRL+D",
     "REPORT URL: https://gitlab.manjaro.org/applications/pacman-mirrors/issues/",
-    f"{WRN_CLR} Acknowledge and continue? (Y/n) \r"
-    ]
+    f"{WRN_CLR} Acknowledge and continue? (Y/n) \r",
+]

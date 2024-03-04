@@ -21,8 +21,7 @@
 import json
 from pacman_mirrors.constants import txt
 from pacman_mirrors.functions import util
-from pacman_mirrors.functions.util import \
-    get_protocol_from_url, location_from_url
+from pacman_mirrors.functions.util import get_protocol_from_url, location_from_url
 
 
 def translate_interactive_to_pool(selection: list, mirror_pool: list) -> tuple:
@@ -69,15 +68,20 @@ def translate_pool_to_interactive(mirror_pool: list, tty: bool = False) -> list:
             last_sync = str(mirror["last_sync"]).split(":")
             mirror_url = location_from_url(mirror["url"])
             for idx, protocol in enumerate(mirror["protocols"]):
-                interactive_list.append({
-                    "country": mirror["country"],
-                    "resp_time": str(mirror["resp_time"]),
-                    "last_sync": f"{last_sync[0]}h {last_sync[1]}m",
-                    "url": f"{protocol}{mirror_url}"
-                })
+                interactive_list.append(
+                    {
+                        "country": mirror["country"],
+                        "resp_time": str(mirror["resp_time"]),
+                        "last_sync": f"{last_sync[0]}h {last_sync[1]}m",
+                        "url": f"{protocol}{mirror_url}",
+                    }
+                )
         except (KeyError, IndexError):
             util.msg(
-                message=f"{txt.HOUSTON}! {txt.MIRROR_POOL_EMPTY}!", urgency=txt.WRN_CLR, tty=tty)
+                message=f"{txt.HOUSTON}! {txt.MIRROR_POOL_EMPTY}!",
+                urgency=txt.WRN_CLR,
+                tty=tty,
+            )
             break
     return interactive_list
 
@@ -105,8 +109,7 @@ def rows_from_tuple(servers: list, join_string: str = " | ") -> list:
         for line in servers:
             rows.append(
                 join_string.join(
-                    "{:{}}".format(text, col_width[i]) 
-                    for i, text in enumerate(line)
-                    )
+                    "{:{}}".format(text, col_width[i]) for i, text in enumerate(line)
                 )
+            )
     return rows

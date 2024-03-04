@@ -35,12 +35,13 @@ test_conf = {
     "url_mirrors_json": mock.URL_MIRROR_JSON,
     "url_status_json": mock.URL_STATUS_JSON,
     "arm": False,
-    "timeout": 2
+    "timeout": 2,
 }
 
 
 class TestCommandLineParse(unittest.TestCase):
     """Pacman Mirrors Test suite"""
+
     def setUp(self):
         pass
 

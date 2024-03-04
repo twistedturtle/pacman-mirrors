@@ -20,6 +20,7 @@
 
 """Pacman-Mirrors GTK GUI Module"""
 import gi
+
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from operator import itemgetter
@@ -49,10 +50,9 @@ class GraphicalUI(Gtk.Window):
                 try:
                     _ = server_list[0]
                     custom_mirrors.append(
-                        (False, server["country"],
-                        server["last_sync"], server["url"])
-                        )
-                    
+                        (False, server["country"], server["last_sync"], server["url"])
+                    )
+
                 except IndexError as i:
                     print(f"{txt.ERR_CLR} IndexError -> {i}")
                 except KeyError as k:
@@ -86,11 +86,7 @@ class GraphicalUI(Gtk.Window):
             button_cancel.connect("clicked", self.cancel)
             self.button_done = Gtk.Button(txt.I_CONFIRM, sensitive=False)
             self.button_done.connect("clicked", self.done)
-            grid = Gtk.Grid(
-                column_homogeneous=True,
-                column_spacing=10,
-                row_spacing=10
-                )
+            grid = Gtk.Grid(column_homogeneous=True, column_spacing=10, row_spacing=10)
             grid.attach(header, 0, 0, 2, 1)
             grid.attach(scrolled_tree, 0, 1, 2, 1)
             grid.attach(button_cancel, 0, 2, 1, 1)
@@ -126,13 +122,17 @@ class GraphicalUI(Gtk.Window):
     def done(self, button):
         """Confirm choice"""
         dialog = Gtk.Dialog(
-            txt.I_CONFIRM_SELECTION, None, 0, (
-                Gtk.STOCK_CANCEL, 
+            txt.I_CONFIRM_SELECTION,
+            None,
+            0,
+            (
+                Gtk.STOCK_CANCEL,
                 Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_OK, 
-                Gtk.ResponseType.OK
-                ))
-        
+                Gtk.STOCK_OK,
+                Gtk.ResponseType.OK,
+            ),
+        )
+
         dialog.set_transient_for(self)
         dialog.set_border_width(10)
         box = dialog.get_content_area()
@@ -145,8 +145,13 @@ class GraphicalUI(Gtk.Window):
             # Quit GUI
             dialog.destroy()
             for line in self.custom_list:
-                line["last_sync"] = line["last_sync"].replace(" ", ":").replace("h", "").replace("m", "")
-           
+                line["last_sync"] = (
+                    line["last_sync"]
+                    .replace(" ", ":")
+                    .replace("h", "")
+                    .replace("m", "")
+                )
+
             if self.random:
                 shuffle(self.custom_list)
             else:
@@ -166,5 +171,5 @@ def run(server_list: list, random: bool, default: bool = False) -> object:
         window.show_all()
         Gtk.main()
         return window
-    
+
     return window

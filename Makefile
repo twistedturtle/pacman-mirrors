@@ -8,6 +8,7 @@ help:
 	@echo "coverage - check code coverage quickly with the default Python"
 	@echo "build-html-docs - generate MkDocs HTML documentation"
 	@echo "build-man - generate Man pages"
+	@echo "format - format code"
 	@echo "install-dev - install in venv"
 	@echo "install - build and install everything"
 	@echo "install-data - Install data files"
@@ -35,10 +36,15 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 pacman_mirrors tests
+	poetry shell && poetry run black --check pacman_mirrors tests
+	pymarkdown scan .
+
+format:
+	poetry shell && poetry run black pacman_mirrors tests
+	pymarkdown fix .
 
 unit-test:
-	poetry shell & poetry run pytest
+	poetry shell && poetry run pytest
 
 coverage:
 	coverage run pacman_mirrors tests

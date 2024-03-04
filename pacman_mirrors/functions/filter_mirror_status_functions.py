@@ -66,11 +66,9 @@ def filter_poor_mirrors(mirror_pool: list, interval: int = 720) -> list:
     """
     result = []
     mirrors = (
-        x for x in mirror_pool if int(
-            str(x["last_sync"]).split(":")[0]
-        ) < interval
+        x for x in mirror_pool if int(str(x["last_sync"]).split(":")[0]) < interval
     )
-    
+
     for mirror in mirrors:
         result.append(mirror)
 

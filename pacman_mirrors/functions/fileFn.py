@@ -37,7 +37,7 @@ def check_file(filename: str, folder: bool = False) -> bool:
     """
     if folder:
         return os.path.isdir(filename)
-    
+
     return os.path.isfile(filename)
 
 
@@ -68,7 +68,7 @@ def return_mirror_filename(config: object, tty: bool = False) -> tuple:
     """
     filename = ""
     # status.json or mirrors.json exist?
-    status = False  
+    status = False
     if check_file(config["status_file"]):
         status = True
         filename = config["status_file"]
@@ -83,10 +83,13 @@ def return_mirror_filename(config: object, tty: bool = False) -> tuple:
 
 
 def write_mirror_list(
-        config: object, servers: list,
-        tty: bool = False, custom: bool = False,
-        quiet: bool = False, interactive: bool = False
-    ) -> None:
+    config: object,
+    servers: list,
+    tty: bool = False,
+    custom: bool = False,
+    quiet: bool = False,
+    interactive: bool = False,
+) -> None:
     """
     Write servers to /etc/pacman.d/mirrorlist
     :param config: configuration dictionary
@@ -100,8 +103,7 @@ def write_mirror_list(
         with open(config["mirror_list"], "w") as outfile:
             if not quiet:
                 util.msg(
-                    message=f"{txt.WRITING_MIRROR_LIST}", 
-                    urgency=txt.INF_CLR, tty=tty
+                    message=f"{txt.WRITING_MIRROR_LIST}", urgency=txt.INF_CLR, tty=tty
                 )
             # write list header
             write_mirrorlist_header(outfile, custom=custom)
@@ -110,8 +112,10 @@ def write_mirror_list(
                 url = server["url"]
                 protocol = server["protocols"][0]
                 pos = url.find(":")
-                server["url"] = f'{protocol}{url[pos:]}{config["branch"]}{config["repo_arch"]}'
-               
+                server["url"] = (
+                    f'{protocol}{url[pos:]}{config["branch"]}{config["repo_arch"]}'
+                )
+
                 if server["resp_time"] == 99.99:
                     # do not write bad servers to mirrorlist
                     continue
@@ -132,13 +136,15 @@ def write_mirror_list(
             if not quiet:
                 util.msg(
                     message=f'{txt.MIRROR_LIST_SAVED}: {config["mirror_list"]}',
-                    urgency=txt.INF_CLR, tty=tty
+                    urgency=txt.INF_CLR,
+                    tty=tty,
                 )
 
     except OSError as err:
         util.msg(
-            message=f"{txt.CANNOT_WRITE_FILE}: {err.filename}: {err.strerror}", 
-            urgency=txt.ERR_CLR, tty=tty
+            message=f"{txt.CANNOT_WRITE_FILE}: {err.filename}: {err.strerror}",
+            urgency=txt.ERR_CLR,
+            tty=tty,
         )
 
         sys.exit(2)

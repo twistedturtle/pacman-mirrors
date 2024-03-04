@@ -24,14 +24,16 @@ def get_local_mirrors() -> tuple:
                     continue
                 line = line.split("=")[1].strip()
                 line = line.split("$")[0]
-                mirror_url = line.split('/')
+                mirror_url = line.split("/")
                 mirror_url.pop()
                 mirror_branch = mirror_url.pop()
                 line = "/".join(mirror_url)
-                urls.append(line + "/",)
+                urls.append(
+                    line + "/",
+                )
 
         return mirror_branch, urls
-    
+
     except (FileNotFoundError, UnboundLocalError):
         return "", []
 
@@ -49,7 +51,7 @@ def get_state(states: list, branch: str) -> tuple:
     if x == 0:
         ret_color = C_KO
         status_text = "--"
-        
+
     if x == -1:
         ret_color = C_KO
         status_text = "--"
@@ -71,8 +73,11 @@ def print_status(self) -> int:
         fake = now.strftime("00:%M")
         mirror = get_static_mirror(self.config["mirror_file"])
         print(
-            "Mirror #1", color, f"{text}", C_NONE, 
-            f"{fake} {mirror['country']} {mirror['url']}"
+            "Mirror #1",
+            color,
+            f"{text}",
+            C_NONE,
+            f"{fake} {mirror['country']} {mirror['url']}",
         )
         return 0
 
@@ -83,7 +88,7 @@ def print_status(self) -> int:
         return 1
 
     try:
-        with request.urlopen('https://repo.manjaro.org/status.json') as f_url:
+        with request.urlopen("https://repo.manjaro.org/status.json") as f_url:
             req = f_url.read()
 
     except error.URLError:
@@ -99,16 +104,16 @@ def print_status(self) -> int:
             temp["url"] = f"{protocol}://{strip_protocol(temp['url'])}"
             mirrors.append(temp)
 
-    mirrors = [m for m in mirrors if m['url'] in mirrors_pacman]
+    mirrors = [m for m in mirrors if m["url"] in mirrors_pacman]
     printFn.yellow_msg(f"Local mirror status for {system_branch} branch")
     exit_code = 0  # up-to-
-    
-    for i, url in enumerate(mirrors_pacman):  
+
+    for i, url in enumerate(mirrors_pacman):
         # same order as pacman-conf
         try:
-            mirror = [m for m in mirrors if m['url'] == url][0]
+            mirror = [m for m in mirrors if m["url"] == url][0]
             color, text = get_state(mirror["branches"], system_branch)
-            len_country = max(len(m['country']) for m in mirrors) + 1
+            len_country = max(len(m["country"]) for m in mirrors) + 1
             last_sync = mirror["last_sync"]
             if last_sync == "-1":
                 last_sync = "--:--"
@@ -116,10 +121,13 @@ def print_status(self) -> int:
                 text = "--"
 
             print(
-                f"Mirror #{str(i + 1):2}", color, f"{text}", C_NONE,
-                f"{last_sync:7} {mirror['country']:{len_country}} {mirror['url']}"
+                f"Mirror #{str(i + 1):2}",
+                color,
+                f"{text}",
+                C_NONE,
+                f"{last_sync:7} {mirror['country']:{len_country}} {mirror['url']}",
             )
-           
+
             if i == 0 and color == C_KO:
                 # first mirror not sync !
                 exit_code = 4

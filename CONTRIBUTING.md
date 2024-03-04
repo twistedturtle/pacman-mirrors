@@ -19,40 +19,6 @@ If you are reporting a bug, please include:
 
 ## Coding style
 
-### Use PyCharm default
-
-* Tabs and Indents
-  - Use spaces - not tabs for indentation
-  - Indentation: 4 (four) spaces
-  - Continuation indent: 8 (eight) spaces
-* Keep maximum empty lines
-  - in declaration: 1 (one)
-  - in code: 1 (one)
-* Minimum blank lines
-  - After top-level imports: 1 (one)
-  - Around class: 1 (one)
-  - Around method: 1 (one)
-  - Around top-level classes and functions: 2 (two)
-  - After local imports: 0 (zero)
-  - Before the first method: 0 (zero)
-* Spaces
-  - Around operators (=, +=, ...)
-  - Equality operators (==, !=)
-  - Relational operators(<, >, <=, >=)
-  - Bitwise operators (&, |, ^^
-  - Additive operators (+, k-)
-  - Multiplicative oprators (*, @, /, %)
-  - Shift operators (<<, >>, >>>)
-  - Power operator (**)
-  - After comma
-  - After ':'
-  - Before '\'
-  - Before '#'
-  - After '#'
-* Wrapping and Braces
-  - Wrap at 120 chars
-
-
 ### Fix Bugs
 
 Look through the Gitlab issues for bugs. Anything tagged with "bug"
@@ -79,24 +45,26 @@ The best way to send feedback is to file an issue at [Manjaro Gitlab](https://gi
 
 If you are proposing a feature:
 
-* Explain in detail how it would work.
-* Keep the scope as narrow as possible, to make it easier to implement.
-* Remember that this is a volunteer-driven project, and that contributions
+- Explain in detail how it would work.
+- Keep the scope as narrow as possible, to make it easier to implement.
+- Remember that this is a volunteer-driven project, and that contributions
   are welcome :)
 
-## Get Started!
+## Getting Started
 
-* An editor of choice e.g.
-   * Visual Studio Code `pacman -Syu code`
-   * PyCharm Community `pacman -Syu pycharm-community`
+- An editor of choice e.g.
+  - Visual Studio Code `pacman -Syu code`
+  - PyCharm Community `pacman -Syu pycharm-community`
 
 ## Python environment
-Poetry will setup your enviroment and any dependecies you need
 
-```
+Poetry will setup your environment and any dependencies you need
+
+```shell
 git clone https://gitlab.manjaro.org/applications/pacman-mirrors.git
 cd pacman-mirrors
-sudo pacman -Syu python-poetry make transifex-client
+sudo pacman -Syu python-poetry make
+yay/paru transifex-client
 poetry install
 poetry shell
 poetry run pacman-mirrors
@@ -104,39 +72,39 @@ poetry run pacman-mirrors
 
 Ready to contribute? Here's how to set up `pacman-mirrors` for local development.
 
-* Fork the `pacman-mirrors` repo on GitHub.
-* Clone your fork locally:
+- Fork the `pacman-mirrors` repo on GitHub.
+- Clone your fork locally:
 
-```
+```shell
 git clone https://gitlab.manjaro.org/your-name-here/pacman-mirrors.git
 ```
 
-* Create a branch for local development:
+- Create a branch for local development:
 
-```
-$ git checkout -b name-of-your-bugfix-or-feature
-```
-
-* Make your changes localy When you're done, check that your changes pass flake8 and unitest:
-
-```
-flake8 pacman-mirrors tests
-poetry run pytests
+```shell
+git checkout -b name-of-your-bugfix-or-feature
 ```
 
-* To get flake8, just pip install it into your virtualenv (see notes below).
-* Commit your changes and push your branch to GitHub:
+- Make your changes locally When you're done, check that your changes pass linting and unit-tests:
 
-```
-$ git add
-$ git commit -m "Your detailed description of your changes."
-$ git push origin name-of-your-bugfix-or-feature
+```shell
+make format
+make test
 ```
 
-* Submit a pull request through the GitHub website.
+- Commit your changes and push your branch:
 
-### Generated Mirrorlist Verification
-From experience it is so easy to forget verification of the generated mirrorlists.
+```shell
+git add
+git commit -m "Your detailed description of your changes."
+git push origin name-of-your-bugfix-or-feature
+```
+
+- Submit a pull request through GitLab.
+
+### Generated Mirror-list Verification
+
+From experience it is so easy to forget verification of the generated mirror-lists.
 
 As the mirrorlists can be generated in a variety of ways - a list of verifications is presented here.
 
@@ -150,18 +118,19 @@ As the mirrorlists can be generated in a variety of ways - a list of verificatio
 8. `sudo pacman-mirrors -aP https http -c Germany`
 9. `sudo pacman-mirrors -aP http https -c Germany`
 
-All urls in the mirrorlist **must** end with **$repo/$arch**
+All urls in the mirror-list **must** end with **$repo/$arch**
 
 ## Pull Request Guidelines
 
 Before you submit a pull request, check that it meets these guidelines:
 
-* The pull request should include tests.
-* If the pull request adds functionality, the docs should be updated. Put
+- The pull request should include tests.
+- If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.md.
 
-# Using make
-```
+## Using make
+
+```shell
 make -h
 ```

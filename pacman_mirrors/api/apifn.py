@@ -41,16 +41,16 @@ def find_mirrorlist_branch(filename: str, tty: bool = False) -> str:
                 if "Server = " in line:
                     workstring = line.strip()[-21:]  # /unstable/$repo/$arch
                     pos = workstring.find("/")
-                    workstring = workstring[pos + 1:]
+                    workstring = workstring[pos + 1 :]
                     pos = workstring.find("/")
                     return workstring[:pos]
     except OSError as err:
         util.msg(
             message=f"{txt.CANNOT_READ_FILE}: {err.filename}: {err.strerror}",
             urgency=txt.ERR_CLR,
-            tty=tty
-            )
-        
+            tty=tty,
+        )
+
         sys.exit(2)
 
 
@@ -72,8 +72,8 @@ def normalize_country(filename: str) -> None:
     lookfor = "OnlyCountry ="
     default = "# OnlyCountry =\n"
     with open(filename) as cnf, tempfile.NamedTemporaryFile(
-        "w+t", dir=os.path.dirname(
-            filename), delete=False) as tmp:
+        "w+t", dir=os.path.dirname(filename), delete=False
+    ) as tmp:
         replaced = False
         for line in cnf:
             if lookfor in line:
@@ -94,8 +94,8 @@ def normalize_method(filename: str) -> None:
     lookfor = "Method ="
     default = "# Method = rank\n"
     with open(filename) as cnf, tempfile.NamedTemporaryFile(
-        "w+t", dir=os.path.dirname(
-            filename), delete=False) as tmp:
+        "w+t", dir=os.path.dirname(filename), delete=False
+    ) as tmp:
         replaced = False
         for line in cnf:
             if lookfor in line:
@@ -116,8 +116,8 @@ def normalize_protocols(filename: str) -> None:
     lookfor = "Protocols ="
     default = "# Protocols =\n"
     with open(filename) as cnf, tempfile.NamedTemporaryFile(
-        "w+t", dir=os.path.dirname(
-            filename), delete=False) as tmp:
+        "w+t", dir=os.path.dirname(filename), delete=False
+    ) as tmp:
         replaced = False
         for line in cnf:
             if lookfor in line:
@@ -137,8 +137,9 @@ def normalize_ssl(filename: str) -> None:
     """
     default = "# SSLVerify = False\n"
     with open(filename) as cnf, tempfile.NamedTemporaryFile(
-          "w+t", dir=os.path.dirname(filename), delete=False) as tmp:
-   
+        "w+t", dir=os.path.dirname(filename), delete=False
+    ) as tmp:
+
         replaced = False
         for line in cnf:
             if "SSLVerify =" in line:
@@ -160,8 +161,9 @@ def normalize_testfile(filename: str) -> None:
     lookfor = "TestFile ="
     default = "# TestFile = core.db.tar.gz\n"
     with open(filename) as cnf, tempfile.NamedTemporaryFile(
-          "w+t", dir=os.path.dirname(filename), delete=False) as tmp:
-        
+        "w+t", dir=os.path.dirname(filename), delete=False
+    ) as tmp:
+
         replaced = False
         for line in cnf:
             if lookfor in line:
@@ -200,7 +202,9 @@ def sanitize_url(url: str) -> str:
     return url + "/"
 
 
-def write_config_branch(branch: str, filename: str, tty: bool = False, quiet: bool = False) -> None:
+def write_config_branch(
+    branch: str, filename: str, tty: bool = False, quiet: bool = False
+) -> None:
     """Write branch
     :param branch:
     :param filename:
@@ -214,8 +218,9 @@ def write_config_branch(branch: str, filename: str, tty: bool = False, quiet: bo
 
     try:
         with open(filename) as cnf, tempfile.NamedTemporaryFile(
-              "w+t", dir=os.path.dirname(filename), delete=False) as tmp:
-  
+            "w+t", dir=os.path.dirname(filename), delete=False
+        ) as tmp:
+
             replaced = False
             for line in cnf:
                 if "Branch =" in line:
@@ -230,25 +235,21 @@ def write_config_branch(branch: str, filename: str, tty: bool = False, quiet: bo
         os.replace(tmp.name, filename)
         os.chmod(filename, 0o644)
         if not quiet:
-            util.msg(
-                message=f"{txt.API_CONF_RE_BRANCH}", 
-                urgency=txt.INF_CLR,
-                tty=tty
-            )
+            util.msg(message=f"{txt.API_CONF_RE_BRANCH}", urgency=txt.INF_CLR, tty=tty)
 
     except OSError as err:
         util.msg(
             message=f"{txt.CANNOT_READ_FILE}: {err.filename}: {err.strerror}",
             urgency=txt.ERR_CLR,
-            tty=tty
+            tty=tty,
         )
 
         sys.exit(2)
 
 
 def write_mirrorlist_branch(
-        newbranch: str, filename: str, tty: bool = False,
-        quiet: bool = False) -> None:
+    newbranch: str, filename: str, tty: bool = False, quiet: bool = False
+) -> None:
     """Write branch in mirrorlist
     :param newbranch:
     :param filename:
@@ -258,7 +259,8 @@ def write_mirrorlist_branch(
     branch = find_mirrorlist_branch(filename=filename, tty=tty)
     try:
         with open(filename) as mirrorlist, tempfile.NamedTemporaryFile(
-              "w+t", dir=os.path.dirname(filename), delete=False) as tmp:
+            "w+t", dir=os.path.dirname(filename), delete=False
+        ) as tmp:
             for line in mirrorlist:
                 if "Server =" in line:
                     line = line.replace(branch, newbranch)
@@ -271,21 +273,22 @@ def write_mirrorlist_branch(
 
         if not quiet:
             util.msg(
-                message=f"{txt.API_MIRRORLIST_RE_BRANCH}",
-                urgency=txt.INF_CLR,
-                tty=tty
+                message=f"{txt.API_MIRRORLIST_RE_BRANCH}", urgency=txt.INF_CLR, tty=tty
             )
-  
+
     except OSError as err:
         util.msg(
             message=f"{txt.CANNOT_READ_FILE}: {err.filename}: {err.strerror}",
-            urgency=txt.ERR_CLR, tty=tty
+            urgency=txt.ERR_CLR,
+            tty=tty,
         )
 
         sys.exit(2)
 
 
-def write_protocols(protocols: str, filename: str, tty: bool = False, quiet: bool = False) -> None:
+def write_protocols(
+    protocols: str, filename: str, tty: bool = False, quiet: bool = False
+) -> None:
     """Write protocols
     :param protocols:
     :param filename:
@@ -299,8 +302,9 @@ def write_protocols(protocols: str, filename: str, tty: bool = False, quiet: boo
 
     try:
         with open(filename) as cnf, tempfile.NamedTemporaryFile(
-              "w+t", dir=os.path.dirname(filename), delete=False) as tmp:
-            
+            "w+t", dir=os.path.dirname(filename), delete=False
+        ) as tmp:
+
             replaced = False
             for line in cnf:
                 if "Protocols =" in line:
@@ -315,16 +319,13 @@ def write_protocols(protocols: str, filename: str, tty: bool = False, quiet: boo
         os.replace(tmp.name, filename)
         os.chmod(filename, 0o644)
         if not quiet:
-            util.msg(
-                message=f"{txt.API_CONF_PROTOCOLS}", 
-                urgency=txt.INF_CLR,
-                tty=tty
-            )
+            util.msg(message=f"{txt.API_CONF_PROTOCOLS}", urgency=txt.INF_CLR, tty=tty)
 
     except OSError as err:
         util.msg(
             message=f"{txt.CANNOT_READ_FILE}: {err.filename}: {err.strerror}",
-            urgency=txt.ERR_CLR, tty=tty
+            urgency=txt.ERR_CLR,
+            tty=tty,
         )
-        
+
         sys.exit(2)

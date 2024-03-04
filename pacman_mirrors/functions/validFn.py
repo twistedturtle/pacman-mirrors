@@ -35,7 +35,9 @@ def custom_config_is_valid() -> bool:
     return os.path.isfile(conf.CUSTOM_FILE)
 
 
-def country_list_is_valid(onlycountry: list, countrylist: list, tty: bool = False) -> bool:
+def country_list_is_valid(
+    onlycountry: list, countrylist: list, tty: bool = False
+) -> bool:
     """Check if the list of countries are valid.
     :param onlycountry: list of countries to check
     :param countrylist: list of available countries
@@ -48,14 +50,10 @@ def country_list_is_valid(onlycountry: list, countrylist: list, tty: bool = Fals
             util.msg(
                 message=f"{txt.OPTION}{txt.OPT_COUNTRY}: {txt.OPT_COUNTRY}: '{txt.UNKNOWN_COUNTRY}'",
                 urgency=txt.WRN_CLR,
-                tty=tty
+                tty=tty,
             )
 
-            util.msg(
-                message=f"{txt.AVAILABLE_COUNTRIES}",
-                urgency=txt.INF_CLR,
-                tty=tty
-            )
+            util.msg(message=f"{txt.AVAILABLE_COUNTRIES}", urgency=txt.INF_CLR, tty=tty)
 
             print(f'{", ".join(countrylist)}')
             sys.exit(1)

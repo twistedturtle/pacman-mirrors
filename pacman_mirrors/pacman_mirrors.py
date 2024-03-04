@@ -49,9 +49,7 @@ _ = i18n.language.gettext
 
 class PacmanMirrors:
     def __init__(self):
-        self.config = {
-            "config_file": conf.CONFIG_FILE
-        }
+        self.config = {"config_file": conf.CONFIG_FILE}
         self.continent = False
         self.custom = False
         self.default = False
@@ -95,9 +93,8 @@ class PacmanMirrors:
             # only fetch data files if configuration url are valid
             if self.network:
                 httpFn.download_mirror_pool(
-                    config=self.config,
-                    tty=self.tty, quiet=self.quiet
-                    )
+                    config=self.config, tty=self.tty, quiet=self.quiet
+                )
 
         if self.no_mirrorlist:
             sys.exit(0)

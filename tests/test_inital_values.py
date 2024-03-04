@@ -18,6 +18,7 @@ ARGS = "-f1"
 
 class TestInitialValues(unittest.TestCase):
     """Pacman Mirrors Test suite"""
+
     def setUp(self):
         pass
 

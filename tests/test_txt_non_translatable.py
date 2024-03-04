@@ -14,6 +14,7 @@ from pacman_mirrors.constants import txt
 
 class TestTextConstants(unittest.TestCase):
     """Pacman Mirrors Test suite"""
+
     def setUp(self):
         pass
 

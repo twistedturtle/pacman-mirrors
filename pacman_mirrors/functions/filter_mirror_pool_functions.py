@@ -82,5 +82,5 @@ def filter_user_branch(mirror_pool: list, config: object) -> list:
 
             if len(filtered) > 0:
                 return filtered
-            
+
     return mirror_pool

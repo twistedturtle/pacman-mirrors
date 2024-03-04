@@ -52,7 +52,7 @@ def setup_config(self) -> tuple:
         "url_mirrors_json": conf.URL_MIRROR_JSON,
         "url_status_json": conf.URL_STATUS_JSON,
         "arm": False,
-        "timeout": 2
+        "timeout": 2,
     }
     # try to replace default entries by reading conf file
     try:
@@ -66,7 +66,7 @@ def setup_config(self) -> tuple:
                 key = key.rstrip()
                 value = value.lstrip()
                 if key and value:
-                    if value.startswith("\"") and value.endswith("\""):
+                    if value.startswith('"') and value.endswith('"'):
                         value = value[1:-1]
 
                     if key == "Method":
@@ -91,9 +91,9 @@ def setup_config(self) -> tuple:
 
     except (PermissionError, OSError) as err:
         util.msg(
-            message=f"{txt.CANNOT_READ_FILE}: {err.filename}: {err.strerror}", 
+            message=f"{txt.CANNOT_READ_FILE}: {err.filename}: {err.strerror}",
             urgency=txt.ERR_CLR,
-            tty=self.tty
+            tty=self.tty,
         )
 
         sys.exit(2)
@@ -114,26 +114,34 @@ def sanitize_config(config: object) -> bool:
 
     if config["arm"]:
         if config["branch"] not in conf.ARM_BRANCHES:
-            errors.append("     'Branch = {}'; {} {}".format(
-                config["branch"], txt.EXP_CLR, "|".join(conf.ARM_BRANCHES))
+            errors.append(
+                "     'Branch = {}'; {} {}".format(
+                    config["branch"], txt.EXP_CLR, "|".join(conf.ARM_BRANCHES)
                 )
+            )
     else:
         if config["branch"] not in conf.BRANCHES:
-            errors.append("     'Branch = {}'; {} {}".format(
-                config["branch"], txt.EXP_CLR, "|".join(conf.BRANCHES))
+            errors.append(
+                "     'Branch = {}'; {} {}".format(
+                    config["branch"], txt.EXP_CLR, "|".join(conf.BRANCHES)
                 )
+            )
 
     if str(config["ssl_verify"]) not in conf.SSL:
-        errors.append("     'SSLVerify = {}'; {} {}".format(
-            config["ssl_verify"], txt.EXP_CLR, "|".join(conf.SSL))
+        errors.append(
+            "     'SSLVerify = {}'; {} {}".format(
+                config["ssl_verify"], txt.EXP_CLR, "|".join(conf.SSL)
             )
+        )
 
     for p in config["protocols"]:
         if p not in conf.PROTOCOLS:
-            errors.append("     'Protocols = {}'; {} {}".format(
-                config["protocols"], txt.EXP_CLR, ",".join(conf.PROTOCOLS))
+            errors.append(
+                "     'Protocols = {}'; {} {}".format(
+                    config["protocols"], txt.EXP_CLR, ",".join(conf.PROTOCOLS)
                 )
-            
+            )
+
     if len(errors) != 0:
         print(f".: {txt.ERR_CLR}: {txt.INVALID_SETTING_IN} `{conf.CONFIG_FILE}`")
         for e in errors:

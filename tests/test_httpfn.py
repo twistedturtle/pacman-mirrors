@@ -34,12 +34,13 @@ test_conf = {
     "url_status_json": mock.URL_STATUS_JSON,
     "work_dir": mock.WORK_DIR,
     "arm": False,
-    "timeout": 2
+    "timeout": 2,
 }
 
 
 class TestHttpFn(unittest.TestCase):
     """Pacman Mirrors Test suite"""
+
     def setUp(self):
         pass
 
@@ -47,11 +48,8 @@ class TestHttpFn(unittest.TestCase):
     @patch.object(httpFn, "get_ip_country")
     @patch.object(config_setup, "setup_config")
     def test_geoip_available(
-        self,
-        mock_build_config,
-        mock_get_geoip_country,
-        mock_os_getuid
-        ):
+        self, mock_build_config, mock_get_geoip_country, mock_os_getuid
+    ):
         """TEST: geoip country IS avaiable"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf

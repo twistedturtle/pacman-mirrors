@@ -31,197 +31,167 @@ from pacman_mirrors.constants import txt
 from pacman_mirrors.functions import outputFn
 from pacman_mirrors.functions import mirror_status
 from pacman_mirrors.functions import printFn
-from pacman_mirrors.translation.custom_help_formatter \
-    import CustomHelpFormatter
+from pacman_mirrors.translation.custom_help_formatter import CustomHelpFormatter
 
 
 def parse_command_line(self, gtk_available: bool) -> None:
     """Read the arguments of the command line"""
 
-    args_summary = f"[-h] [-f [{txt.NUMBER}]] [-i [-d]] [-m {txt.METHOD}] [--status]\n" \
-                   f"\t\t[-c {txt.COUNTRY} [{txt.COUNTRY}...] | [--geoip] | [--continent]]\n" \
-                   f"\t\t[-l] [-lc] [-q] [-t {txt.SECONDS}] [-v] [-n]\n" \
-                   f"\t\t[--api] [-S/-B {txt.BRANCH}] [-p {txt.PREFIX}]\n" \
-                   f"\t\t\t[-P {txt.PROTO} [{txt.PROTO}...]] [-R] [-U {txt.URL}]"
+    args_summary = (
+        f"[-h] [-f [{txt.NUMBER}]] [-i [-d]] [-m {txt.METHOD}] [--status]\n"
+        f"\t\t[-c {txt.COUNTRY} [{txt.COUNTRY}...] | [--geoip] | [--continent]]\n"
+        f"\t\t[-l] [-lc] [-q] [-t {txt.SECONDS}] [-v] [-n]\n"
+        f"\t\t[--api] [-S/-B {txt.BRANCH}] [-p {txt.PREFIX}]\n"
+        f"\t\t\t[-P {txt.PROTO} [{txt.PROTO}...]] [-R] [-U {txt.URL}]"
+    )
 
     nusage = f"\rVersion {__version__}\n{txt.USAGE}:\n pacman-mirrors"
     usage = f"{nusage} {args_summary}"
 
     parser = argparse.ArgumentParser(
-        formatter_class=CustomHelpFormatter,
-        add_help=False, usage=usage
-        )
+        formatter_class=CustomHelpFormatter, add_help=False, usage=usage
+    )
 
     # Method arguments
     methods = parser.add_argument_group(txt.METHODS)
     methods.add_argument(
-        "-i", "--interactive",
-        action="store_true",
-        help=txt.HLP_ARG_INTERACTIVE
-        )
-    
+        "-i", "--interactive", action="store_true", help=txt.HLP_ARG_INTERACTIVE
+    )
+
     methods_exclusive = methods.add_mutually_exclusive_group()
     methods_exclusive.add_argument(
-        "-f", "--fasttrack",
+        "-f",
+        "--fasttrack",
         nargs="?",
         const=-1,
         type=int,
         metavar=txt.NUMBER,
-        help=f"{txt.HLP_ARG_FASTTRACK} {txt.OVERRIDE_OPT}"
-        )
+        help=f"{txt.HLP_ARG_FASTTRACK} {txt.OVERRIDE_OPT}",
+    )
 
     methods_exclusive.add_argument(
-        "-c", "--country",
+        "-c",
+        "--country",
         type=str,
         nargs="+",
         metavar=txt.COUNTRY,
-        help=txt.HLP_ARG_COUNTRY
-        )
-    
+        help=txt.HLP_ARG_COUNTRY,
+    )
+
     methods_exclusive.add_argument(
-        "--geoip",
-        action="store_true",
-        help=txt.HLP_ARG_GEOIP
-        )
-    
+        "--geoip", action="store_true", help=txt.HLP_ARG_GEOIP
+    )
+
     methods_exclusive.add_argument(
-        "--continent",
-        action="store_true",
-        help=txt.HLP_ARG_CONTINENT
-        )
-    
+        "--continent", action="store_true", help=txt.HLP_ARG_CONTINENT
+    )
+
     api = parser.add_argument_group(txt.API)
     api.add_argument(
-        "-a", "--api",
-         action="store_true",
-         help=f"[-p {txt.PREFIX}][-R][-S/-B|-G {txt.BRANCH}][-P {txt.PROTO} [{txt.PROTO} ...]]"
-         )
-    
-    api.add_argument(
-        "-S", "-B", "--set-branch",
-        choices=["stable", "testing", "unstable"],
-        help=f"{txt.API}: {txt.HLP_ARG_API_SET_BRANCH}"
-        )
+        "-a",
+        "--api",
+        action="store_true",
+        help=f"[-p {txt.PREFIX}][-R][-S/-B|-G {txt.BRANCH}][-P {txt.PROTO} [{txt.PROTO} ...]]",
+    )
 
     api.add_argument(
-        "-p", "--prefix",
+        "-S",
+        "-B",
+        "--set-branch",
+        choices=["stable", "testing", "unstable"],
+        help=f"{txt.API}: {txt.HLP_ARG_API_SET_BRANCH}",
+    )
+
+    api.add_argument(
+        "-p",
+        "--prefix",
         type=str,
         metavar=txt.PREFIX,
-        help=f"{txt.API}: {txt.HLP_ARG_API_PREFIX} {txt.PREFIX_TIP}"
-        )
-    
+        help=f"{txt.API}: {txt.HLP_ARG_API_PREFIX} {txt.PREFIX_TIP}",
+    )
+
     api.add_argument(
-        "-P", "--proto", "--protocols",
+        "-P",
+        "--proto",
+        "--protocols",
         choices=["all", "http", "https", "ftp", "ftps"],
         type=str,
         nargs="+",
-        help=f"{txt.API}: {txt.HLP_ARG_API_PROTOCOLS}"
-        )
-    
+        help=f"{txt.API}: {txt.HLP_ARG_API_PROTOCOLS}",
+    )
+
     api.add_argument(
-        "-R", "--re-branch",
+        "-R",
+        "--re-branch",
         action="store_true",
-        help=f"{txt.API}: {txt.HLP_ARG_API_RE_BRANCH}"
-        )
-    
+        help=f"{txt.API}: {txt.HLP_ARG_API_RE_BRANCH}",
+    )
+
     api.add_argument(
-        "-U", "--url",
+        "-U",
+        "--url",
         type=str,
         metavar=txt.URL,
-        help=f"{txt.API}: {txt.HLP_ARG_API_URL}"
-        )
-    
+        help=f"{txt.API}: {txt.HLP_ARG_API_URL}",
+    )
+
     misc = parser.add_argument_group(txt.MISC)
     misc.add_argument(
-        "-G", "--get-branch",
-        action="store_true",
-        help=txt.HLP_ARG_API_GET_BRANCH
-        )
-    
+        "-G", "--get-branch", action="store_true", help=txt.HLP_ARG_API_GET_BRANCH
+    )
+
     misc.add_argument(
-        "-d", "--default",
+        "-d",
+        "--default",
         action="store_true",
-        help=f"INTERACTIVE: {txt.HLP_ARG_DEFAULT}"
-        )
-    
+        help=f"INTERACTIVE: {txt.HLP_ARG_DEFAULT}",
+    )
+
     misc.add_argument("-h", "--help", action="store_true")
     misc.add_argument(
-        "-l", "--list", "--country-list",
+        "-l", "--list", "--country-list", action="store_true", help=txt.HLP_ARG_LIST
+    )
+
+    misc.add_argument(
+        "-lc",
+        "--country-config",
         action="store_true",
-        help=txt.HLP_ARG_LIST
-        )
-    
+        help="lists configured mirror countries",
+    )
+
     misc.add_argument(
-        "-lc", "--country-config",
-        action="store_true",
-        help="lists configured mirror countries"
-        )
-    
+        "-m", "--method", type=str, choices=["rank", "random"], help=txt.HLP_ARG_METHOD
+    )
+
     misc.add_argument(
-        "-m", "--method",
-        type=str,
-        choices=["rank", "random"],
-        help=txt.HLP_ARG_METHOD
-        )
-    
+        "-n", "--no-mirrorlist", action="store_true", help=txt.HLP_ARG_NO_MIRRORLIST
+    )
+
+    misc.add_argument("-q", "--quiet", action="store_true", help=txt.HLP_ARG_QUIET)
+
+    misc.add_argument("-s", "--no-status", action="store_true", help=txt.HLP_ARG_STATUS)
+
     misc.add_argument(
-        "-n", "--no-mirrorlist",
-        action="store_true",
-        help=txt.HLP_ARG_NO_MIRRORLIST
-        )
-    
+        "-t", "--timeout", type=int, metavar=txt.SECONDS, help=txt.HLP_ARG_TIMEOUT
+    )
+
+    misc.add_argument("-v", "--version", action="store_true", help=txt.HLP_ARG_VERSION)
+
+    misc.add_argument("--no-color", action="store_true")
+
     misc.add_argument(
-        "-q", "--quiet",
-        action="store_true",
-        help=txt.HLP_ARG_QUIET
-        )
-    
+        "--interval", type=int, help="Max. number of hours since last sync"
+    )
+
     misc.add_argument(
-        "-s", "--no-status",
-        action="store_true",
-        help=txt.HLP_ARG_STATUS
-        )
-    
+        "-g", action="store_true", help="Create mirror list from active pool."
+    )
+
     misc.add_argument(
-        "-t", "--timeout",
-        type=int,
-        metavar=txt.SECONDS,
-        help=txt.HLP_ARG_TIMEOUT
-        )
-    
-    misc.add_argument(
-        "-v", "--version",
-        action="store_true",
-        help=txt.HLP_ARG_VERSION
-        )
-    
-    misc.add_argument(
-        "--no-color",
-        action="store_true"
-        )
-    
-    misc.add_argument(
-        "--interval",
-        type=int,
-        help="Max. number of hours since last sync"
-        )
-    
-    misc.add_argument(
-        "-g",
-        action="store_true",
-        help="Create mirror list from active pool."
-        )
-    
-    misc.add_argument(
-        "--status",
-        action="store_true",
-        help="Status for the current mirror list."
-        )
-    
-    misc.add_argument(
-        "-fc",
-        action="store_true"
-        )
+        "--status", action="store_true", help="Status for the current mirror list."
+    )
+
+    misc.add_argument("-fc", action="store_true")
 
     args = parser.parse_args()
 
@@ -339,11 +309,13 @@ def parse_command_line(self, gtk_available: bool) -> None:
             self.default = True
 
         # wayland - sway - console - gtk
-        if os.environ.get("XDG_SESSION_TYPE") == "wayland" \
-                or os.environ.get("XDG_SESSION_TYPE") == "tty" \
-                or not os.environ.get("DISPLAY") \
-                or not gtk_available:
-            
+        if (
+            os.environ.get("XDG_SESSION_TYPE") == "wayland"
+            or os.environ.get("XDG_SESSION_TYPE") == "tty"
+            or not os.environ.get("DISPLAY")
+            or not gtk_available
+        ):
+
             self.no_display = True
 
     if args.fc:
@@ -369,7 +341,10 @@ def parse_command_line(self, gtk_available: bool) -> None:
                     self.config["protocols"] = args.proto
 
         api_handler.set_config(
-            self, set_pfx=args.prefix,
-            set_branch=setbranch, re_branch=rebranch,
-            set_protocols=setprotocols, set_url=url
-            )
+            self,
+            set_pfx=args.prefix,
+            set_branch=setbranch,
+            re_branch=rebranch,
+            set_protocols=setprotocols,
+            set_url=url,
+        )

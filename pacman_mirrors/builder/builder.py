@@ -17,11 +17,17 @@
 #
 # Authors: Frede Hundewadt <echo ZmhAbWFuamFyby5vcmcK | base64 -d>
 
-from pacman_mirrors.functions.filter_mirror_pool_functions import \
-    filter_mirror_protocols, filter_mirror_country, filter_user_branch
+from pacman_mirrors.functions.filter_mirror_pool_functions import (
+    filter_mirror_protocols,
+    filter_mirror_country,
+    filter_user_branch,
+)
 
-from pacman_mirrors.functions.filter_mirror_status_functions import \
-    filter_bad_mirrors, filter_error_mirrors, filter_poor_mirrors
+from pacman_mirrors.functions.filter_mirror_status_functions import (
+    filter_bad_mirrors,
+    filter_error_mirrors,
+    filter_poor_mirrors,
+)
 
 
 def build_pool(self) -> list:
@@ -41,14 +47,14 @@ def build_pool(self) -> list:
     if not self.fasttrack:
         work_pool = filter_mirror_country(
             mirror_pool=work_pool, country_pool=self.selected_countries
-            )
+        )
 
     # Apply protocol filter
     try:
         _ = self.config["protocols"][0]
         work_pool = filter_mirror_protocols(
             mirror_pool=work_pool, protocols=self.config["protocols"]
-            )
+        )
 
     except IndexError:
         pass
@@ -59,10 +65,8 @@ def build_pool(self) -> list:
         if self.interval:
             work_pool = filter_poor_mirrors(
                 mirror_pool=work_pool, interval=self.interval
-                )
-    else:
-        work_pool = filter_user_branch(
-            mirror_pool=work_pool, config=self.config
             )
+    else:
+        work_pool = filter_user_branch(mirror_pool=work_pool, config=self.config)
 
     return work_pool

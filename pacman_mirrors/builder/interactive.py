@@ -29,11 +29,11 @@ from pacman_mirrors.functions.sortMirrorFn import sort_mirror_pool
 from pacman_mirrors.functions.testMirrorFn import test_mirror_pool
 from pacman_mirrors.functions.conversion import (
     translate_interactive_to_pool,
-    translate_pool_to_interactive
-    )
+    translate_pool_to_interactive,
+)
 from pacman_mirrors.functions.outputFn import (
     write_custom_mirrors_json,
-    write_pacman_mirror_list
+    write_pacman_mirror_list,
 )
 
 
@@ -52,9 +52,7 @@ def build_mirror_list(self) -> None:
             # TODO again duplicated objects
             worklist = test_mirror_pool(self=self, worklist=worklist)
             worklist = sort_mirror_pool(
-                worklist=worklist,
-                field="resp_time",
-                reverse=False
+                worklist=worklist, field="resp_time", reverse=False
             )
         else:
             shuffle(worklist)
@@ -68,10 +66,7 @@ def build_mirror_list(self) -> None:
     #    "last_sync": "HHh MMm",
     #    "url": "http://server/repo/"
     # }
-    interactive_list = translate_pool_to_interactive(
-        mirror_pool=worklist,
-        tty=self.tty
-        )
+    interactive_list = translate_pool_to_interactive(mirror_pool=worklist, tty=self.tty)
 
     # import the correct ui
     if self.no_display or self.config["arm"]:
@@ -84,16 +79,15 @@ def build_mirror_list(self) -> None:
     interactive = ui.run(
         server_list=interactive_list,
         random=self.config["method"] == "random",
-        default=self.default
-        )
+        default=self.default,
+    )
 
     # process user choices
     if interactive.is_done:
         # translate interactive list back to our json format
         custom_pool, mirror_list = translate_interactive_to_pool(
-            selection=interactive.custom_list,
-            mirror_pool=self.mirrors.mirror_pool
-            )
+            selection=interactive.custom_list, mirror_pool=self.mirrors.mirror_pool
+        )
 
         # Try selected method on the mirrorlist
         try:
@@ -102,14 +96,8 @@ def build_mirror_list(self) -> None:
             if self.default:
                 if self.config["method"] == "rank":
                     # TODO duplicate objects
-                    mirror_list = test_mirror_pool(
-                        self=self,
-                        worklist=mirror_list
-                        )
-                    mirror_list = sorted(
-                        mirror_list,
-                        key=itemgetter("resp_time")
-                        )
+                    mirror_list = test_mirror_pool(self=self, worklist=mirror_list)
+                    mirror_list = sorted(mirror_list, key=itemgetter("resp_time"))
                 else:
                     shuffle(mirror_list)
         except IndexError:
@@ -134,23 +122,15 @@ def build_mirror_list(self) -> None:
                     util.msg(
                         message=f"{txt.OVERRIDE_STATUS_CHOICE}",
                         urgency=txt.WRN_CLR,
-                        tty=self.tty
-                        )
+                        tty=self.tty,
+                    )
                     util.msg(
                         message=f"{txt.OVERRIDE_STATUS_MIRROR}",
                         urgency=txt.WRN_CLR,
-                        tty=self.tty
-                        )
+                        tty=self.tty,
+                    )
             except IndexError as e:
                 util.msg(message=str(e), urgency=txt.WRN_CLR, tty=self.tty)
         except IndexError:
-            util.msg(
-                message=f"{txt.NO_SELECTION}",
-                urgency=txt.WRN_CLR,
-                tty=self.tty
-                )
-            util.msg(
-                message=f"{txt.NO_CHANGE}",
-                urgency=txt.INF_CLR,
-                tty=self.tty
-                )
+            util.msg(message=f"{txt.NO_SELECTION}", urgency=txt.WRN_CLR, tty=self.tty)
+            util.msg(message=f"{txt.NO_CHANGE}", urgency=txt.INF_CLR, tty=self.tty)

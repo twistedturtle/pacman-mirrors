@@ -31,9 +31,15 @@ class Mirror:
         self.country_pool = []
         self.mirror_pool = []
 
-    def add(self, country: str, url: str, protocols: list,
-            branches: list = None, last_sync: str = None,
-            resp_time: str = None) -> None:
+    def add(
+        self,
+        country: str,
+        url: str,
+        protocols: list,
+        branches: list = None,
+        last_sync: str = None,
+        resp_time: str = None,
+    ) -> None:
         """Append mirror
         :param country:
         :param url:
@@ -66,15 +72,17 @@ class Mirror:
         continent = get_continent(country.replace("_", " "))
 
         # add to pool
-        self.mirror_pool.append({
-            "continent": continent,
-            "branches": branches,
-            "country": country,
-            "last_sync": last_sync,
-            "protocols": protocols,
-            "resp_time": resp_time,
-            "url": url
-        })
+        self.mirror_pool.append(
+            {
+                "continent": continent,
+                "branches": branches,
+                "country": country,
+                "last_sync": last_sync,
+                "protocols": protocols,
+                "resp_time": resp_time,
+                "url": url,
+            }
+        )
 
     def seed(self, servers: list, status: bool = False, custom: bool = False) -> None:
         """
@@ -94,11 +102,7 @@ class Mirror:
                     server["url"],
                     server["protocols"],
                     server["branches"],
-                    server["last_sync"]
+                    server["last_sync"],
                 )
             else:
-                self.add(
-                    server["country"],
-                    server["url"],
-                    server["protocols"]
-                )
+                self.add(server["country"], server["url"], server["protocols"])

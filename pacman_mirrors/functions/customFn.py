@@ -32,7 +32,9 @@ def apply_status_to_custom_pool(config: object, custom_pool: list) -> list:
     :param custom_pool: the custom mirror pool
     :return: custom mirror pool with status applied
     """
-    status_list = tuple(jsonFn.read_json_file(filename=config["status_file"], dictionary=False))
+    status_list = tuple(
+        jsonFn.read_json_file(filename=config["status_file"], dictionary=False)
+    )
     custom_list = tuple(custom_pool)
     try:
         _ = status_list[0]
@@ -43,7 +45,7 @@ def apply_status_to_custom_pool(config: object, custom_pool: list) -> list:
                     custom["branches"] = status["branches"]
 
         return list(custom_list)
-    
+
     except (IndexError, KeyError):
         return custom_pool
 
@@ -73,4 +75,3 @@ def load_custom_pool(self) -> None:
         self.mirrors.mirror_pool = apply_status_to_custom_pool(
             config=self.config, custom_pool=self.mirrors.mirror_pool
         )
-

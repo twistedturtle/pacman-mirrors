@@ -26,11 +26,12 @@ npyscreen = "^4.10.5"
 
 [tool.poetry.scripts]
 pacman-mirrors = "pacman_mirrors.pacman_mirrors:start"
+format = "black:main ."
 
 [tool.poetry.group.lint.dependencies]
-flake9 = "^3.8.3.post2"
-lint = "^1.2.1"
 coverage = "^7.3.1"
+black = "^24.2.0"
+pymarkdownlnt = "^0.9.17"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.5.3"
@@ -42,11 +43,11 @@ babel = "^2.12.1"
 pytest = "^7.4.2"
 pytest-cov = "^4.1.0"
 
-[tool.flake8]
-#ignore = "E203,E266,H106,H904"
-max-line-length = 88
-max-complexity = 25
-hang-closing = true
+[tool.black]
+line-length = 88
+
+[tool.pymarkdown]
+plugins.MD013.enabled = false
 
 [build-system]
 requires = ["poetry-core"]
