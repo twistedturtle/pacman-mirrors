@@ -232,9 +232,9 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
     :param tty:
     """
 
-    def output_err(host, err):
+    def output_err(hostname, error):
         print("")
-        util.msg(f"{host} '{err}'", urgency=txt.WRN_CLR, tty=tty)
+        util.msg(f"{hostname} '{error}'", urgency=txt.WRN_CLR, tty=tty)
         print("")
 
     for host in conf.INET_CONN_CHECK_URLS:
