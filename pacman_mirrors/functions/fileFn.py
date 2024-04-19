@@ -159,7 +159,7 @@ def read_mirror_file(filename: str) -> list:
     return jsonFn.read_json_file(filename, dictionary=True)
 
 
-def write_mirrorlist_header(handle: object, custom: bool = False) -> None:
+def write_mirrorlist_header(handle, custom: bool = False) -> None:
     """
     Write mirrorlist header
     :param handle: handle to a file opened for writing
@@ -191,7 +191,7 @@ def write_mirrorlist_header(handle: object, custom: bool = False) -> None:
     handle.write("##\n\n")
 
 
-def write_mirrorlist_entry(handle: object, mirror: dict) -> None:
+def write_mirrorlist_entry(handle, mirror: dict) -> None:
     """
     Write mirror to mirror list or file
     :param handle: handle to a file opened for writing
