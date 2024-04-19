@@ -40,6 +40,7 @@ def setup_config(self) -> tuple:
         "config_file": conf.CONFIG_FILE,
         "country_pool": [],
         "custom_file": conf.CUSTOM_FILE,
+        "enterprise": False,
         "method": "rank",
         "work_dir": conf.WORK_DIR,
         "mirror_file": conf.MIRROR_FILE,
@@ -89,6 +90,10 @@ def setup_config(self) -> tuple:
                         config["test_file"] = value
                         if not config["test_file"]:
                             config["test_file"] = conf.TEST_FILE
+
+                    if key == "Static":
+                        config["enterprise"] = True
+                        config["static"] = value
 
     except (PermissionError, OSError) as err:
         util.msg(
@@ -143,6 +148,14 @@ def sanitize_config(config: dict) -> bool:
                 )
             )
 
+    if config["enterprise"]:
+        # check static mirror - simple validation
+        if "://" or "." not in config["static"]:
+            errors.append(
+                "     'Static = {}'; {} (e.g. 'http://domain.tld/manjaro/')".format(
+                    config["static"], txt.EXP_CLR
+                )
+            )
     if len(errors) != 0:
         print(f".: {txt.ERR_CLR}: {txt.INVALID_SETTING_IN} `{conf.CONFIG_FILE}`")
         for e in errors:

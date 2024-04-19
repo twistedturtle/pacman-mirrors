@@ -35,6 +35,7 @@ from pacman_mirrors.functions import config_setup
 from pacman_mirrors.functions import defaultFn
 from pacman_mirrors.functions import fileFn
 from pacman_mirrors.functions import httpFn
+from pacman_mirrors.functions import outputFn
 from pacman_mirrors.mirrors.mirror import Mirror
 from pacman_mirrors.translation import i18n
 
@@ -81,6 +82,26 @@ class PacmanMirrors:
         # Build mirror list
         """
         (self.config, self.custom) = config_setup.setup_config(self)
+
+        if self.config["enterprise"]:
+            self.custom = False
+            if fileFn.check_file(self.config["custom_file"]):
+                fileFn.delete_file(self.config["custom_file"])
+            # write enterprise mirror list
+            util.msg("Enterprise setup found")
+            mirrors = [{
+                "branches": [1, 1, 1],
+                "country": "Enterprise",
+                "protocols": [str(self.config["static"]).split(":")[0]],
+                "resp_time": "0.125",
+                "last_sync": "00:13",
+                "url": str(self.config["static"]).split("//")[-1],
+                "url2": self.config["static"]
+            }]
+            outputFn.write_pacman_mirror_list(self, mirrors)
+            exit(0)
+        ##########################################################
+        # default manjaro setup
         fileFn.create_dir(self.config["work_dir"])
         cliFn.parse_command_line(self, gtk_available=GTK_AVAILABLE)
         util.aarch64_check(self, write=True)
