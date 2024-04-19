@@ -20,6 +20,7 @@
 """Pacman-Mirrors Configuration Functions"""
 
 import sys
+from typing import Dict, Any, Tuple, List
 
 from pacman_mirrors.config import configuration as conf
 from pacman_mirrors.constants import txt
@@ -33,7 +34,7 @@ def setup_config(self) -> tuple:
     """
     custom = False
     # default config
-    config = {
+    config: dict[str | Any, str | tuple[str, str, str] | list[Any] | bool | Any] = {
         "branch": "stable",
         "branches": conf.BRANCHES,
         "config_file": conf.CONFIG_FILE,
@@ -101,7 +102,7 @@ def setup_config(self) -> tuple:
     return config, custom
 
 
-def sanitize_config(config: object) -> bool:
+def sanitize_config(config: dict) -> bool:
     """
     Verify configuration
     :param config:
