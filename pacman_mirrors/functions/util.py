@@ -146,7 +146,7 @@ def terminal_size() -> tuple:
     return result
 
 
-def static_pool_from_string(static: str) -> list:
+def build_static_from_config(static: str) -> list:
     urls = static.split(",")
     result = []
     for url in urls:
@@ -157,6 +157,7 @@ def static_pool_from_string(static: str) -> list:
             "country": "StaticConfig",
             "protocols": [str(url).split(":")[0]],
             "last_sync": "00:05",
+            "resp_time": 0.555,
             "url": url
         }
         result.append(temp)

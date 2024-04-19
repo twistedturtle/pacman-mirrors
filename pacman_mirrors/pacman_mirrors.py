@@ -90,8 +90,8 @@ class PacmanMirrors:
                 fileFn.delete_file(self.config["custom_file"])
             # write enterprise mirror list
             util.msg("Static configuration found")
-            mirrors = util.static_pool_from_string(self.config["static"])
-            outputFn.write_enterprise_mirrors_json(self, mirrors)
+            mirrors = util.build_static_from_config(self.config["static"])
+            outputFn.write_static_mirror_pool(self, mirrors)
             outputFn.write_pacman_mirror_list(self, mirrors)
             exit(0)
 

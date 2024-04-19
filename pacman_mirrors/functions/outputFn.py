@@ -27,7 +27,7 @@ from pacman_mirrors.functions import jsonFn
 from pacman_mirrors.functions import util
 
 
-def write_enterprise_mirrors_json(self, selected_mirrors: list) -> None:
+def write_static_mirror_pool(self, selected_mirrors: list) -> None:
     """
     Output enterprise setup to mirror file
     :param self:
