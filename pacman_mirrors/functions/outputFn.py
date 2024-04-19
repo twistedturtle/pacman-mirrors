@@ -27,6 +27,16 @@ from pacman_mirrors.functions import jsonFn
 from pacman_mirrors.functions import util
 
 
+def write_enterprise_mirrors_json(self, selected_mirrors: list) -> None:
+    """
+    Output enterprise setup to mirror file
+    :param self:
+    :param selected_mirrors:
+    :return:
+    """
+    jsonFn.write_json_file(data=selected_mirrors, filename=self.config["mirror_file"])
+
+
 def write_custom_mirrors_json(self, selected_mirrors: list) -> None:
     """
     Output selected mirrors to custom mirror file

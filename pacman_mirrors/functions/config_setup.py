@@ -40,7 +40,7 @@ def setup_config(self) -> tuple:
         "config_file": conf.CONFIG_FILE,
         "country_pool": [],
         "custom_file": conf.CUSTOM_FILE,
-        "enterprise": False,
+        "static": False,
         "method": "rank",
         "work_dir": conf.WORK_DIR,
         "mirror_file": conf.MIRROR_FILE,
