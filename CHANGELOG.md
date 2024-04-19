@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.26.0] 2024-04-19
+* Added option allowing for enterprise static mirror configuration
+```text
+## Static configuration
+## Add a comma separated list of urls to use
+## e.g. https://mirror1.tld/manjaro/,https://mirror2.tld/manjaro/
+# Static =
+```
+
 ## [4.25.0] 2023-03-12
 
 * [ping url configuration](https://gitlab.manjaro.org/applications/pacman-mirrors/-/blame/master/pacman_mirrors/functions/util.py)
