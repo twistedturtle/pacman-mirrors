@@ -42,7 +42,7 @@ def headers():
     return {"User-Agent": f"{conf.USER_AGENT}/{__version__}"}
 
 
-def download_mirrors(config: object) -> tuple:
+def download_mirrors(config: dict) -> tuple:
     """Retrieve mirrors from manjaro.org
     :param config:
     :returns: tuple with bool for mirrors.json and status.json
@@ -176,7 +176,7 @@ def get_ftp_response(url: str, maxwait: int) -> str:
 
 def get_mirror_response(
     url: str,
-    config: object,
+    config: dict,
     tty: bool = False,
     maxwait: int = 2,
     count: int = 1,
@@ -191,7 +191,7 @@ def get_mirror_response(
     :param maxwait:
     :param count:
     :param quiet:
-    :returns always return a float value with response time
+    :returns: always return a float value with response time
     """
     response_time = txt.SERVER_RES  # prepare default return value
     probe_stop = None
@@ -263,7 +263,7 @@ def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
 
 
 def download_mirror_pool(
-    config: object, tty: bool = False, quiet: bool = False
+    config: dict, tty: bool = False, quiet: bool = False
 ) -> tuple:
     """Download updates from repo.manjaro.org
     :param config:
