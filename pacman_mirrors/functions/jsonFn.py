@@ -28,24 +28,33 @@ def json_dump_file(data: list, filename: str) -> None:
         json.dump(data, outfile)
 
 
-def read_json_file(filename: str, dictionary: bool = True) -> list:
-    """Read json data from file"""
-    # TODO does this var has a purpuse
-    result = list()
+def read_file_content(file_name: str, binary: bool = False) -> str:
+    """
+    Reads the content of a file.
+    """
+    mode = "rb" if binary else "r"
+    with open(file_name, mode) as file:
+        return file.read()
+
+
+def read_json_file(filename: str, use_ordered_dict: bool = True) -> list:
+    """Reads json data from file."""
+    data = []  # Represent an empty JSON array
     try:
-        if dictionary:
-            with open(filename, "rb") as infile:
-                result = json.loads(
-                    infile.read().decode("utf8"),
-                    object_pairs_hook=collections.OrderedDict,
-                )
+        file_content = read_file_content(filename, binary=use_ordered_dict)
+
+        if use_ordered_dict:
+            # noinspection PyTypeChecker
+            data = json.loads(
+                file_content.decode("utf8"),
+                object_pairs_hook=collections.OrderedDict,
+            )
         else:
-            with open(filename, "r") as infile:
-                result = json.load(infile)
+            data = json.loads(file_content)
     except OSError:
         pass
 
-    return result
+    return data
 
 
 def write_json_file(data: list, filename: str, dictionary: bool = False) -> bool:
