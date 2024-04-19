@@ -25,7 +25,7 @@ from pacman_mirrors.functions import jsonFn
 from pacman_mirrors.functions import validFn
 
 
-def apply_status_to_custom_pool(config: object, custom_pool: list) -> list:
+def apply_status_to_custom_pool(config: dict, custom_pool: list) -> list:
     """
     Apply the current mirror status to the custom mirror file
     :param config: config dictionary
