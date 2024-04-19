@@ -146,50 +146,50 @@ def terminal_size() -> tuple:
     return result
 
 
-def build_ping_url() -> str:
-    url = "http://ping.manjaro.org/pacmanmirrors/"
-
-    def proc(cmd):
-        return subprocess.check_output(cmd).decode()
-
-    info = proc(["hostnamectl"]).split()
-
-    def chassis():
-        for index, line in enumerate(info):
-            if "Chassis" in line:
-                return info[index + 1]
-
-    def vendor():
-        for index, line in enumerate(info):
-            if "Vendor" in line:
-                return info[index + 1]
-
-    def branch():
-        # TODO port pacman-mirrors config to a standard file format
-        config = configparser.ConfigParser()
-        with open("/etc/pacman-mirrors.conf") as stream:
-            config.read_string("[default]\n" + stream.read())
-
-        try:
-            branch = config["default"]["branch"]
-        except KeyError:
-            branch = "stable"
-        return branch
-
-    kernel = proc(["uname", "-r"])
-    arch = proc(["uname", "-m"])
-    codename = proc(["lsb_release", "-c"]).replace("Codename:\t", "").replace("\n", "")
-    version = proc(["lsb_release", "-r"]).replace("Release:\t", "").replace("\n", "")
-    session_type = os.getenv("XDG_SESSION_TYPE")
-    de = os.getenv("XDG_CURRENT_DESKTOP")
-    _os_ = f"{codename}-{version}"
-
-    if session_type is not None:
-        session_type += "/"
-    else:
-        session_type = ""
-
-    host = url + "".join(
-        f"{arch}/{session_type}{_os_}/{branch()}/{de}/{kernel}/{chassis()}-{vendor()}".split()
-    )
-    return host
+# def build_ping_url() -> str:
+#     url = "https://ping.manjaro.org/pacmanmirrors/"
+#
+#     def proc(cmd):
+#         return subprocess.check_output(cmd).decode()
+#
+#     info = proc(["hostnamectl"]).split()
+#
+#     def chassis():
+#         for index, line in enumerate(info):
+#             if "Chassis" in line:
+#                 return info[index + 1]
+#
+#     def vendor():
+#         for index, line in enumerate(info):
+#             if "Vendor" in line:
+#                 return info[index + 1]
+#
+#     def branch():
+#         # TODO port pacman-mirrors config to a standard file format
+#         config = configparser.ConfigParser()
+#         with open("/etc/pacman-mirrors.conf") as stream:
+#             config.read_string("[default]\n" + stream.read())
+#
+#         try:
+#             branch = config["default"]["branch"]
+#         except KeyError:
+#             branch = "stable"
+#         return branch
+#
+#     kernel = proc(["uname", "-r"])
+#     arch = proc(["uname", "-m"])
+#     codename = proc(["lsb_release", "-c"]).replace("Codename:\t", "").replace("\n", "")
+#     version = proc(["lsb_release", "-r"]).replace("Release:\t", "").replace("\n", "")
+#     session_type = os.getenv("XDG_SESSION_TYPE")
+#     de = os.getenv("XDG_CURRENT_DESKTOP")
+#     _os_ = f"{codename}-{version}"
+#
+#     if session_type is not None:
+#         session_type += "/"
+#     else:
+#         session_type = ""
+#
+#     host = url + "".join(
+#         f"{arch}/{session_type}{_os_}/{branch()}/{de}/{kernel}/{chassis()}-{vendor()}".split()
+#     )
+#     return host
