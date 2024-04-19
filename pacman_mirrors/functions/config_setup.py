@@ -40,7 +40,7 @@ def setup_config(self) -> tuple:
         "config_file": conf.CONFIG_FILE,
         "country_pool": [],
         "custom_file": conf.CUSTOM_FILE,
-        "static": False,
+        "enterprise": False,
         "method": "rank",
         "work_dir": conf.WORK_DIR,
         "mirror_file": conf.MIRROR_FILE,
@@ -49,6 +49,7 @@ def setup_config(self) -> tuple:
         "protocols": [],
         "repo_arch": conf.REPO_ARCH,
         "ssl_verify": True,
+        "static": "",
         "status_file": conf.STATUS_FILE,
         "test_file": conf.TEST_FILE,
         "url_mirrors_json": conf.URL_MIRROR_JSON,
@@ -152,10 +153,11 @@ def sanitize_config(config: dict) -> bool:
         # check static mirror - simple validation
         if "://" or "." not in config["static"]:
             errors.append(
-                "     'Static = {}'; {} (e.g. 'http://domain.tld/manjaro/')".format(
+                "     'Static = {}'; {} (e.g. 'https://mirror1.tld/manjaro/')".format(
                     config["static"], txt.EXP_CLR
                 )
             )
+
     if len(errors) != 0:
         print(f".: {txt.ERR_CLR}: {txt.INVALID_SETTING_IN} `{conf.CONFIG_FILE}`")
         for e in errors:

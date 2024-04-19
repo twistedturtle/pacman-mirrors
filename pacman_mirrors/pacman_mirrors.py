@@ -84,21 +84,17 @@ class PacmanMirrors:
         (self.config, self.custom) = config_setup.setup_config(self)
 
         if self.config["static"]:
+            # static setup
             self.custom = False
             if fileFn.check_file(self.config["custom_file"]):
                 fileFn.delete_file(self.config["custom_file"])
             # write enterprise mirror list
-            util.msg("Static setup found")
-            mirrors = [{
-                "branches": [1, 1, 1],
-                "country": "Enterprise",
-                "protocols": [str(self.config["static"]).split(":")[0]],
-                "last_sync": "00:13",
-                "url": self.config["static"]
-            }]
+            util.msg("Static configuration found")
+            mirrors = util.static_pool_from_string(self.config["static"])
             outputFn.write_enterprise_mirrors_json(self, mirrors)
             outputFn.write_pacman_mirror_list(self, mirrors)
             exit(0)
+
         ##########################################################
         # default manjaro setup
         fileFn.create_dir(self.config["work_dir"])

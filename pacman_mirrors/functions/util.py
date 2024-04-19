@@ -146,6 +146,22 @@ def terminal_size() -> tuple:
     return result
 
 
+def static_pool_from_string(static: str) -> list:
+    urls = static.split(",")
+    result = []
+    for url in urls:
+        if not str(url).endswith("/"):
+            url = f"{url}/"
+        temp = {
+            "branches": [1, 1, 1],
+            "country": "StaticConfig",
+            "protocols": [str(url).split(":")[0]],
+            "last_sync": "00:05",
+            "url": url
+        }
+        result.append(temp)
+    return result
+
 # def build_ping_url() -> str:
 #     url = "https://ping.manjaro.org/pacmanmirrors/"
 #
