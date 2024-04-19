@@ -50,6 +50,7 @@ def setup_config(self) -> tuple:
         "repo_arch": conf.REPO_ARCH,
         "ssl_verify": True,
         "static": "",
+        "statistics": 0,
         "status_file": conf.STATUS_FILE,
         "test_file": conf.TEST_FILE,
         "url_mirrors_json": conf.URL_MIRROR_JSON,
@@ -95,6 +96,9 @@ def setup_config(self) -> tuple:
                     if key == "Static":
                         config["enterprise"] = True
                         config["static"] = value
+
+                    if key == "Statistics":
+                        config["statistics"] = value
 
     except (PermissionError, OSError) as err:
         util.msg(

@@ -307,3 +307,7 @@ def download_mirror_pool(
             result = (False, False)
 
     return result
+
+
+def send_statistics(url: str) -> None:
+    requests.get(url, headers=headers())

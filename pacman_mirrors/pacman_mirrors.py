@@ -131,6 +131,11 @@ class PacmanMirrors:
         else:
             common.build_mirror_list(self)
 
+        # check statisics participation
+        if self.config["statistics"] == 1:
+            url = util.build_statistics_url(self)
+            httpFn.send_statistics(url)
+
 
 def start():
     app = PacmanMirrors()
