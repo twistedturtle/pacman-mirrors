@@ -42,7 +42,7 @@ def wash_country_list(country_list: list):
     return washed
 
 
-def build_country_list(self: list) -> list:
+def build_country_list(self) -> list:
     """
     Do a check on the users country selection
     :param self:
@@ -53,8 +53,8 @@ def build_country_list(self: list) -> list:
     # When I wrote this code, only I knew how it worked.
     # Now, no one knows!
     #
-    # Therefore if you are trying to optimize
-    # this routine and it fails (most surely),
+    # If you are trying to optimize
+    # this routine it fails (most surely),
     # please increase this counter as a warning for the next maintainer.
     #
     # total_hours_wasted_here = 1
