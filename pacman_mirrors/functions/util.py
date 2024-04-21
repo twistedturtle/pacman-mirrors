@@ -164,9 +164,7 @@ def build_static_from_config(static: str) -> list:
     return result
 
 
-def build_statistics_url(self) -> str:
-    url = "https://ping.manjaro.org/pacmanmirrors/"
-
+def user_agent(config: dict) -> str:
     def proc(cmd):
         return subprocess.check_output(cmd).decode()
 
@@ -182,18 +180,7 @@ def build_statistics_url(self) -> str:
             if "Vendor" in line:
                 return info[index + 1]
 
-    def branch():
-        return self.config["branch"]
-        # config = configparser.ConfigParser()
-        # with open("/etc/pacman-mirrors.conf") as stream:
-        #     config.read_string("[default]\n" + stream.read())
-        #
-        # try:
-        #     branch = config["default"]["branch"]
-        # except KeyError:
-        #     branch = "stable"
-        # return branch
-
+    branch = config["branch"]
     kernel = proc(["uname", "-r"])
     arch = proc(["uname", "-m"])
     codename = proc(["lsb_release", "-c"]).replace("Codename:\t", "").replace("\n", "")
@@ -205,9 +192,9 @@ def build_statistics_url(self) -> str:
     if session_type is not None:
         session_type += "/"
     else:
-        session_type = ""
+        session_type = "na/"
 
-    host = url + "".join(
-        f"{arch}/{session_type}{_os_}/{branch()}/{de}/{kernel}/{chassis()}-{vendor()}".split()
+    host = "".join(
+        f"{arch}/{session_type}{_os_}/{branch}/{de}/{kernel}/{chassis()}-{vendor()}".split()
     )
     return host
