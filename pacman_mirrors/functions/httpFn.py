@@ -54,7 +54,7 @@ def download_mirrors(config: dict) -> tuple:
     fetchstatus = True
     message = ""
     try:
-        agent = util.user_agent(config)
+        agent = util.user_agent()
         # mirrors.json
         util.msg(
             message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR
@@ -314,5 +314,5 @@ def download_mirror_pool(
 
 
 def send_statistics(agent: str) -> None:
-    url = f"{conf.INET_CONN_CHECK_URLS[0]}/{agent}"
+    url = f"{conf.STATISTIC_HOSTNAME}/{agent}"
     requests.get(url, headers=headers(agent))
