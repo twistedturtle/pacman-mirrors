@@ -82,6 +82,8 @@ class PacmanMirrors:
         # Build mirror list
         """
         (self.config, self.custom) = config_setup.setup_config(self)
+        agent = util.user_agent(self.config)
+        self.network = httpFn.check_internet_connection(agent, tty=self.tty)
 
         if self.config["static"]:
             # static setup
@@ -104,7 +106,6 @@ class PacmanMirrors:
         if not config_setup.sanitize_config(config=self.config):
             sys.exit(2)
 
-        self.network = httpFn.check_internet_connection(tty=self.tty)
         if self.config["url_mirrors_json"] and self.config["url_status_json"]:
             # only fetch data files if configuration url are valid
             if self.network:
@@ -133,7 +134,7 @@ class PacmanMirrors:
 
         # check statisics participation
         if self.config["statistics"] == 1:
-            url = util.build_statistics_url(self)
+            url = util.user_agent(self.config)
             httpFn.send_statistics(url)
 
 
