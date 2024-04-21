@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [4.26.0] 2024-04-19
+## [4.26.0] 2024-04-21
 
 * Added option allowing for enterprise static mirror configuration
 * Added opt-in for sending statistics
@@ -73,11 +73,11 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 
 ## [4.19.3] 2021-03-14
 
-* added `timeout=config["timeout"] to functions which did implement timeout
+* added **timeout=config["timeout"]** to functions which did implement timeout
 
 ## [4.19.2] 2021-03-14
 
-* Added check to validate the path supplied by argument `-a -p` e.g. -p mistaken for `-P https`
+* Added check to validate the path supplied by argument **-a -p** e.g. **-p** mistaken for **-P https**
 
 ## [4.19.1]
 
@@ -85,7 +85,7 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 
 ## [4.19] 2020-12-02
 
-* enhanced `-c/--country` argument
+* enhanced **-c/--country** argument
   * countries can be specified using country code or country name
   * further enhanced argument to accept lower case (any casing is accepted)
   * country specifications can be a mix of country code and country name
@@ -103,7 +103,7 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 
 ## [4.17.1] 2020-09-29
 
-* fix --interactive on arm - sway edition
+* fix **--interactive** on arm - sway edition
 
 ## [4.16.3] 2020-03-03
 
@@ -115,22 +115,22 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 
 ## [4.16.2] 2019-12-12
 
-* Fixed missing reset of custom mirror pool when using `--continent` and `--geoip`
+* Fixed missing reset of custom mirror pool when using **--continent** and **--geoip**
 
 ## [4.16] 2019-12-10
 
-* Added `--continent` argument [#149](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/149)
+* Added **--continent** argument [#149](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/149)
 * Added `--status` argument [#151](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/151)
 
 ## [4.15.1] 2019-10-22
 
-* Fix bug in return value for `--geoip` argument
+* Fix bug in return value for **--geoip** argument
 * Removed debug messages
 
 ## [4.15] 2019-10-19
 
 * Refactor internal mirrorpool building - excluding mirros which are unresponsive or not up-to-date
-* Experimental argument `--use-async`
+* Experimental argument **--use-async**
   * @ZenTauro code added for [#144](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/144)
   * Overall functionality works - needs fieldtesting.
   * Disclaimer before run.
@@ -138,7 +138,7 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 ## [4.14.99.dev] 2019-04-25
 
 * Implemented [#146](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/146)
-  * Added `--interval`. Works only with `--no-status` filtering mirrors based on last sync time.
+  * Added **--interval**. Works only with **--no-status** filtering mirrors based on last sync time.
 * Fixed [#145](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/145)
 
 ## [4.14.2] 2019-04-22
@@ -157,9 +157,9 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 ## [4.13.0] 2018-10-28
 
 * Implemented [#143](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/143)
-  * Added `--no-color` argument for Pamac v7.2 logging.
+  * Added **--no-color** argument for Pamac v7.2 logging.
   * Pulled translations
-  * Fixed doubled messages when using `-f` argument
+  * Fixed doubled messages when using **-f** argument
 
 ## [4.12.5] 2018-08-06
 
@@ -171,7 +171,7 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 
 ## [4.12.3] 2018-08-06
 
-* changed test file to `core.db.tar.gz` - added option to `pacman-mirrors.conf`
+* changed test file to **core.db.tar.gz** - added option to **pacman-mirrors.conf**
 
 ## [4.12.2] 2018-08-02
 
@@ -212,8 +212,7 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 ## [4.11.0] 2018-06-22
 
 * Added       : Implemented issue [#135](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/135)
-* Description : A non-reponsive mirror is eliminated from the mirrorlist
-*             : If a mirror is blacklisted in the systems hosts file the mirror becomes unresponsive
+* Description : A non-reponsive mirror is eliminated from the mirrorlist, If a mirror is blacklisted in the systems hosts file the mirror becomes unresponsive
 
 ## [4.10.1] 2018-04-01
 
@@ -226,7 +225,7 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 
 ## [4.9.0] 2018-03-23
 
-* Added  : `-lc/--country-config` (Pamac [#366](https://github.com/manjaro/pamac/issues/366))
+* Added  : **-lc/--country-config** (Pamac [#366](https://github.com/manjaro/pamac/issues/366))
 
 ## [4.8.2] 2018-03-19
 
@@ -239,10 +238,10 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 
 ## [4.8.0] 2018-03-19
 
-* Remove : `--branch` - temporary branch change removed [System Maintenance](https://wiki.manjaro.org/System_Maintenance) [Forum Post](https://forum.manjaro.org/t/wiki-pacman-mirrors-pacman-4-7-6-recommendations-for-maintenance-and-installation/41991/16)
-* Change : `--get-branch` not dependent on api [#124](https://github.com/manjaro/pacman-mirrors/issues/124) and [#125](https://github.com/pacman-mirrors/issues/125)
-* Check  : `--api` is present with api args -> args error -> exit(1)
-* Check  : `--interactive` is present with `--default` -> args error -> exit(1)
+* Remove : **--branch** - temporary branch change removed [System Maintenance](https://wiki.manjaro.org/System_Maintenance) [Forum Post](https://forum.manjaro.org/t/wiki-pacman-mirrors-pacman-4-7-6-recommendations-for-maintenance-and-installation/41991/16)
+* Change : **--get-branch** not dependent on api [#124](https://github.com/manjaro/pacman-mirrors/issues/124) and [#125](https://github.com/pacman-mirrors/issues/125)
+* Check  : **--api** is present with api args -> args error -> exit(1)
+* Check  : **--interactive** is present with **--default** -> args error -> exit(1)
 * Added  : translation texts for args error
 * Updated: changelog, translations, documentation and tests
 
@@ -277,7 +276,7 @@ echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -
 
 * Support for x32 branches - transparent change to x32
   * Check if architecture is i686 and change branch to x32-$branch
-  * b/--branch and -a/--api -S/--set-branch
+  * **b/--branch** and **-a/--api -S/--set-branch**
     * no need to prepend when calling branch changing functions
 
 ## [4.6.9] 2017-12-06
@@ -306,8 +305,8 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 
 ## [4.4] 2017-11-07
 
-* **Improvement**: `-f/--fasttrack` honor `-c COUNTRY,COUNTRY,COUNTRY`
-* **Change**: `-c/--country` countries supplied will be written to `custom-mirrors.json`, overwriting exiting file.
+* **Improvement**: **-f/--fasttrack** honor **-c COUNTRY,COUNTRY,COUNTRY**
+* **Change**: **-c/--country** countries supplied will be written to **custom-mirrors.json**, overwriting exiting file.
 
 ## [4.3.1] 2017-11-07
 
@@ -315,9 +314,9 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 
 ## [4.3.0] 2017-10-28
 
-* **Fix**: `-h/--help` added deprecation messages
-* **Improvement**: Api `--get-branch` removed root requirement
-* **Deprecation**: `-y` and `-g` is deprecated and use is discouraged
+* **Fix**: **-h/--help** added deprecation messages
+* **Improvement**: Api **--get-branch** removed root requirement
+* **Deprecation**: **-y** and **-g** is deprecated and use is discouraged
 * **Improvement**: General mirrorlist uses only up-to-date mirrors on users branch
 * **Improvement**: Fasttrack mirrorlist uses only up-to-date mirrors on users branch
 * **Improvement**: Filter generated mirrorlist based on branch and sync status
@@ -329,32 +328,32 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 
 ## [4.2.1] 2017-08-16
 
-* Ensure correct exit code (0) on `api --get-branch`
+* Ensure correct exit code (0) on **api --get-branch**
 
 ## [4.2.0] 2017-06-14
 
-* **Improvement**: Added `-U` / `--url` [#105](https://github.com/manjaro/pacman-mirrors/issues/105).
-* **Improvement**: Added `-R`/`--re-branch` [#105](https://github.com/manjaro/pacman-mirrors/issues/105).
+* **Improvement**: Added **-U/--url** [#105](https://github.com/manjaro/pacman-mirrors/issues/105).
+* **Improvement**: Added **-R/--re-branch** [#105](https://github.com/manjaro/pacman-mirrors/issues/105).
 * **Improvement**: Added man page.
 
 ### Breaking changes
 
-* `-S`/`--set-branch $BRANCH` requires branch as argument.
-* `-u`/`--update` renamed to `-y`/`--sync`.
-* `NoUpdate` configuration removed from pacman-mirrors.conf.
-* `--no-update` argument removed.
-* `MirrorlistsDir = /etc/pacman.d/mirrors` removed from pacman-mirrors.conf.
-* `-o`/`--output` argument removed.
-* `OutputMirrorlist = /etc/pacman.d/mirrorlist` removed from pacman-mirrors.conf
-* `-d`/`--mirror_dir` argument removed.
+* **-S/--set-branch $BRANCH** requires branch as argument.
+* **-u/--update** renamed to **-y/--sync**.
+* **NoUpdate** configuration removed from pacman-mirrors.conf.
+* **--no-update** argument removed.
+* **MirrorlistsDir = /etc/pacman.d/mirrors** removed from pacman-mirrors.conf.
+* **-o/--output** argument removed.
+* **OutputMirrorlist = /etc/pacman.d/mirrorlist** removed from pacman-mirrors.conf
+* **-d/--mirror_dir** argument removed.
 
 ### Other improvements and fixes
 
 * **Improvement**: Do not write bad servers to the end of the mirrorlist.
 * **Improvement**: created argument groups for logic division of arguments usage.
-* **Improvement**: `-G`/`--get-branch` and `-S`/`--set-branch` mutually exclusive.
-* **Improvement**: `-n`/`--no-mirrorlist` and `-y --sync` mutually exclusive.
-* **Improvement**: added choices to `-P`/`--proto` [all, http, https, ftp, ftps].
+* **Improvement**: **-G/--get-branch** and **-S/--set-branch** mutually exclusive.
+* **Improvement**: **-n/--no-mirrorlist** and **-y --sync** mutually exclusive.
+* **Improvement**: added choices to **-P/--proto [all, http, https, ftp, ftps]**.
 * **Improvement**: sorting mirrorlist by country during load of data file.
 * **Fix**: Bug where ssl-certificate errors would break execution.
 * **Fix**: Issue where values from configuration was not parsed correct.
@@ -362,8 +361,8 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 
 ## [4.1.4] 2017-05-16
 
-* Improvement: Removed `--no-mirrorlist` dependency on API.
-* Fix: Behavior of `--no-mirrorlist`. Download updated mirror files before exit.
+* Improvement: Removed **--no-mirrorlist** dependency on API.
+* Fix: Behavior of **--no-mirrorlist**. Download updated mirror files before exit.
 
 ## [4.1.3] 2017-05-15
 
@@ -371,34 +370,34 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 
 ## [4.1.2] 2017-05-15
 
-* Fix: ranking breaks when `--interactive` is used with `--default` [#98](https://github.com/manjaro/pacman-mirrors/issues/98)
+* Fix: ranking breaks when **--interactive** is used with **--default** [#98](https://github.com/manjaro/pacman-mirrors/issues/98)
 
 ## [4.1.1] 2017-05-01
 
-* Added `-u` / `--update` option
-  * Run `pacman -Syy` after mirrorlist generation
+* Added **-u/--update** option
+  * Run **pacman -Syy** after mirrorlist generation
 * Modified network check so a single site failure is not considered network failure.
 
 ## [4.1.0] 2017-05-01
 
 * Added protocol option to api.
   * Possible to control protocols from CLI
-* `/var/lib/pacman-mirrors/mirrors.json` is causing confusion so it has been removed.
-  * Only one fallback is needed `/usr/share/pacman-mirrors/mirrors.json`.
-  * If a new `mirrors.json` is available - existing will be updated by pacman-mirrors.
+* **/var/lib/pacman-mirrors/mirrors.json** is causing confusion so it has been removed.
+  * Only one fallback is needed **/usr/share/pacman-mirrors/mirrors.json**.
+  * If a new **mirrors.json** is available - existing will be updated by pacman-mirrors.
 * Improvement on default mirrorlist.
   * mirror protocols are reverse sorted (https,http,ftps,ftp).
-  * if several protocols exist only the first is written to mirrorlist. Thus ssl enabled protocols get priority.
+  * if several protocols exist only the first is written to mirrorlist. SSL enabled protocols get priority.
 * Improvement on mirror protocol selection [#90](https://github.com/manjaro/pacman-mirrors/issues/90).
   * If a mirror offers more than one protocol - only the first is written to the mirrorlist.
-  * Added `# Protocols =` to pacman-mirrors.conf.
+  * Added **# Protocols =** to pacman-mirrors.conf.
   * Defined protocols are honored in the order in which they appear.
-* Improvement on `--interactive`: select mirrors by protocol.
+* Improvement on **--interactive**: select mirrors by protocol.
 * Added a simple API [#81](https://github.com/manjaro/pacman-mirrors/issues/81).
 * Update translations.
 * Code optimizing.
-* Added to config `# SSLVerify = True`.
-* Refactored mirrorcheck to ignore a mirrors certificate error if `SSLVerify = False`.
+* Added to config **# SSLVerify = True**.
+* Refactored mirrorcheck to ignore a mirrors certificate error if **SSLVerify = False**.
 * Refactored mirrorcheck for https-mirrors timing out during ssl-handshake.
 * Update docs.
 
@@ -408,7 +407,7 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 
 ## [4.0.3] - 2017-03-28
 
-* Fix issue with `--fasttrack` and `OnlyCountry = Custom`.
+* Fix issue with **--fasttrack** and **OnlyCountry = Custom**.
 * Update translations.
 * Update docs.
 
@@ -433,9 +432,9 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 * Modified GUI and TUI to reflect rank/random method.
 * Colorized console output by message type.
 * Internal rewrite to use json files from repo.manjaro.org.
-* The `/etc/pacman.d/mirrors` dir has been removed.
-  * All data files now exist in `/var/lib/pacman-mirrors`.
-  * If the `Custom` mirrorfile exist it will convert to `custom-mirrors.json`
+* The **/etc/pacman.d/mirrors** dir has been removed.
+  * All data files now exist in **/var/lib/pacman-mirrors**.
+  * If the **Custom** mirrorfile exist it will convert to **custom-mirrors.json**
 * A lot of inevitable small fixes.
 
 ## [3.2.2] - 2017-02-12
