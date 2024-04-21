@@ -58,7 +58,7 @@ class TestHttpFn(unittest.TestCase):
         cmd = mock.TEST_CMD + args
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
-            app.config = config_setup.setup_config()
+            app.config = config_setup.setup_config(app)
             cliFn.parse_command_line(app, True)
             defaultFn.load_default_mirror_pool(app)
             app.selected_countries = httpFn.get_ip_country()
