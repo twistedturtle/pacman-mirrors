@@ -164,7 +164,14 @@ def build_static_from_config(static: str) -> list:
     return result
 
 
-def user_agent(config: dict) -> str:
+def user_agent() -> str:
+    sys_info = system_info()
+    return f"{sys_info['arch']}/{sys_info['session_type']}/"\
+           f"{sys_info['os']}/{sys_info['branch']}/{sys_info['de']}/"\
+           f"{sys_info['kernel']}/{sys_info['chassis']}-{sys_info['vendor']}"
+
+
+def system_info() -> dict:
     def proc(cmd):
         return subprocess.check_output(cmd).decode()
 
@@ -180,21 +187,25 @@ def user_agent(config: dict) -> str:
             if "Vendor" in line:
                 return info[index + 1]
 
-    branch = config["branch"]
-    kernel = proc(["uname", "-r"])
-    arch = proc(["uname", "-m"])
+    branch = proc(["pacman-mirrors", "-G"]).strip("\n")
+    kernel = proc(["uname", "-r"]).strip("\n")
+    arch = proc(["uname", "-m"]).strip("\n")
     codename = proc(["lsb_release", "-c"]).replace("Codename:\t", "").replace("\n", "")
     version = proc(["lsb_release", "-r"]).replace("Release:\t", "").replace("\n", "")
-    session_type = os.getenv("XDG_SESSION_TYPE")
-    de = os.getenv("XDG_CURRENT_DESKTOP")
+    session_type = os.getenv("XDG_SESSION_TYPE").strip("\n")
+    de = os.getenv("XDG_CURRENT_DESKTOP").strip("\n")
     _os_ = f"{codename}-{version}"
 
-    if session_type is not None:
-        session_type += "/"
-    else:
-        session_type = "na/"
+    if session_type is None:
+        session_type = "tty"
 
-    host = "".join(
-        f"{arch}/{session_type}{_os_}/{branch}/{de}/{kernel}/{chassis()}-{vendor()}".split()
-    )
-    return host
+    return {
+        "arch": arch,
+        "session": session_type,
+        "os": _os_,
+        "branch": branch,
+        "desktop": de,
+        "kernel": kernel,
+        "vendor": vendor(),
+        "chassis": chassis()
+    }

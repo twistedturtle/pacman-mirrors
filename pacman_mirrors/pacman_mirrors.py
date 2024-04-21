@@ -82,7 +82,7 @@ class PacmanMirrors:
         # Build mirror list
         """
         (self.config, self.custom) = config_setup.setup_config(self)
-        agent = util.user_agent(self.config)
+        agent = util.user_agent()
         self.network = httpFn.check_internet_connection(agent, tty=self.tty)
 
         if self.config["static"]:
@@ -134,7 +134,7 @@ class PacmanMirrors:
 
         # check statisics participation
         if self.config["statistics"] == 1:
-            url = util.user_agent(self.config)
+            url = util.user_agent()
             httpFn.send_statistics(url)
 
 
