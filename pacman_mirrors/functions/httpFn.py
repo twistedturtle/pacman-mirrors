@@ -38,7 +38,9 @@ from pacman_mirrors.functions import jsonFn
 from pacman_mirrors.functions import util
 
 
-def headers():
+def headers(agent: str = None):
+    if agent is not None:
+        return {"User-Agent": f"{conf.USER_AGENT}/{__version__}/{agent}"}
     return {"User-Agent": f"{conf.USER_AGENT}/{__version__}"}
 
 
@@ -52,12 +54,13 @@ def download_mirrors(config: dict) -> tuple:
     fetchstatus = True
     message = ""
     try:
+        agent = util.user_agent(config)
         # mirrors.json
         util.msg(
             message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR
         )
         resp = requests.get(
-            url=config["url_mirrors_json"], headers=headers(), timeout=config["timeout"]
+            url=config["url_mirrors_json"], headers=headers(agent), timeout=config["timeout"]
         )
 
         resp.raise_for_status()
@@ -94,7 +97,7 @@ def download_mirrors(config: dict) -> tuple:
             urgency=txt.INF_CLR,
         )
         resp = requests.get(
-            url=config["url_status_json"], headers=headers(), timeout=config["timeout"]
+            url=config["url_status_json"], headers=headers(None), timeout=config["timeout"]
         )
 
         statuslist = resp.json()
@@ -139,7 +142,7 @@ def get_http_response(url: str, maxwait: int) -> str:
     """
     message = ""
     try:
-        resp = requests.get(url=url, headers=headers(), timeout=maxwait)
+        resp = requests.get(url=url, headers=headers(None), timeout=maxwait)
         resp.raise_for_status()
         # _ = resp.text
     except (requests.exceptions.ConnectionError,) as err:
@@ -226,10 +229,11 @@ def get_mirror_response(
     return response_time
 
 
-def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
+def check_internet_connection(agent: str = None, tty: bool = False, maxwait: int = 2) -> bool:
     """Check for internet connection
-    :param maxwait:
-    :param tty:
+    @param maxwait:
+    @param tty:
+    @param agent:
     """
 
     def output_err(hostname, error):
@@ -239,7 +243,7 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
 
     for host in conf.INET_CONN_CHECK_URLS:
         try:
-            requests.get(host, headers=headers(), timeout=maxwait)
+            requests.get(host, headers=headers(agent), timeout=maxwait)
             return True
         except requests.exceptions.ConnectionError as err:
             output_err(host, err)
@@ -273,7 +277,7 @@ def download_mirror_pool(
     :rtype: tuple
     """
     result = None
-    connected = check_internet_connection(tty=tty)
+    connected = check_internet_connection(None, tty=tty)
     if connected:
         if not quiet:
             util.msg(
@@ -309,5 +313,6 @@ def download_mirror_pool(
     return result
 
 
-def send_statistics(url: str) -> None:
-    requests.get(url, headers=headers())
+def send_statistics(agent: str) -> None:
+    url = f"{conf.INET_CONN_CHECK_URLS[0]}/{agent}"
+    requests.get(url, headers=headers(agent))
