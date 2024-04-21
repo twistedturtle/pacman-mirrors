@@ -341,7 +341,7 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 * **-S/--set-branch $BRANCH** requires branch as argument.
 * **-u/--update** renamed to **-y/--sync**.
 * **NoUpdate** configuration removed from pacman-mirrors.conf.
-* **--no-update** argument removed.
+* ****--no-update**** argument removed.
 * **MirrorlistsDir = /etc/pacman.d/mirrors** removed from pacman-mirrors.conf.
 * **-o/--output** argument removed.
 * **OutputMirrorlist = /etc/pacman.d/mirrorlist** removed from pacman-mirrors.conf
@@ -418,7 +418,7 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 ## [4.0.1] - 2017-03-21
 
 * GUI: Add sorting functionality.
-* Add: --default argument
+* Add: **--default** argument
 * Fix issue with OnlyCountry unexpected reset
 * Fix issue with not only displaying selected mirrors.
 * Fix connectivity check.
@@ -426,9 +426,9 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 
 ## [4.0.0] - 2017-03-19
 
-* Add: -l/--list Print available mirror countries
+* Add: **-l/--list** Print available mirror countries
 * Add: Network check; do not run rank if no internet.
-* Add: -f/--fasttrack [n] argument.
+* Add: **-f/--fasttrack [n]** argument.
 * Modified GUI and TUI to reflect rank/random method.
 * Colorized console output by message type.
 * Internal rewrite to use json files from repo.manjaro.org.
@@ -455,7 +455,7 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 
 ## [3.1.0] - 2017-01-18
 
-* Replace --verbose option by --quiet.
+* Replace **--verbose** option by **--quiet**.
 * New documentation.
 * Translation review.
 * Check DISPLAY when using interactive mode.
@@ -466,16 +466,16 @@ After releasing 4.4 a couple of small trivial issues surfaced.
 * Refactoring.
 * New GUI.
 * Code improvements.
-* --verbose option.
+* **--verbose** option.
 
 ## [2.0.0] - 2016-03-01
 
 * Add translation support.
 * Better error messages.
-* --no-update option, to prevent updates when upgrading the package.
+* **--no-update** option, to prevent updates when upgrading the package.
 * Big refractor of code.
-* Configuration file /etc/pacman-mirrors.conf is optional.
-* Pep8 all the code in pacman_mirrors.py
+* Configuration file **/etc/pacman-mirrors.conf** is optional.
+* Pep8 all the code in **pacman_mirrors.py**
 * Reestructure the project.
-* The Custom country created with interactive mode is now stored in /var/lib/pacman-mirrors/
-* If a Custom country is found in /etc/pacman.d/mirrors/ its moved automatically to the new directory.
+* The Custom country created with interactive mode is now stored in **/var/lib/pacman-mirrors/**
+* If a Custom country is found in **/etc/pacman.d/mirrors/** its moved automatically to the new directory.
