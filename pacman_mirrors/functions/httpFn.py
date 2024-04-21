@@ -248,7 +248,8 @@ def check_internet_connection(agent: str = None, tty: bool = False, maxwait: int
             # until the configuration of
             # the ping server is corrected
             # we could neglect the error e.g. using pass
-            output_err(host, err)
+            pass
+            # output_err(host, err)
         except requests.exceptions.Timeout as err:
             output_err(host, err)
         except requests.exceptions.HTTPError as err:
