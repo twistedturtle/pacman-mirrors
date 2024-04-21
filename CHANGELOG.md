@@ -20,13 +20,13 @@ All notable changes to this project will be documented in this file.
   ## Uncomment next line and change the value to 1 to enable statistics
   #Statistics = 0
   ```
-  - architecture `uname -m`
-  - session `echo $XDG_SESSION_TYPE`
-  - os `echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -f 2 | xargs)`
-  - branch `pacman-mirrors -G`
-  - desktop `echo $XDG_CURRENT_DESKTOP`
-  - kernel `uname -r`
-  - system type `echo $(hostnamectl chassis)-$(hostnamectl  | grep -e 'Vendor' | cut -d ':' -f 2 | xargs)`
+  * architecture `uname -m`
+  * session `echo $XDG_SESSION_TYPE`
+  * os `echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -f 2 | xargs)`
+  * branch `pacman-mirrors -G`
+  * desktop `echo $XDG_CURRENT_DESKTOP`
+  * kernel `uname -r`
+  * system type `echo $(hostnamectl chassis)-$(hostnamectl  | grep -e 'Vendor' | cut -d ':' -f 2 | xargs)`
 
 
 ## [4.25.0] 2023-03-12

@@ -60,7 +60,9 @@ def download_mirrors(config: dict) -> tuple:
             message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR
         )
         resp = requests.get(
-            url=config["url_mirrors_json"], headers=headers(agent), timeout=config["timeout"]
+            url=config["url_mirrors_json"],
+            headers=headers(agent),
+            timeout=config["timeout"],
         )
 
         resp.raise_for_status()
@@ -97,7 +99,9 @@ def download_mirrors(config: dict) -> tuple:
             urgency=txt.INF_CLR,
         )
         resp = requests.get(
-            url=config["url_status_json"], headers=headers(None), timeout=config["timeout"]
+            url=config["url_status_json"],
+            headers=headers(None),
+            timeout=config["timeout"],
         )
 
         statuslist = resp.json()
@@ -228,7 +232,9 @@ def get_mirror_response(
     return response_time
 
 
-def check_internet_connection(agent: str = None, tty: bool = False, maxwait: int = 2) -> bool:
+def check_internet_connection(
+    agent: str = None, tty: bool = False, maxwait: int = 2
+) -> bool:
     """Check for internet connection
     @param maxwait:
     @param tty:
@@ -269,9 +275,7 @@ def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
     return subprocess.Popen(f"ping -c{count} {host} > /dev/null", shell=True) == 0
 
 
-def download_mirror_pool(
-    config: dict, tty: bool = False, quiet: bool = False
-) -> tuple:
+def download_mirror_pool(config: dict, tty: bool = False, quiet: bool = False) -> tuple:
     """Download updates from repo.manjaro.org
     :param config:
     :param quiet:

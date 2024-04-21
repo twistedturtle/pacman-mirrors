@@ -158,7 +158,7 @@ def build_static_from_config(static: str) -> list:
             "protocols": [str(url).split(":")[0]],
             "last_sync": "00:05",
             "resp_time": 0.555,
-            "url": url
+            "url": url,
         }
         result.append(temp)
     return result
@@ -166,9 +166,11 @@ def build_static_from_config(static: str) -> list:
 
 def user_agent(config: dict) -> str:
     sys_info = system_info(config)
-    return f"{sys_info['arch']}/{sys_info['session']}/"\
-           f"{sys_info['os']}/{sys_info['branch']}/{sys_info['desktop']}/"\
-           f"{sys_info['kernel']}/{sys_info['chassis']}-{sys_info['vendor']}"
+    return (
+        f"{sys_info['arch']}/{sys_info['session']}/"
+        f"{sys_info['os']}/{sys_info['branch']}/{sys_info['desktop']}/"
+        f"{sys_info['kernel']}/{sys_info['chassis']}-{sys_info['vendor']}"
+    )
 
 
 def system_info(config: dict) -> dict:
@@ -207,5 +209,5 @@ def system_info(config: dict) -> dict:
         "desktop": de.strip("\n"),
         "kernel": kernel.strip("\n"),
         "vendor": vendor(),
-        "chassis": chassis()
+        "chassis": chassis(),
     }

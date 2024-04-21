@@ -89,7 +89,7 @@ git checkout -b name-of-your-bugfix-or-feature
 
 ```shell
 make format
-make test
+make tests
 ```
 
 - Commit your changes and push your branch:

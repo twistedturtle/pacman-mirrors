@@ -25,9 +25,9 @@ URL_STATUS_JSON = "https://repo.manjaro.org/status.json"
 INET_CONN_CHECK_URLS = [
     "https://ping.manjaro.org/pacman-mirrors",
     "https://wikipedia.org",
-    "https://archlinux.org"
+    "https://archlinux.org",
 ]
-STATISTIC_HOSTNAME="https://stat.manjaro.org"
+STATISTIC_HOSTNAME = "https://stat.manjaro.org"
 # etc files
 CONFIG_FILE = "/etc/pacman-mirrors.conf"
 MIRROR_LIST = "/etc/pacman.d/mirrorlist"
