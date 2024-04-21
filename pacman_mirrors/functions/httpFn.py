@@ -54,7 +54,7 @@ def download_mirrors(config: dict) -> tuple:
     fetchstatus = True
     message = ""
     try:
-        agent = util.user_agent()
+        agent = util.user_agent(config)
         # mirrors.json
         util.msg(
             message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR
@@ -151,7 +151,6 @@ def get_http_response(url: str, maxwait: int) -> str:
         message = f"Connection: {err}"
     except (requests.exceptions.HTTPError,) as err:
         message = f"Connection {err}"
-
     return message
 
 
@@ -246,7 +245,8 @@ def check_internet_connection(agent: str = None, tty: bool = False, maxwait: int
             requests.get(host, headers=headers(agent), timeout=maxwait)
             return True
         except requests.exceptions.ConnectionError as err:
-            output_err(host, err)
+            if str(err) != 'Connection aborted.':
+                output_err(host, err)
         except requests.exceptions.Timeout as err:
             output_err(host, err)
         except requests.exceptions.HTTPError as err:
@@ -313,6 +313,7 @@ def download_mirror_pool(
     return result
 
 
-def send_statistics(agent: str) -> None:
+def send_statistics(sys_info: dict) -> None:
+    agent = util.user_agent(sys_info)
     url = f"{conf.STATISTIC_HOSTNAME}/{agent}"
     requests.get(url, headers=headers(agent))
