@@ -59,7 +59,7 @@ def delete_file(filename: str) -> None:
         os.remove(filename)
 
 
-def return_mirror_filename(config: object, tty: bool = False) -> tuple:
+def return_mirror_filename(config: dict, tty: bool = False) -> tuple:
     """
     Find the mirror pool file
     :param config: config dictionary
@@ -83,7 +83,7 @@ def return_mirror_filename(config: object, tty: bool = False) -> tuple:
 
 
 def write_mirror_list(
-    config: object,
+    config: dict,
     servers: list,
     tty: bool = False,
     custom: bool = False,
@@ -94,10 +94,10 @@ def write_mirror_list(
     Write servers to /etc/pacman.d/mirrorlist
     :param config: configuration dictionary
     :param servers: list of servers to write
-    :param tty: flag
-    :param custom: flag
-    :param quiet: flag
-    :param interactive: flag
+    :param tty:
+    :param custom:
+    :param quiet:
+    :param interactive:
     """
     try:
         with open(config["mirror_list"], "w") as outfile:
@@ -156,7 +156,7 @@ def read_mirror_file(filename: str) -> list:
     :param filename:
     :returns: list of mirrors
     """
-    return jsonFn.read_json_file(filename, dictionary=True)
+    return jsonFn.read_json_file(filename, use_ordered_dict=True)
 
 
 def write_mirrorlist_header(handle, custom: bool = False) -> None:
