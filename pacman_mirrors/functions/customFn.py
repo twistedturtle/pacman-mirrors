@@ -33,7 +33,7 @@ def apply_status_to_custom_pool(config: dict, custom_pool: list) -> list:
     :return: custom mirror pool with status applied
     """
     status_list = tuple(
-        jsonFn.read_json_file(filename=config["status_file"], dictionary=False)
+        jsonFn.read_json_file(filename=config["status_file"], use_ordered_dict=False)
     )
     custom_list = tuple(custom_pool)
     try:
