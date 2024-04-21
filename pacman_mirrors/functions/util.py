@@ -164,14 +164,14 @@ def build_static_from_config(static: str) -> list:
     return result
 
 
-def user_agent() -> str:
-    sys_info = system_info()
+def user_agent(config: dict) -> str:
+    sys_info = system_info(config)
     return f"{sys_info['arch']}/{sys_info['session_type']}/"\
            f"{sys_info['os']}/{sys_info['branch']}/{sys_info['de']}/"\
            f"{sys_info['kernel']}/{sys_info['chassis']}-{sys_info['vendor']}"
 
 
-def system_info() -> dict:
+def system_info(config: dict) -> dict:
     def proc(cmd):
         return subprocess.check_output(cmd).decode()
 
@@ -187,7 +187,7 @@ def system_info() -> dict:
             if "Vendor" in line:
                 return info[index + 1]
 
-    branch = proc(["pacman-mirrors", "-G"]).strip("\n")
+    branch = config["branch"]
     kernel = proc(["uname", "-r"]).strip("\n")
     arch = proc(["uname", "-m"]).strip("\n")
     codename = proc(["lsb_release", "-c"]).replace("Codename:\t", "").replace("\n", "")
