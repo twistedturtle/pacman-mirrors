@@ -2,32 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
-
 ## [4.26.0] 2024-04-19
-* Added option allowing for enterprise static mirror configuration
-  ```text
-  ## Static configuration
-  ## Add a comma separated list of urls to use
-  ## e.g. https://mirror1.tld/manjaro/,https://mirror2.tld/manjaro/
-  # Static =
-  ```
-* Added opt-in for sending statistics
-  ```
-  ## Statistics url
-  ## template /{arch}/{session_type}/{_os_}/{branch}/{de}/{kernel}/{chassis}-{vendor}"
-  ## e.g.     /x86_64/wayland/Vulcan-23.1.4/unstable/KDE/6.6.28-1-MANJARO/desktop-Lenovo
-  ## Participating is voluntary and default disabled
-  ## Uncomment next line and change the value to 1 to enable statistics
-  #Statistics = 0
-  ```
-  * architecture `uname -m`
-  * session `echo $XDG_SESSION_TYPE`
-  * os `echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -f 2 | xargs)`
-  * branch `pacman-mirrors -G`
-  * desktop `echo $XDG_CURRENT_DESKTOP`
-  * kernel `uname -r`
-  * system type `echo $(hostnamectl chassis)-$(hostnamectl  | grep -e 'Vendor' | cut -d ':' -f 2 | xargs)`
 
+* Added option allowing for enterprise static mirror configuration
+* Added opt-in for sending statistics
+
+```conf
+## Static configuration
+## Add a comma separated list of urls to use
+## e.g. https://mirror1.tld/manjaro/,https://mirror2.tld/manjaro/
+# Static =
+
+## Statistics url
+## template /{arch}/{session_type}/{_os_}/{branch}/{de}/{kernel}/{chassis}-{vendor}"
+## e.g.     /x86_64/wayland/Vulcan-23.1.4/unstable/KDE/6.6.28-1-MANJARO/desktop-Lenovo
+## Participating is voluntary and default disabled
+## Uncomment next line and change the value to 1 to enable statistics
+# Statistics = 0
+```
+
+Statistic data
+
+```bash
+uname -m
+uname -r
+pacman-mirrors -G
+echo $XDG_SESSION_TYPE
+echo $XDG_CURRENT_DESKTOP
+echo $(lsb_release -c | cut -d ':' -f 2 | xargs)-$(lsb_release -r | cut -d ':' -f 2 | xargs)
+```
 
 ## [4.25.0] 2023-03-12
 
@@ -129,7 +132,7 @@ All notable changes to this project will be documented in this file.
 * Refactor internal mirrorpool building - excluding mirros which are unresponsive or not up-to-date
 * Experimental argument `--use-async`
   * @ZenTauro code added for [#144](https://gitlab.manjaro.org/applications/pacman-mirrors/issues/144)
-  * Overall functionality works - needs field testing.
+  * Overall functionality works - needs fieldtesting.
   * Disclaimer before run.
 
 ## [4.14.99.dev] 2019-04-25
