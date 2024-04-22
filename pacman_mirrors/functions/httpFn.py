@@ -244,10 +244,11 @@ def check_internet_connection(
     @param agent:
     """
 
-    def output_err(hostname, error):
-        print("")
-        util.msg(f"{hostname} '{error}'", urgency=txt.WRN_CLR, tty=tty)
-        print("")
+    def output_err(hostname, error, emit: bool = True):
+        if emit:
+            print("")
+            util.msg(f"{hostname} '{error}'", urgency=txt.WRN_CLR, tty=tty)
+            print("")
 
     for host in conf.INET_CONN_CHECK_URLS:
         try:
@@ -257,7 +258,7 @@ def check_internet_connection(
             # until the configuration of
             # the ping server is corrected
             # we could neglect the error
-            output_err(host, err)
+            output_err(host, err, emit=False)
         except requests.exceptions.Timeout as err:
             output_err(host, err)
         except requests.exceptions.HTTPError as err:
@@ -325,4 +326,4 @@ def download_mirror_pool(config: dict, tty: bool = False, quiet: bool = False) -
 def send_sys_info(sys_info: dict) -> None:
     agent = util.user_agent(sys_info)
     url = f"{conf.STATISTIC_HOSTNAME}/{agent}"
-    requests.get(url, data=sys_info, headers=headers(agent, content_type="application/json"))
+    requests.post(url, data=sys_info, headers=headers(agent, content_type="application/json"))
