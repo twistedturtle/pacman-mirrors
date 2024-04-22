@@ -38,10 +38,13 @@ from pacman_mirrors.functions import jsonFn
 from pacman_mirrors.functions import util
 
 
-def headers(agent: str = None):
+def headers(agent: str = None, content_type: str = None):
+    user_agent = f"{conf.USER_AGENT}/{__version__}"
     if agent is not None:
-        return {"User-Agent": f"{conf.USER_AGENT}/{__version__}/{agent}"}
-    return {"User-Agent": f"{conf.USER_AGENT}/{__version__}"}
+        user_agent = f"{conf.USER_AGENT}/{__version__}/{agent}"
+    if content_type is not None:
+        return {"User-Agent": user_agent, "Content-Type": content_type}
+    return {"User-Agent": user_agent}
 
 
 def download_mirrors(config: dict) -> tuple:
@@ -253,9 +256,9 @@ def check_internet_connection(
         except (requests.exceptions.ConnectionError,) as err:
             # until the configuration of
             # the ping server is corrected
-            # we could neglect the error e.g. using pass
-            pass
-            # output_err(host, err)
+            # we could neglect the error
+            # pass
+            output_err(host, err)
         except requests.exceptions.Timeout as err:
             output_err(host, err)
         except requests.exceptions.HTTPError as err:
@@ -320,7 +323,7 @@ def download_mirror_pool(config: dict, tty: bool = False, quiet: bool = False) -
     return result
 
 
-def send_statistics(sys_info: dict) -> None:
+def send_sys_info(sys_info: dict) -> None:
     agent = util.user_agent(sys_info)
     url = f"{conf.STATISTIC_HOSTNAME}/{agent}"
-    requests.get(url, headers=headers(agent))
+    requests.get(url, data=sys_info, headers=headers(agent, content_type="application/json"))

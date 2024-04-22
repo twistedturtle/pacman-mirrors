@@ -27,7 +27,7 @@ INET_CONN_CHECK_URLS = [
     "https://wikipedia.org",
     "https://archlinux.org",
 ]
-STATISTIC_HOSTNAME = "https://ping.manjaro.org/pacmanmirrors"
+STATISTIC_HOSTNAME = "https://matomo.manjaro.org"
 # etc files
 CONFIG_FILE = "/etc/pacman-mirrors.conf"
 MIRROR_LIST = "/etc/pacman.d/mirrorlist"

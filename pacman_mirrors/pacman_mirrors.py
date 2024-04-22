@@ -121,7 +121,10 @@ class PacmanMirrors:
                 util.internet_message(tty=self.tty)
             self.config["method"] = "random"
             self.fasttrack = False
-
+        # check statisics participation
+        if self.network and self.config["statistic"] is not None:
+            sys_info = util.system_info(self.config)
+            httpFn.send_sys_info(sys_info)
         # Load configured mirror pool
         defaultFn.load_config_mirror_pool(self)
         # Decide which type of mirrorlist to create Fasttrack/Interactive/Default
@@ -131,11 +134,6 @@ class PacmanMirrors:
             interactive.build_mirror_list(self)
         else:
             common.build_mirror_list(self)
-
-        # check statisics participation
-        if self.config["statistics"] == 1:
-            sys_info = util.system_info(self.config)
-            httpFn.send_statistics(sys_info)
 
 
 def start():
