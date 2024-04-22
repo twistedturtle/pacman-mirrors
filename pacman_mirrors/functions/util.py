@@ -26,6 +26,7 @@ import os
 import configparser
 from pacman_mirrors.api import apifn
 from pacman_mirrors.constants import txt
+from pacman_mirrors.functions import httpFn
 
 
 def extract_mirror_url(data: str) -> str:
@@ -146,7 +147,7 @@ def terminal_size() -> tuple:
     return result
 
 
-def build_static_from_config(static: str) -> list:
+def build_static_from_config(self, static: str) -> list:
     urls = static.split(",")
     result = []
     for url in urls:
@@ -154,10 +155,10 @@ def build_static_from_config(static: str) -> list:
             url = f"{url}/"
         temp = {
             "branches": [1, 1, 1],
-            "country": "StaticConfig",
+            "country": "Static",
             "protocols": [str(url).split(":")[0]],
             "last_sync": "00:05",
-            "resp_time": 0.555,
+            "resp_time": httpFn.get_mirror_response(url, self.config, self.tty),
             "url": url,
         }
         result.append(temp)
@@ -168,7 +169,7 @@ def user_agent(config: dict) -> str:
     sys_info = system_info(config)
     return (
         f"{sys_info['arch']}/{sys_info['session']}/"
-        f"{sys_info['os']}/{sys_info['branch']}/{sys_info['desktop']}/"
+        f"{sys_info['codename']}-{sys_info['version']}/{sys_info['branch']}/{sys_info['desktop']}/"
         f"{sys_info['kernel']}/{sys_info['chassis']}-{sys_info['vendor']}"
     )
 
@@ -196,18 +197,18 @@ def system_info(config: dict) -> dict:
     version = proc(["lsb_release", "-r"]).replace("Release:\t", "").replace("\n", "")
     session_type = os.getenv("XDG_SESSION_TYPE")
     de = os.getenv("XDG_CURRENT_DESKTOP")
-    _os_ = f"{codename}-{version}"
 
     if session_type is None:
         session_type = "tty"
 
     return {
         "arch": arch.strip("\n"),
-        "session": session_type.strip("\n"),
-        "os": _os_,
         "branch": branch,
+        "chassis": chassis(),
         "desktop": de.strip("\n"),
         "kernel": kernel.strip("\n"),
+        "session": session_type.strip("\n"),
+        "codename": codename,
         "vendor": vendor(),
-        "chassis": chassis(),
+        "version": version
     }

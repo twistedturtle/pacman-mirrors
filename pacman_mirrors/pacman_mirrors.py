@@ -84,7 +84,10 @@ class PacmanMirrors:
         (self.config, self.custom) = config_setup.setup_config(self)
         agent = util.user_agent(self.config)
         self.network = httpFn.check_internet_connection(agent, tty=self.tty)
-
+        if self.network and self.config["statistic"] is True:
+            sys_info = util.system_info(self.config)
+            httpFn.send_sys_info(sys_info)
+        # check for static configuration
         if self.config["static"]:
             # static setup
             self.custom = False
@@ -92,7 +95,7 @@ class PacmanMirrors:
                 fileFn.delete_file(self.config["custom_file"])
             # write enterprise mirror list
             util.msg("Static configuration found")
-            mirrors = util.build_static_from_config(self.config["static"])
+            mirrors = util.build_static_from_config(self, self.config["static"])
             outputFn.write_static_mirror_pool(self, mirrors)
             outputFn.write_pacman_mirror_list(self, mirrors)
             exit(0)
@@ -121,10 +124,6 @@ class PacmanMirrors:
                 util.internet_message(tty=self.tty)
             self.config["method"] = "random"
             self.fasttrack = False
-        # check statisics participation
-        if self.network and self.config["statistic"] is not None:
-            sys_info = util.system_info(self.config)
-            httpFn.send_sys_info(sys_info)
         # Load configured mirror pool
         defaultFn.load_config_mirror_pool(self)
         # Decide which type of mirrorlist to create Fasttrack/Interactive/Default

@@ -257,7 +257,6 @@ def check_internet_connection(
             # until the configuration of
             # the ping server is corrected
             # we could neglect the error
-            # pass
             output_err(host, err)
         except requests.exceptions.Timeout as err:
             output_err(host, err)
