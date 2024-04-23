@@ -210,5 +210,5 @@ def system_info(config: dict) -> dict:
         "session": session_type.strip("\n"),
         "codename": codename,
         "vendor": vendor(),
-        "version": version
+        "version": version,
     }
