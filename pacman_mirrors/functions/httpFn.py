@@ -325,5 +325,5 @@ def download_mirror_pool(config: dict, tty: bool = False, quiet: bool = False) -
 
 def send_sys_info(sys_info: dict) -> None:
     agent = util.user_agent(sys_info)
-    url = f"{conf.STATISTIC_HOSTNAME}/{agent}"
+    url = f"{conf.STATISTIC_HOSTNAME}"
     requests.post(url, data=sys_info, headers=headers(agent, content_type="application/json"))
