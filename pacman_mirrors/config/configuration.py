@@ -23,11 +23,14 @@ USER_AGENT = "PacmanMirrors"
 URL_MIRROR_JSON = "https://repo.manjaro.org/mirrors.json"
 URL_STATUS_JSON = "https://repo.manjaro.org/status.json"
 INET_CONN_CHECK_URLS = [
-    "https://ping.manjaro.org/pacmanmirrors",
+    "http://ping.manjaro.org/pacmanmirrors",
     "https://wikipedia.org",
     "https://archlinux.org",
 ]
-STATISTIC_HOSTNAME = "https://matomo.manjaro.org"
+# there is no certificate on the ping url
+# we have been using https for everything
+# need to set up a certificate for the ping domain
+STATISTIC_HOSTNAME = "http://ping.manjaro.org/pacmanmirrors"
 # etc files
 CONFIG_FILE = "/etc/pacman-mirrors.conf"
 MIRROR_LIST = "/etc/pacman.d/mirrorlist"
