@@ -71,10 +71,13 @@ class PacmanMirrors:
     def run(self):
         """
         # Setup config: retunrs the config dictionary and true/false on custom
-        # Parse commandline
-        # i686 check - change branch to x32-$branch
-        # sanitize config
         # Check network
+        # Check for static config
+        # Check for statistic
+        # Check working folders
+        # Parse commandline
+        # aarch64 check
+        # sanitize config
         # Update mirror pool
         # Check if mirrorlist is not to be touched - normal exit
         # Handle missing network
