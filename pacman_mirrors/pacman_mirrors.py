@@ -85,11 +85,7 @@ class PacmanMirrors:
         # Build mirror list
         """
         (self.config, self.custom) = config_setup.setup_config(self)
-        agent = util.user_agent(self.config)
-        self.network = httpFn.check_internet_connection(agent, tty=self.tty)
-        if self.network and self.config["statistic"] is True:
-            sys_info = util.system_info(self.config)
-            httpFn.send_sys_info(sys_info)
+        self.network = httpFn.check_internet_connection(tty=self.tty)
         # check for static configuration
         if self.config["static"]:
             # static setup
