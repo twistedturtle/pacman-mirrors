@@ -50,9 +50,9 @@ To be able to download the latest status file from repo.manjaro.org
 pacman-mirrors verifies network connection by opening up to
 three different websites. These sites are
 
-1. repo.manjaro.org
-2. github.com
-2. bitbucket.org
+1. ping.manjaro.org
+2. wikipedia.org
+3. archlinux.org
 
 The sites are chosen due to their generic nature and general availability.
 
