@@ -299,7 +299,7 @@ editing your pacman-mirrors configuration.
 
 * Create a mirrorlist with 5 mirrors up-to-date on your branch
 
-    *sudo pacman-mirrors --fastrack 5*
+    *sudo pacman-mirrors --fasttrack 5*
 
 * I want to choose my mirrors
 
