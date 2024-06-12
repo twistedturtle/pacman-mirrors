@@ -64,60 +64,62 @@ entry in the configuration file.
 ## MODES
 
 1. The number of mirrors
-   * pacman-mirrors -f [number]
+   `pacman-mirrors -f [number]`
 2. More control (custom mirror pool)
-   * -c COUNTRY[[,COUNTRY]...]
-   * --continent
+   - `-c COUNTRY[[,COUNTRY]...]`
+   - `--continent`
 3. Full control (custom mirror pool)
-   * -i [-d/--default]
+   - `-i [-d/--default]`
 
 ## FILES OVERVIEW
 
-* **The configuration**: *`/etc/pacman-mirrors.conf`*
-   * The file holds configuration for pacman-mirrors.
-* **The mirrorlist**: *`/etc/pacman.d/mirrorlist`*
-   * The file contains a number of servers which `pacman` uses to update your system.
-* **Manjaro mirror pool**: *`/usr/share/pacman-mirrors/mirrors.json`*
-   * The worldwide mirrorpool.
-   * At runtime the file is downloaded from Github and compared with the systems file.
-   * If the files differs, your local file will be replaced.
-* **Manjaro mirror pool status**: *`/var/lib/pacman-mirrors/status.json`*
-   * The mirrorpool status file.
-   * It is the data you see displayed at repo.manjaro.org.
-   * The file is downloaded and saved on every run of pacman-mirrors.
-* **Custom mirror pool**: *`/var/lib/pacman-mirrors/custom-mirrors.json`*
-   * The file is your custom mirror pool
-   * It is created using **`-i/--interactive`** or **`-c/--country`** argument.
+- **The configuration**: `/etc/pacman-mirrors.conf`
+  - The file holds configuration for pacman-mirrors.
+- **The mirrorlist**: `/etc/pacman.d/mirrorlist`
+   - The file contains a number of servers which `pacman` uses to update your system.
+- **Manjaro mirror pool**: `/usr/share/pacman-mirrors/mirrors.json`
+   - The worldwide mirrorpool.
+   - At runtime the file is downloaded from Github and compared with the systems file.
+   - If the files differ, your local file will be replaced.
+- **Manjaro mirror pool status**: `/var/lib/pacman-mirrors/status.json`
+   - The mirrorpool status file.
+   - It is the data you see displayed at repo.manjaro.org.
+   - The file is downloaded and saved on every run of pacman-mirrors.
+- **Custom mirror pool**: `/var/lib/pacman-mirrors/custom-mirrors.json`
+   - The file is your custom mirror pool
+   - It is created using `-i/--interactive` or `-c/--country` argument.
 
 If you are stunned by this message
-
-    .: WARNING No mirrors in selection
-    .: INFO The mirrors has not changed
+```
+.: WARNING No mirrors in selection
+.: INFO The mirrors has not changed
+```
 
 This is not an error, it is a feature.
 The reason: You have limited your mirror pool too much and none of your selected mirrors are up-to-date.
 
 **Suggested solutions**:
 
-* Remove limitations on countries and/or protocols
-* Do a complete reset of your list with *`pacman-mirrors -c all -aP all`*
+- Remove limitations on countries and/or protocols
+- Do a complete reset of your list with `pacman-mirrors -c all -aP all`
 
 ## GENERAL INFO ABOUT ARGUMENTS
-Some options are mutual exclusive and will throw an arguments error:
+Some options are mutual exclusive and will throw an argument error:
 
-* **--country**, **--fasttrack**, **--geoip**, **--continent**
-* **--fasttrack** and **--no-status**
+- `--country`, `--fasttrack`, `--geoip`, `--continent`
+- `--fasttrack** and **--no-status**
 
-Some arguments requires another argument present to have effect.
-If such conditions rise pacman-mirrors will throw an arguments error.
+Some arguments require another argument present to have effect.
+If such conditions rise pacman-mirrors will throw an argument error.
 
 The arguments can appear in any order except for arguments which takes additional options
 in which case the options must follow immediately after the argument with or without space,
 for example
-
-    pacman-mirrors -f
-    pacman-mirrors -f 5
-    pacman-mirrors -f5
+```
+pacman-mirrors -f
+pacman-mirrors -f 5
+pacman-mirrors -f5
+```
 
 Pacman-mirrors always attempt to download the lastest available data
 from [http://repo.manjaro.org](http://repo.manjaro.org).
@@ -130,13 +132,13 @@ that you connect to a mirror which is up-to-date for your systems branch.
 -g
 :   Generic default run command. Will use custom mirror pool if defined.
 
--c, \--country *COUNTRY* [[*COUNTRY*]...]
+-c, \--country *COUNTRY* [[COUNTRY]...]
 :   Creates a custom mirror pool with supplied countries.
 
 --continent
 :   Creates a custom mirror pool from geolocation
 
--f, \--fasttrack [*NUMBER*]
+-f, \--fasttrack [NUMBER]
 :   Generates a random mirrorlist for the users current selected branch,
 mirrors are randomly selected from the users current mirror pool,
 either a custom pool or the default pool,
@@ -164,7 +166,7 @@ thus allowing for reselecting mirrors for a new custom pool.
 :   Permanent change branch, using *stable*, *testing* or *unstable*.
 
 -p, \--prefix *PREFIX*
-:   Add a path prefix to pacman-mirrors file-handling eg. */mnt/install* or *$mnt*.
+:   Add a path prefix to pacman-mirrors file-handling e.g. */mnt/install* or *$mnt*.
 
 -P, \--proto, \--protocols *PROTO* [*PROTO*] ...
 :   Write protocols to configuration,  using *all* or *http*, *https*, *ftp* and *ftps*.
@@ -219,46 +221,47 @@ the time spent on exchanging encryption keys.
 :   Show the version of pacman-mirrors.
 
 ## Exit status:
-
-    0     : OK
-    1     : Problem with argument
-    2     : Problem accessing systemfiles
-    3     : Missing mirror file
-    4     : Primary mirror not up-to-date
-    5     : Invalid mirrors found
-    BRANCH: Value from config
+```
+0     : OK
+1     : Problem with argument
+2     : Problem accessing systemfiles
+3     : Missing mirror file
+4     : Primary mirror not up-to-date
+5     : Invalid mirrors found
+BRANCH: Value from config
+```
 
 ## Configuration flow of pacman-mirrors
 
-At launch an internal default configuration is setup,
+At launch an internal default configuration is constructed,
 file configuration is applied then the commandline is parsed and applied.
 
 ## API arguments
 
-The arguments modifies key elements of pacman-mirrors configuration according to the users needs.
+The arguments modify key elements of pacman-mirrors configuration according to the users needs.
 
 The actions performed by the API are in strict order and performed *before any* other actions.
 This also means that ordinary arguments supplied in conjunction with api might be ignored.
 Eg. **-U** argument terminates pacman-mirrors when branch and mirrorlist has been written.
 
-1. If *p*  *PREFIX*
-   *  add *PREFIX* to internal file configuration
-2. If *-S/-B* *BRANCH*
-   * apply *BRANCH* to internal configuration
-   * replace branch in pacman-mirrors.conf with *BRANCH*
-3. If *-U* *URL*
-   * apply internal configuration to a mirrorlist with *URL*
-   * *sys.exit(0)*
-4. If *-P* *PROTO* [*PROTO*] ...
-   * replace protocols in pacman-mirrors.conf with *PROTO*
-5. If *-R*
-   * replace branch in mirrorlist with *-S/-B* *BRANCH*
+1. If `-p PREFIX`
+   -  add `PREFIX` to internal file configuration
+2. If `-S/-B BRANCH`
+   - apply *BRANCH* to internal configuration
+   - replace branch in pacman-mirrors.conf with *BRANCH*
+3. If `-U URL`
+   -apply internal configuration to a mirrorlist with *URL*
+   - `sys.exit(0)`
+4. If `-P PROTO [PROTO] ...`
+   - replace protocols in pacman-mirrors.conf with *PROTO*
+5. If `-R`
+   - replace branch in mirrorlist with `-S/-B BRANCH`
 
 When done pacman-mirrors checks the internet connection and
 if possible download the latest datafiles for creating the mirrorlist.
 At this point it is possible to interrupt further processing.
 
-If the *-n/--no-mirrorlist* argument is present pacman-mirrors will now exit.
+If the `-n/--no-mirrorlist` argument is present pacman-mirrors will now exit.
 
 # EXAMPLES
 
@@ -269,101 +272,107 @@ editing your pacman-mirrors configuration.
 
 ## Commands
 
-* Which countries has mirrors?
-
-    *pacman-mirrors --country-list*
-
-* Which countries in my custom mirror pool
-
-    *pacman-mirrors --country-config
-
-* What branch am I on
-
-    *pacman-mirrors --get-branch*
+- Which countries has mirrors?
+  ```
+  pacman-mirrors --country-list
+  ```
+- Which countries in my custom mirror pool
+  ```
+  pacman-mirrors --country-config
+  ```
+- What branch am I on
+  ```
+  pacman-mirrors --get-branch
+  ```
 
 ## Commands requiring sudo
 
-* I want to permanently change branch to unstable,
-* I want to use mirrors from Germany and France,
-* I want only https and http protocol in that order
-
-    *sudo pacman-mirrors --country Germany,France --api --set-branch unstable --procotol https http*
-
-* Create a mirrorlist with German mirrors
-
-    *sudo pacman-mirrors --country Germany*
-
-* If you want more countries in your mirrorlist add them they will be written to your custom mirror pool
-
-    *sudo pacman-mirrors --country Germany France Denmark*
-
-* Create a mirrorlist with 5 mirrors up-to-date on your branch
-
-    *sudo pacman-mirrors --fasttrack 5*
-
-* I want to choose my mirrors
-
-    *sudo pacman-mirrors --interactive*
-
-* I have a custom mirror list and I want to create a new custom mirror list?
-
-    *sudo pacman-mirrors --interactive --default*
-
-* I have a custom mirror list - can I reset it?
-
-    *sudo pacman-mirrors --country all*
+- I want to permanently change branch to unstable, using mirrors from Germany and France, use https and http protocol in that order
+  ```
+  sudo pacman-mirrors --country Germany,France --api --set-branch unstable --procotol https http
+  ```
+- Create a mirrorlist with German mirrors
+  ```
+  sudo pacman-mirrors --country Germany
+  ```
+- If you want more countries in your mirrorlist add them they will be written to your custom mirror pool
+  ```
+  sudo pacman-mirrors --country Germany France Denmark
+  ```
+- Create a mirrorlist with 5 mirrors up-to-date on your branch
+  ```
+  sudo pacman-mirrors --fasttrack 5
+  ```
+- I want to choose my mirrors
+  ```
+  sudo pacman-mirrors --interactive
+  ```
+- I have a custom mirror list and I want to create a new custom mirror list?
+  ```
+  sudo pacman-mirrors --interactive --default
+  ```
+- I have a custom mirror list - can I reset it?
+  ```
+  sudo pacman-mirrors --country all
+  ```
 
 ## Advanced use samples - BEWARE OF THE DRAGONS
-* Change system branch and dont change the mirrorlist
-
-    *sudo pacman-mirrors -naS unstable*
-
-* Change system branch and replace branch in mirrorlist and quit
-
-    *sudo pacman-mirrors -naRS unstable*
-
-* Change protocols you will accept but dont touch the mirrorlist
-
-    *sudo pacman-mirrors -naP https http*
-
-* A packager can write directly to a mounted systems datafiles using either a path or an environment variable replacing the branch in both configuration and mirrorlist leaving the mirrors as is
-
-    *sudo pacman-mirrors -anR -p $prefix -S $branch -P https*
-
-* It is also possible to specify a mirror in which case the mirrorlist is created and pacman-mirrors terminate
-
-    *sudo pacman-mirrors -ap $prefix -S $branch -U $url*
+- Change system branch but do not change the mirrorlist
+  ```
+  sudo pacman-mirrors -naS unstable
+  ```
+- Change system branch and replace branch in mirrorlist and quit
+  ```
+  sudo pacman-mirrors -naRS unstable
+  ```
+- Change protocols you will accept but do not touch the mirrorlist
+  ```
+  sudo pacman-mirrors -naP https http
+  ```
+- A packager can write directly to a mounted systems datafiles using either a path or an environment variable replacing the branch in both configuration and mirrorlist leaving the mirrors as is
+  ```
+  sudo pacman-mirrors -anR -p $prefix -S $branch -P https
+  ```
+- It is also possible to specify a mirror in which case the mirrorlist is created and pacman-mirrors terminate
+  ```
+  sudo pacman-mirrors -ap $prefix -S $branch -U $url
+  ```
 
 # DEFAULT CONFIGURATION
+```
+##
+## /etc/pacman-mirrors.conf
+##
 
-    ##
-    ## /etc/pacman-mirrors.conf
-    ##
+## Branch Pacman should use (stable, testing, unstable)
+# Branch = stable
 
-    ## Branch Pacman should use (stable, testing, unstable)
-    # Branch = stable
+## Generation method
+## 1) rank   - rank mirrors depending on their access time
+## 2) random - randomly generate the output mirrorlist
+# Method = rank
 
-    ## Generation method
-    ## 1) rank   - rank mirrors depending on their access time
-    ## 2) random - randomly generate the output mirrorlist
-    # Method = rank
+## Filename to use when ranking mirrors
+## The file must be present in core repo
+# TestFile = core.db.tar.gz
 
-    ## Filename to use when ranking mirrors
-    ## The file must be present in core repo
-    # TestFile = core.db.tar.gz
+## Define protocols and priority
+##   separated by comma 'https,http' or 'http,https'
+## ATM available protocols are: http, https, ftp
+## Not specifying a protocol will ban the protocol from being used
+## If a mirror has more than one protocol defined only the first is written to the mirrorlist
+## Empty means all in reversed alphabetic order
+# Protocols =
 
-    ## Define protocols and priority
-    ##   separated by comma 'https,http' or 'http,https'
-    ## ATM available protocols are: http, https, ftp
-    ## Not specifying a protocol will ban the protocol from being used
-    ## If a mirror has more than one protocol defined only the first is written to the mirrorlist
-    ## Empty means all in reversed alphabetic order
-    # Protocols =
+## When set to False - all certificates are accepted.
+## Use only if you fully trust all ssl-enabled mirrors.
+# SSLVerify = True
 
-    ## When set to False - all certificates are accepted.
-    ## Use only if you fully trust all ssl-enabled mirrors.
-    # SSLVerify = True
-
+## Static configuration
+## Add a comma separated list of urls to use
+## e.g. Static = https://mirror1.tld/manjaro/,https://mirror2.tld/manjaro/
+# Static =
+```
 
 # MORE INFO
 * [https://wiki.manjaro.org/index.php?title=Pacman-mirrors](https://wiki.manjaro.org/index.php?title=Pacman-mirrors)
