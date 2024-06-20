@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.26.1] 2024-06-12
+
+* Removed opt-in statistics and related configuration
+  - see https://gitlab.manjaro.org/applications/pacman-mirrors/-/releases/4.26.1
+
 ## [4.26.0] 2024-04-21
 
 * Added option allowing for enterprise static mirror configuration
