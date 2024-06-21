@@ -1,6 +1,6 @@
 % pacman-mirrors(8) Pacman-Mirrors 4.x User Manual
 %
-% April, 2019
+% June, 2024
 
 # NAME
 
@@ -104,10 +104,11 @@ The reason: You have limited your mirror pool too much and none of your selected
 - Do a complete reset of your list with `pacman-mirrors -c all -aP all`
 
 ## GENERAL INFO ABOUT ARGUMENTS
+
 Some options are mutual exclusive and will throw an argument error:
 
 - `--country`, `--fasttrack`, `--geoip`, `--continent`
-- `--fasttrack** and **--no-status**
+- `--fasttrack`, `-no-status`
 
 Some arguments require another argument present to have effect.
 If such conditions rise pacman-mirrors will throw an argument error.
@@ -115,6 +116,7 @@ If such conditions rise pacman-mirrors will throw an argument error.
 The arguments can appear in any order except for arguments which takes additional options
 in which case the options must follow immediately after the argument with or without space,
 for example
+
 ```
 pacman-mirrors -f
 pacman-mirrors -f 5
@@ -376,7 +378,6 @@ editing your pacman-mirrors configuration.
 
 # MORE INFO
 * [https://wiki.manjaro.org/index.php?title=Pacman-mirrors](https://wiki.manjaro.org/index.php?title=Pacman-mirrors)
-* [https://wiki.manjaro.org/index.php?title=Create_your_own_Custom_Mirrorlist](https://wiki.manjaro.org/index.php?title=Create_your_own_Custom_Mirrorlist)
 
 # REPORTING BUGS
    [https://gitlab.manjaro.org/applications/pacman-mirrors/issues](https://gitlab.manjaro.org/applications/pacman-mirrors/issues)
