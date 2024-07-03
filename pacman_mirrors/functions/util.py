@@ -81,12 +81,19 @@ def location_from_url(url: str) -> str:
 def aarch64_check(self, write: bool = False) -> None:
     if platform.machine() == "aarch64":
         self.config["arm"] = True
+        # get branch from config object
         branch = self.config["branch"]
-        if "arm" not in branch:
-            branch = f"arm-{branch}"
+        # branch should start with 'arm-'
+        if not branch.startswith("arm-"):
+            # change internal configuration
+            # branch to arm-{stable,testing,unstable}
+            self.config["branch"] = f"arm-{branch}"
             if write:
+                # write the branch to config storage
                 apifn.write_config_branch(
-                    branch, self.config["config_file"], quiet=True
+                    self.config["branch"],
+                    self.config["config_file"],
+                    quiet=True
                 )
 
 
