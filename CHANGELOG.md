@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.27.0] 2024-07-03
+
+- correct aarch check to also modify the internal variable so no errors is emitted when configuration is run through the sanitizer
+
 ## [4.26.1] 2024-06-12
 
 * Removed opt-in statistics and related configuration
