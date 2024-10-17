@@ -26,7 +26,6 @@ npyscreen = "^4.10.5"
 
 [tool.poetry.scripts]
 pacman-mirrors = "pacman_mirrors.pacman_mirrors:start"
-format = "black:main ."
 
 [tool.poetry.group.lint.dependencies]
 coverage = "^7.3.1"
