@@ -244,18 +244,22 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
         try:
             requests.get(host, headers=headers(), timeout=maxwait)
             return True
-        except (requests.exceptions.ConnectionError,) as err:
+        except (requests.exceptions.HTTPError, requests.exceptions.SSLError) as err:
+            # this indicates an active internet connection
+            # otherwilse http errors would not be possible
+            # this can return true
+            # an internet connection is available
+            # the host didn't respond well to https request
+            return True
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
+            # this indicates that internet connection is not available
             # until the configuration of
             # the ping server is corrected
             # we could neglect the error
-            output_err(host, err, emit=False)
-        except requests.exceptions.Timeout as err:
-            output_err(host, err)
-        except requests.exceptions.HTTPError as err:
-            output_err(host, err)
-
-    return False
-
+            return False
+        except Exception as err:
+            output_err(host, err, emit=True)
+            return False
 
 def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
     """Check a hosts availability

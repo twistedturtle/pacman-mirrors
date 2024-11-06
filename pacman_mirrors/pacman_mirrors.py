@@ -71,11 +71,10 @@ class PacmanMirrors:
     def run(self):
         """
         # Setup config: retunrs the config dictionary and true/false on custom
-        # Check network
-        # Check for static config
-        # Check for statistic
         # Check working folders
+        # Check for static config
         # Parse commandline
+        # Check network
         # aarch64 check
         # sanitize config
         # Update mirror pool
@@ -84,14 +83,19 @@ class PacmanMirrors:
         # Load default mirror pool
         # Build mirror list
         """
+        # load configuration
         (self.config, self.custom) = config_setup.setup_config(self)
-        self.network = httpFn.check_internet_connection(tty=self.tty)
+
+        # ensure workdir exist
+        fileFn.create_dir(self.config["work_dir"])
+
         # check for static configuration
         if self.config["static"]:
             # static setup
             self.custom = False
             if fileFn.check_file(self.config["custom_file"]):
                 fileFn.delete_file(self.config["custom_file"])
+
             # write enterprise mirror list
             util.msg("Static configuration found")
             mirrors = util.build_static_from_config(self, self.config["static"])
@@ -101,30 +105,40 @@ class PacmanMirrors:
 
         ##########################################################
         # default manjaro setup
-        fileFn.create_dir(self.config["work_dir"])
         cliFn.parse_command_line(self, gtk_available=GTK_AVAILABLE)
+
+        # check network connection
+        self.network = httpFn.check_internet_connection(tty=self.tty)
+
+        # check for arm architecture
         util.aarch64_check(self, write=True)
 
+        # sanitize configuraiton
         if not config_setup.sanitize_config(config=self.config):
             sys.exit(2)
 
-        if self.config["url_mirrors_json"] and self.config["url_status_json"]:
-            # only fetch data files if configuration url are valid
-            if self.network:
-                httpFn.download_mirror_pool(
-                    config=self.config, tty=self.tty, quiet=self.quiet
-                )
+        # download mirror pool if internet connection is available
+        if self.network:
+            httpFn.download_mirror_pool(
+                config=self.config, tty=self.tty, quiet=self.quiet
+            )
 
+        # conditional exit
+        # used in pacman hook to avoid changing mirror pool and mirror list on updates
         if self.no_mirrorlist:
             sys.exit(0)
 
+        # conditional reset CLI configuration
+        # if internet connection is down
         if not self.network:
             if not self.quiet:
                 util.internet_message(tty=self.tty)
             self.config["method"] = "random"
             self.fasttrack = False
+
         # Load configured mirror pool
         defaultFn.load_config_mirror_pool(self)
+
         # Decide which type of mirrorlist to create Fasttrack/Interactive/Default
         if self.fasttrack:
             fasttrack.build_mirror_list(self, limit=self.fasttrack)
