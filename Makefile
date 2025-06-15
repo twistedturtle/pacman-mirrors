@@ -36,15 +36,17 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	poetry shell && poetry run black --check pacman_mirrors tests
+	poetry run black --check pacman_mirrors tests
 	pymarkdown scan .
 
 format:
-	poetry shell && poetry run black pacman_mirrors tests
+	poetry run black pacman_mirrors tests
 	pymarkdown fix .
 
 unit-test:
-	poetry shell && poetry run pytest
+	curl -o tests/mock/var/mirrors.json https://repo.manjaro.org/mirrors.json
+	curl -o tests/mock/var/status.json https://repo.manjaro.org/status.json
+	poetry run pytest
 
 coverage:
 	coverage run pacman_mirrors tests
@@ -81,7 +83,7 @@ run-dev:
 install: build install-data
 
 install-data:
-	install -D data/share/mirrors.json /usr/share/pacman-mirrors/mirrors.json
+	install -D data/share/mirrors.json /var/lib/pacman-mirrors/mirrors.json
 	install -D data/etc/pacman-mirrors.conf /etc/
 	install -D data/bin/pacman-mirrors /usr/bin/
 	install -D data/man/pacman-mirrors.8.gz /usr/share/man/man8/

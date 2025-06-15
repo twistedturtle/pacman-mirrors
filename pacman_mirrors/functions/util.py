@@ -91,9 +91,7 @@ def aarch64_check(self, write: bool = False) -> None:
             if write:
                 # write the branch to config storage
                 apifn.write_config_branch(
-                    self.config["branch"],
-                    self.config["config_file"],
-                    quiet=True
+                    self.config["branch"], self.config["config_file"], quiet=True
                 )
 
 

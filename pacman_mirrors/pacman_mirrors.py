@@ -136,7 +136,7 @@ class PacmanMirrors:
             self.config["method"] = "random"
             self.fasttrack = False
 
-        # Load configured mirror pool
+        # Load a configured mirror pool
         defaultFn.load_config_mirror_pool(self)
 
         # Decide which type of mirrorlist to create Fasttrack/Interactive/Default

@@ -23,23 +23,22 @@ USER_AGENT = "PacmanMirrors"
 URL_MIRROR_JSON = "https://repo.manjaro.org/mirrors.json"
 URL_STATUS_JSON = "https://repo.manjaro.org/status.json"
 INET_CONN_CHECK_URLS = [
-    "http://ping.manjaro.org/pacmanmirrors",
+    "https://ping.manjaro.org/pacmanmirrors",
     "https://wikipedia.org",
     "https://archlinux.org",
 ]
 # there is no certificate on the ping url
 # we have been using https for everything
 # need to set up a certificate for the ping domain
-STATISTIC_HOSTNAME = "http://ping.manjaro.org/pacmanmirrors"
-# etc files
+# STATISTIC_HOSTNAME = "http://ping.manjaro.org/pacmanmirrors"
 CONFIG_FILE = "/etc/pacman-mirrors.conf"
 MIRROR_LIST = "/etc/pacman.d/mirrorlist"
-# pacman-mirrors dir/files
-WORK_DIR = "/var/lib/pacman-mirrors/"
-USR_DIR = "/usr/share/pacman-mirrors"
-CUSTOM_FILE = "/var/lib/pacman-mirrors/custom-mirrors.json"
-MIRROR_FILE = "/usr/share/pacman-mirrors/mirrors.json"
-STATUS_FILE = "/var/lib/pacman-mirrors/status.json"
+# /var/lib
+# WORK_DIR = "/var/lib/pacman-mirrors"
+WORK_DIR = "/var/lib/pacman-mirrors"
+CUSTOM_FILE = f"{WORK_DIR}/custom-mirrors.json"
+MIRROR_FILE = f"{WORK_DIR}/mirrors.json"
+STATUS_FILE = f"{WORK_DIR}/status.json"
 # repo constants
 BRANCHES = ("stable", "testing", "unstable")
 ARM_BRANCHES = ("arm-stable", "arm-testing", "arm-unstable")
