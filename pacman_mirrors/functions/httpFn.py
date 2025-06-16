@@ -280,9 +280,11 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
             output_err(host, err, emit=True)
             return False
 
+    return False
+
 
 def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
-    """Check a hosts availability
+    """Check a host's availability
     :param host:
     :param count:
     :param tty:
