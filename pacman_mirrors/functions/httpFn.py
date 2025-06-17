@@ -42,6 +42,19 @@ def headers():
     return {"User-Agent": f"{conf.USER_AGENT}/{__version__}"}
 
 
+def check_timestamp(url: str) -> bool:
+    """Use a head request to get the last modified time of the mirror pool"""
+    resp = requests.head(url, headers=headers())
+    resp.raise_for_status()
+    remote_file_stamp = resp.headers.get("Last-Modified")
+    local_file_stamp = os.path.getmtime(conf.MIRROR_FILE)
+    return (
+        remote_file_stamp is not None
+        and local_file_stamp is not None
+        and remote_file_stamp == local_file_stamp
+    )
+
+
 def download_mirrors(config: dict) -> tuple:
     """Retrieve mirrors from manjaro.org
     :param config:
@@ -52,29 +65,30 @@ def download_mirrors(config: dict) -> tuple:
     fetchstatus = True
     message = ""
     try:
-        # mirrors.json
         util.msg(
             message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR
         )
-        resp = requests.get(
-            url=config["url_mirrors_json"],
-            headers=headers(),
-            timeout=config["timeout"],
-        )
+        # mirrors.json
+        if not check_timestamp(config["url_mirrors_json"]):
+            resp = requests.get(
+                url=config["url_mirrors_json"],
+                headers=headers(),
+                timeout=config["timeout"],
+            )
 
-        resp.raise_for_status()
-        mirrorlist = resp.json()
-        tempfile = config["work_dir"] + "/.temp.file"
-        jsonFn.json_dump_file(mirrorlist, tempfile)
-        filecmp.clear_cache()
+            resp.raise_for_status()
+            mirrorlist = resp.json()
+            tempfile = config["work_dir"] + "/.temp.file"
+            jsonFn.json_dump_file(mirrorlist, tempfile)
+            filecmp.clear_cache()
 
-        if fileFn.check_file(conf.USR_DIR, folder=True):
-            if not fileFn.check_file(config["mirror_file"]):
-                jsonFn.json_dump_file(mirrorlist, config["mirror_file"])
-            elif not filecmp.cmp(tempfile, config["mirror_file"]):
-                jsonFn.json_dump_file(mirrorlist, config["mirror_file"])
+            if fileFn.check_file(conf.WORK_DIR, folder=True):
+                if not fileFn.check_file(config["mirror_file"]):
+                    jsonFn.json_dump_file(mirrorlist, config["mirror_file"])
+                elif not filecmp.cmp(tempfile, config["mirror_file"]):
+                    jsonFn.json_dump_file(mirrorlist, config["mirror_file"])
 
-        os.remove(tempfile)
+            os.remove(tempfile)
 
     except (json.JSONDecodeError,) as err:
         message = f"Invalid JSON data: {err}"
@@ -90,6 +104,7 @@ def download_mirrors(config: dict) -> tuple:
         util.msg(message=message, urgency=txt.ERR_CLR, newline=True)
         message = ""
 
+    # fetch status.json
     try:
         util.msg(
             message=f"=> Mirror status: {config['url_status_json']}",
@@ -234,6 +249,7 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
     @param maxwait:
     @param tty:
     """
+
     def output_err(hostname, error, emit: bool = True):
         if emit:
             print("")
@@ -251,7 +267,10 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
             # an internet connection is available
             # the host didn't respond well to https request
             return True
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
+        except (
+            requests.exceptions.ConnectionError,
+            requests.exceptions.Timeout,
+        ) as err:
             # this indicates that internet connection is not available
             # until the configuration of
             # the ping server is corrected
@@ -261,8 +280,11 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
             output_err(host, err, emit=True)
             return False
 
+    return False
+
+
 def ping_host(host: str, tty: bool = False, count: int = 1) -> bool:
-    """Check a hosts availability
+    """Check a host's availability
     :param host:
     :param count:
     :param tty:

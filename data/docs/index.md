@@ -77,10 +77,10 @@ entry in the configuration file.
   - The file holds configuration for pacman-mirrors.
 - **The mirrorlist**: `/etc/pacman.d/mirrorlist`
    - The file contains a number of servers which `pacman` uses to update your system.
-- **Manjaro mirror pool**: `/usr/share/pacman-mirrors/mirrors.json`
+- **Manjaro mirror pool**: `/var/lib/pacman-mirrors/mirrors.json`
    - The worldwide mirrorpool.
-   - At runtime the file is downloaded from Github and compared with the systems file.
-   - If the files differ, your local file will be replaced.
+   - At runtime the file is checked with upstream repo and compared to the system's file.
+   - If the files differ, the new file will be downloaded to replace your local file.
 - **Manjaro mirror pool status**: `/var/lib/pacman-mirrors/status.json`
    - The mirrorpool status file.
    - It is the data you see displayed at repo.manjaro.org.
