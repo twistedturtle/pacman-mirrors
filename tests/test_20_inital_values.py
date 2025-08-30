@@ -42,13 +42,13 @@ class TestInitialValues(unittest.TestCase):
             assert app.fasttrack is None
 
     @patch("os.getuid")
-    def test_initial_geoip(self, mock_os_getuid):
-        """TEST: self.geoip is False"""
+    def test_initial_timezone(self, mock_os_getuid):
+        """TEST: self.tz is False"""
         mock_os_getuid.return_value = 0
         cmd = mock.TEST_CMD + ARGS
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
-            assert app.geoip is False
+            assert app.tz is False
 
     @patch("os.getuid")
     def test_initial_interactive(self, mock_os_getuid):
@@ -88,12 +88,12 @@ class TestInitialValues(unittest.TestCase):
 
     @patch("os.getuid")
     def test_initial_no_mirrorlist(self, mock_os_getuid):
-        """TEST: self.no_mirrorlist = False"""
+        """TEST: self.no_mirrorList = False"""
         mock_os_getuid.return_value = 0
         cmd = mock.TEST_CMD + ARGS
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
-            assert app.no_mirrorlist is False
+            assert app.no_mirrorList is False
 
     @patch("os.getuid")
     def test_initial_quiet(self, mock_os_getuid):

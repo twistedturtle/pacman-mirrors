@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-15 15:50+0200\n"
+"POT-Creation-Date: 2025-08-30 10:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: pacman_mirrors/constants/txt.py:29
 msgid "ERROR"
@@ -125,7 +125,7 @@ msgstr ""
 msgid "Branch name"
 msgstr ""
 
-#: pacman_mirrors/constants/txt.py:59
+#: pacman_mirrors/constants/txt.py:60
 msgid "Comma separated list of countries, from which mirrors will be used"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Load default mirror file"
 msgstr ""
 
-#: pacman_mirrors/constants/txt.py:64
+#: pacman_mirrors/constants/txt.py:65
 msgid "Generate mirrorlist with a number of up-to-date mirrors. Overrides"
 msgstr ""
 
@@ -329,7 +329,7 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#: pacman_mirrors/constants/txt.py:115
+#: pacman_mirrors/constants/txt.py:116
 msgid "You have chosen to override the status for your system branch."
 msgstr ""
 

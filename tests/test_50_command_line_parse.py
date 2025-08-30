@@ -77,18 +77,18 @@ class TestCommandLineParse(unittest.TestCase):
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")
-    def test_arg_geoip(self, mock_build_config, mock_os_getuid):
-        """TEST: CLI geoip is True from ARG '--geoip'"""
+    def test_arg_timezone(self, mock_build_config, mock_os_getuid):
+        """TEST: CLI timezone is True from ARG '--timezone'"""
         mock_os_getuid.return_value = 0
         mock_build_config.return_value = test_conf
-        args = "--geoip"
+        args = "--timezone"
         cmd = mock.TEST_CMD + args
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()
             cliFn.parse_command_line(app, True)
-            assert app.geoip is True
+            assert app.tz is True
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")

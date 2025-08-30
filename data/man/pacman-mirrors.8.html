@@ -249,12 +249,13 @@ file.</p>
 to update your system.</li>
 </ul></li>
 <li><strong>Manjaro mirror pool</strong>:
-<code>/usr/share/pacman-mirrors/mirrors.json</code>
+<code>/var/lib/pacman-mirrors/mirrors.json</code>
 <ul>
 <li>The worldwide mirrorpool.</li>
-<li>At runtime the file is downloaded from Github and compared with the
-systems file.</li>
-<li>If the files differ, your local file will be replaced.</li>
+<li>At runtime the file is checked with upstream repo and compared to
+the system’s file.</li>
+<li>If the files differ, the new file will be downloaded to replace your
+local file.</li>
 </ul></li>
 <li><strong>Manjaro mirror pool status</strong>:
 <code>/var/lib/pacman-mirrors/status.json</code>
