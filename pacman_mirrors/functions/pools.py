@@ -3,7 +3,7 @@
 # This file is part of pacman-mirrors.
 #
 # pacman-mirrors is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
+# it under the terms of the GNU General Public License as published b
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
@@ -18,13 +18,29 @@
 # Authors: Frede Hundewadt <echo ZmhAbWFuamFyby5vcmcK | base64 -d>
 
 """Pacman-Mirrors Country Functions"""
-from pacman_mirrors.constants.timezones import countries
-
-from pacman_mirrors.functions.httpFn import get_ip_country
+import os
 from pacman_mirrors.functions.validFn import country_list_is_valid
+from pacman_mirrors.functions.util import get_timezones_country
+
+countries = get_timezones_country()
 
 
 def wash_country_list(country_list: list):
+    """
+    Cleans and standardizes a list of country identifiers.
+
+    This function processes a list of country identifiers, such as country names
+    or codes, and standardizes them by matching against known country data. If a
+    match is found, the standardized country name is included in the output list.
+    Duplicates in the input list are removed in the output.
+
+    Args:
+        country_list: A list of strings, where each string represents a
+            country identifier (e.g., name or code) to be cleaned and standardized.
+
+    Returns:
+        list: A list of unique, standardized country names.
+    """
     washed = []
     for p in country_list:
         c = p.lower()
@@ -35,18 +51,16 @@ def wash_country_list(country_list: list):
         for s in search:
             if s is not None:
                 r = s["name"]
-
         if r not in washed:
             washed.append(r)
-
     return washed
 
 
 def build_country_list(self) -> list:
     """
-    Do a check on the users country selection
+    Do a check on the user's country selection
     :param self:
-    :return: list of valid countries
+    :return: list a of valid countries
     :rtype: list
     """
     # Dear Fellow Manjaro Maintainer:
@@ -54,7 +68,7 @@ def build_country_list(self) -> list:
     # Now, no one knows!
     #
     # If you are trying to optimize
-    # this routine it fails (most surely),
+    # this function it fails (most surely),
     # please increase this counter as a warning for the next maintainer.
     #
     # total_hours_wasted_here = 1
@@ -73,36 +87,34 @@ def build_country_list(self) -> list:
     # this executes when geoip or continent is True
     if not result:
         # get country
-        if self.geoip:
-            country = get_geo_country(self.mirrors.country_pool)
+        if self.tz:
+            country = get_timezone_country()
             if country:
                 result.append(country)
 
-        # get country list for continent
+        # get a country list for the continent
         if self.continent:
             continent_mirror_countries = get_continent_countries(
-                get_geo_continent(), self.mirrors.mirror_pool
+                get_timezone_continent(), self.mirrors.mirror_pool
             )
             if continent_mirror_countries:
                 result = continent_mirror_countries
 
-        # validate result
-        # do not return an empty list
+        # validate the result
+        # but do not return an empty list
         if not result:
             result = self.mirrors.country_pool
-
     return result
 
 
 def get_continent(country: str) -> str:
     """
-    Database query for continent where country belongs
+    Database query for the continent where a country belongs
     :param country:
     """
     continent = (x for x in countries if country in x["name"])
     for x in continent:
         return x["continent"].strip().replace(" ", "_")
-
     return ""
 
 
@@ -118,48 +130,48 @@ def get_continent_countries(continent: str, mirror_pool: list) -> list:
     for m in mirror_countries:
         if m["country"] not in result:
             result.append(m["country"])
-
     return result
 
 
-def get_geo_continent() -> str:
-    """
-    Return geo continent from IP
-    Spaces in name are replaced with underscores
-    """
-    return _get_ip_continent().replace(" ", "_")
+def get_country_from_zone(zone: str) -> str:
+    filtered_zones = [x for x in countries if zone in x["timezones"]]
+    return filtered_zones[0]["name"] if filtered_zones else ""
 
 
-def get_geo_country(country_pool: list) -> str:
+def get_timezone_country() -> str:
     """
-    Return geo country if possible
-    :param country_pool:
-    :return: country name if found - spaces are replaced with underscores
-    """
-    geo_country = _get_ip_country().replace(" ", "_")
-    selection = (x for x in country_pool if geo_country in x)
-    for c in selection:
-        return c
+    Gets the name of the country corresponding to the system's current timezone.
 
-    return ""
+    The function retrieves the system's timezone based on the symbolic link `/etc/localtime`.
+    It then matches this timezone with a list of countries and their associated timezones,
+    returning the name of the country whose timezones include the system's timezone.
 
-
-def _get_ip_country() -> str:
+    Returns:
+        str: The name of the country corresponding to the system's timezone, or an
+        empty string if no matching country is found.
     """
-    Get country from ip address
-    :return: country name
-    """
-    return get_ip_country().strip()
+    localtime = os.readlink("/etc/localtime").split("/")
+    timezone = "{}/{}".format(localtime[-2], localtime[-1])
+    filtered_zones = [x for x in countries if timezone in x["timezones"]]
+    return filtered_zones[0]["name"] if filtered_zones else ""
 
 
-def _get_ip_continent() -> str:
+def get_timezone_continent() -> str:
     """
-    Get continent from ip address
-    :return:
-    """
-    country = _get_ip_country()
-    continents = (x for x in countries if country in x["name"])
-    for continent in continents:
-        return continent["continent"].strip()
+    Determines the continent of the current timezone.
 
+    This function identifies the continent based on the current
+    timezone's country. It performs this by comparing the current
+    country against a list of countries and their corresponding
+    continents.
+
+    Returns:
+        str: The continent of the current timezone, formatted with
+        underscores replacing spaces. Returns an empty string if
+        the continent cannot be determined.
+    """
+    country = get_timezone_country()
+    continent = (x for x in countries if country in x["name"])
+    for x in continent:
+        return x["continent"].strip().replace(" ", "_")
     return ""

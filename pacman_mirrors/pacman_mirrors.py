@@ -55,13 +55,13 @@ class PacmanMirrors:
         self.custom = False
         self.default = False
         self.fasttrack = None
-        self.geoip = False
+        self.tz = False
         self.interactive = False
         self.max_wait_time = 2
         self.mirrors = Mirror()
         self.network = True
         self.no_display = False
-        self.no_mirrorlist = False
+        self.no_mirrorList = False
         self.no_status = False
         self.quiet = False
         self.selected_countries = []
@@ -70,7 +70,7 @@ class PacmanMirrors:
 
     def run(self):
         """
-        # Setup config: retunrs the config dictionary and true/false on custom
+        # Setup config: returns the config dictionary and true/false on custom
         # Check working folders
         # Check for static config
         # Parse commandline
@@ -78,7 +78,7 @@ class PacmanMirrors:
         # aarch64 check
         # sanitize config
         # Update mirror pool
-        # Check if mirrorlist is not to be touched - normal exit
+        # Check if mirrorList is not to be touched - normal exit
         # Handle missing network
         # Load default mirror pool
         # Build mirror list
@@ -113,7 +113,7 @@ class PacmanMirrors:
         # check for arm architecture
         util.aarch64_check(self, write=True)
 
-        # sanitize configuraiton
+        # sanitize the configuration
         if not config_setup.sanitize_config(config=self.config):
             sys.exit(2)
 
@@ -125,7 +125,7 @@ class PacmanMirrors:
 
         # conditional exit
         # used in pacman hook to avoid changing mirror pool and mirror list on updates
-        if self.no_mirrorlist:
+        if self.no_mirrorList:
             sys.exit(0)
 
         # conditional reset CLI configuration

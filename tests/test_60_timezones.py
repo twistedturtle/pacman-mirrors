@@ -1,0 +1,92 @@
+#!/usr/bin/env python
+
+"""
+test_pacman-mirrors
+----------------------------------
+
+Tests for `pacman-mirrors` module.
+"""
+
+import unittest
+from unittest.mock import patch
+
+from pacman_mirrors.functions import pools, config_setup, cliFn, defaultFn
+from pacman_mirrors.pacman_mirrors import PacmanMirrors
+from . import mock_configuration as mock
+
+
+test_conf = {
+    "branch": "stable",
+    "branches": mock.BRANCHES,
+    "config_file": mock.CONFIG_FILE,
+    "custom_file": mock.CUSTOM_FILE,
+    "method": "rank",
+    "mirror_file": mock.MIRROR_FILE,
+    "mirror_list": mock.MIRROR_LIST,
+    "no_update": False,
+    "country_pool": [],
+    "protocols": [],
+    "repo_arch": mock.REPO_ARCH,
+    "status_file": mock.STATUS_FILE,
+    "ssl_verify": True,
+    "test_file": mock.TEST_FILE,
+    "url_mirrors_json": mock.URL_MIRROR_JSON,
+    "url_status_json": mock.URL_STATUS_JSON,
+    "work_dir": mock.WORK_DIR,
+    "arm": False,
+    "timeout": 2,
+}
+
+
+class TestHttpFn(unittest.TestCase):
+    """Pacman Mirrors Test suite"""
+
+    def setUp(self):
+        pass
+
+    @patch("os.getuid")
+    @patch.object(pools, "get_timezone_country")
+    @patch.object(config_setup, "setup_config")
+    def test_geoip_available(
+        self, mock_build_config, mock_get_timezone_country, mock_os_getuid
+    ):
+        """TEST: timezone country IS available"""
+        mock_os_getuid.return_value = 0
+        mock_build_config.return_value = test_conf
+        mock_get_timezone_country.return_value = ["Denmark"]
+        args = "--timezone"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
+            app = PacmanMirrors()
+            app.config = config_setup.setup_config(app)
+            cliFn.parse_command_line(app, True)
+            defaultFn.load_default_mirror_pool(app)
+            app.selected_countries = pools.get_timezone_country()
+            assert app.selected_countries == ["Denmark"]
+
+    @patch("os.getuid")
+    @patch.object(pools, "get_timezone_continent")
+    @patch.object(config_setup, "setup_config")
+    def test_geoip_available(
+        self, mock_build_config, mock_get_timezone_continent, mock_os_getuid
+    ):
+        """TEST: timezone country IS available"""
+        mock_os_getuid.return_value = 0
+        mock_build_config.return_value = test_conf
+        mock_get_timezone_continent.return_value = "Europe"
+        args = "--continent"
+        cmd = mock.TEST_CMD + args
+        with unittest.mock.patch("sys.argv", cmd.split()):
+            app = PacmanMirrors()
+            app.config = config_setup.setup_config(app)
+            cliFn.parse_command_line(app, True)
+            defaultFn.load_default_mirror_pool(app)
+            app.continent = pools.get_timezone_continent()
+            assert app.continent == "Europe"
+
+    def tearDown(self):
+        pass
+
+
+if __name__ == "__main__":
+    unittest.main()

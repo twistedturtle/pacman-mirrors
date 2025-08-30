@@ -29,11 +29,51 @@ from pacman_mirrors.constants import txt
 from pacman_mirrors.functions import httpFn
 
 
+def get_timezones_country() -> list:
+    """
+    Retrieves a list of countries with their associated timezones and related details.
+
+    This function processes and collects country information including timezones,
+    continent, region, country name, and country code. Valid timezones are
+    filtered for each country, and the information is organized into a dictionary
+    format. The result is a list containing these dictionaries for all available
+    countries.
+
+    Returns:
+        list: A list of dictionaries where each dictionary contains the following:
+            - timezones (list): A list of timezone strings associated with a country.
+            - continent (str): The continent derived from the first timezone of the country.
+            - region (str): The region derived from the first timezone of the country.
+            - name (str): The human-readable name of the country.
+            - code (str): The ISO 3166-1 alpha-2 country code.
+
+    """
+    from zoneinfo import ZoneInfo
+    from pytz import country_names, country_timezones
+
+    countries = []
+    for country_code in country_timezones:
+        # Filter timezones for allowed regions
+        filtered_zones = [zone for zone in country_timezones[country_code]]
+
+        if filtered_zones:  # Only process if there are valid timezones
+            pm_timezone = {
+                "timezones": filtered_zones,
+                "continent": ZoneInfo(filtered_zones[0]).key.split("/")[0],
+                "region": ZoneInfo(filtered_zones[0]).key.split("/")[0],
+                "name": country_names[country_code],
+                "code": country_code,
+            }
+            countries.append(pm_timezone)
+    return countries
+
+
 def extract_mirror_url(data: str) -> str:
     """Extract mirror url from data"""
     line = data.strip()
     if line.startswith("Server"):
         return line[9:].replace("$branch/$repo/$arch", "")
+    return ""
 
 
 def get_country(data: str) -> str:
@@ -44,6 +84,7 @@ def get_country(data: str) -> str:
 
     elif line.startswith("## Country") or line.startswith("## Location"):
         return line[19:]
+    return ""
 
 
 def get_protocol(url: str) -> str:
@@ -85,7 +126,7 @@ def aarch64_check(self, write: bool = False) -> None:
         branch = self.config["branch"]
         # branch should start with 'arm-'
         if not branch.startswith("arm-"):
-            # change internal configuration
+            # change the internal configuration
             # branch to arm-{stable,testing,unstable}
             self.config["branch"] = f"arm-{branch}"
             if write:

@@ -66,6 +66,7 @@ HLP_ARG_FASTTRACK = _(
 )
 HLP_ARG_GENERATE = _("Generate mirrorlist with defaults")
 HLP_ARG_GEOIP = _("Get current country using geolocation")
+HLP_ARG_TZ = _("Get mirror country using system timezone")
 HLP_ARG_LIST = _("List all available countries")
 HLP_ARG_INTERACTIVE = _("Generate custom mirrorlist")
 HLP_ARG_METHOD = _("Generation method")

@@ -45,8 +45,8 @@ def parse_command_line(self, gtk_available: bool) -> None:
         f"\t\t\t[-P {txt.PROTO} [{txt.PROTO}...]] [-R] [-U {txt.URL}]"
     )
 
-    nusage = f"\rVersion {__version__}\n{txt.USAGE}:\n pacman-mirrors"
-    usage = f"{nusage} {args_summary}"
+    usage_header = f"\rVersion {__version__}\n{txt.USAGE}:\n pacman-mirrors"
+    usage = f"{usage_header} {args_summary}"
 
     parser = argparse.ArgumentParser(
         formatter_class=CustomHelpFormatter, add_help=False, usage=usage
@@ -80,6 +80,10 @@ def parse_command_line(self, gtk_available: bool) -> None:
 
     methods_exclusive.add_argument(
         "--geoip", action="store_true", help=txt.HLP_ARG_GEOIP
+    )
+
+    methods_exclusive.add_argument(
+        "-tz", "--timezone", action="store_true", help=txt.HLP_ARG_TZ
     )
 
     methods_exclusive.add_argument(
@@ -259,13 +263,20 @@ def parse_command_line(self, gtk_available: bool) -> None:
         self.continent = True
 
     if args.geoip:
-        self.geoip = True
+        print(
+            "'--geoip' argument is deprecated and will be removed in a future release."
+        )
+        print("Replace with '-tz/--timezone' argument.")
+        self.tz = True
+
+    if args.timezone:
+        self.tz = True
 
     if args.method:
         self.config["method"] = args.method
 
     if args.no_mirrorlist:
-        self.no_mirrorlist = True
+        self.no_mirrorList = True
 
     if args.quiet:
         self.quiet = True
@@ -284,7 +295,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
 
     # Generation methods
     if args.country:
-        self.geoip = False
+        self.tz = False
         if "," in args.country[0]:
             self.config["country_pool"] = args.country[0].split(",")
         else:
@@ -300,7 +311,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
             sys.exit(1)
 
         self.fasttrack = args.fasttrack
-        self.geoip = False
+        self.tz = False
         self.config["method"] = "rank"
 
     if args.interactive:
@@ -315,7 +326,6 @@ def parse_command_line(self, gtk_available: bool) -> None:
             or not os.environ.get("DISPLAY")
             or not gtk_available
         ):
-
             self.no_display = True
 
     if args.fc:
