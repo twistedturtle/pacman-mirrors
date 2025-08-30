@@ -20,9 +20,9 @@
 """Pacman-Mirrors Country Functions"""
 import os
 from pacman_mirrors.functions.validFn import country_list_is_valid
-from pacman_mirrors.functions.util import get_timezones_country
+from pacman_mirrors.functions.util import get_zone_countries
 
-countries = get_timezones_country()
+countries = get_zone_countries()
 
 
 def wash_country_list(country_list: list):
@@ -133,9 +133,33 @@ def get_continent_countries(continent: str, mirror_pool: list) -> list:
     return result
 
 
-def get_country_from_zone(zone: str) -> str:
-    filtered_zones = [x for x in countries if zone in x["timezones"]]
-    return filtered_zones[0]["name"] if filtered_zones else ""
+def get_mirror_country_from_zone(zone: str) -> str:
+    """
+    Retrieves the corresponding mirror country for a given timezone.
+
+    This function determines the country that corresponds to a specific timezone
+    (zone) by examining a list of country data and their associated timezones.
+    It uses data from a configuration file to map the timezone to a mirror
+    country, if a match is found.
+
+    Parameters:
+    zone : str
+        The timezone for which the corresponding mirror country is to be found.
+
+    Returns:
+    str
+        The name of the mirror country corresponding to the specified timezone.
+        Returns an empty string if no matching country is found.
+    """
+    import json
+    from pacman_mirrors.functions.jsonFn import read_file_content
+    from pacman_mirrors.config import configuration as config
+    mirror_countries = json.loads(read_file_content(config.MIRROR_FILE, binary=False))
+    country_zones = [x for x in countries if zone in x["timezones"]]
+    if not country_zones:
+        return ""
+    filtered_countries = [x for x in mirror_countries if country_zones[0]["name"] in x["country"]]
+    return filtered_countries[0]["country"] if filtered_countries else ""
 
 
 def get_timezone_country() -> str:

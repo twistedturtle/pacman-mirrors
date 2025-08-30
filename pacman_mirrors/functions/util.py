@@ -21,15 +21,11 @@
 
 import platform
 import shutil
-import subprocess
-import os
-import configparser
 from pacman_mirrors.api import apifn
 from pacman_mirrors.constants import txt
 from pacman_mirrors.functions import httpFn
 
-
-def get_timezones_country() -> list:
+def get_zone_countries() -> list:
     """
     Retrieves a list of countries with their associated timezones and related details.
 
