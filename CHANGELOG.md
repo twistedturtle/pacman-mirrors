@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.2] 2025-09-14
+
+Refactored the internal function build_country_list() to be more pythonic.
+When using `-tx/--timezone` a fallback has been inserted to return a continent-based mirror-pool rather than the complete mirror pool.
+The ultimate fallback is still the entire mirror-pool.
+
+## [5.1] 2025-08-30
+
+Refactor country and timezone handling for mirror selection
+See merge request [applications/pacman-mirrors!159](https://gitlab.manjaro.org/applications/pacman-mirrors/-/merge_requests/159)
+
 ## [5.0] 2025-06-15
 
 This version involves a potential breaking change if an application relies on the Manjaro Linux mirrors data file.
