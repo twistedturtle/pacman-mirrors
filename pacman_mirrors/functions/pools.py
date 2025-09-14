@@ -58,41 +58,53 @@ def wash_country_list(country_list: list):
 
 def build_country_list(self) -> list:
     """
-    Validate and clean the user's country selection or determine the list of countries
-    based on timezone, continent, or a default fallback.
-
-    :return: A list of valid countries.
+    Do a check on the user's country selection
+    :param self:
+    :return: list a of valid countries
+    :rtype: list
     """
-    # If the user selected "all", return the entire country pool
-    if self.selected_countries == ["all"]:
-        return self.mirrors.country_pool
-
-    # Clean and validate user's self.selected_countries
-    if self.selected_countries:
-        self.selected_countries = wash_country_list(self.selected_countries)
-        if country_list_is_valid(
-            onlycountry=self.selected_countries,
-            countrylist=self.mirrors.country_pool,
-            tty=self.tty,
-        ):
-            return self.selected_countries
-
-    # If no valid result so far, attempt fallback based on timezone or continent
+    # Dear Fellow Manjaro Maintainer:
+    # When I wrote this code, only I knew how it worked.
+    # Now, no one knows!
+    #
+    # If you are trying to optimize
+    # this function it fails (most surely),
+    # please increase this counter as a warning for the next maintainer.
+    #
+    # total_hours_wasted_here = 1
     result = []
-    if self.tz:
-        country = get_timezone_country()
-        if country:
-            result = [country]
+    if self.selected_countries:
+        if self.selected_countries == ["all"]:
+            result = self.mirrors.country_pool
         else:
-            self.continent = True  # Trigger a continent-based fallback
+            self.selected_countries = wash_country_list(self.selected_countries)
+            if country_list_is_valid(
+                onlycountry=self.selected_countries,
+                countrylist=self.mirrors.country_pool,
+                tty=self.tty,
+            ):
+                result = self.selected_countries
+    # this executes when geoip or continent is True
+    if not result:
+        # get country
+        if self.tz:
+            country = get_timezone_country()
+            if country:
+                result.append(country)
 
-    # Get a continent-based country list if needed
-    if self.continent and not result:
-        continent = get_timezone_continent()
-        result = get_continent_countries(continent, self.mirrors.mirror_pool)
+        # get a country list for the continent
+        if self.continent:
+            continent_mirror_countries = get_continent_countries(
+                get_timezone_continent(), self.mirrors.mirror_pool
+            )
+            if continent_mirror_countries:
+                result = continent_mirror_countries
 
-    # Fallback to full country pool if the list is still empty
-    return result or self.mirrors.country_pool
+        # validate the result
+        # but do not return an empty list
+        if not result:
+            result = self.mirrors.country_pool
+    return result
 
 
 def get_continent(country: str) -> str:
@@ -142,14 +154,11 @@ def get_mirror_country_from_zone(zone: str) -> str:
     import json
     from pacman_mirrors.functions.jsonFn import read_file_content
     from pacman_mirrors.config import configuration as config
-
     mirror_countries = json.loads(read_file_content(config.MIRROR_FILE, binary=False))
     country_zones = [x for x in countries if zone in x["timezones"]]
     if not country_zones:
         return ""
-    filtered_countries = [
-        x for x in mirror_countries if country_zones[0]["name"] in x["country"]
-    ]
+    filtered_countries = [x for x in mirror_countries if country_zones[0]["name"] in x["country"]]
     return filtered_countries[0]["country"] if filtered_countries else ""
 
 
