@@ -31,12 +31,23 @@ from pacman_mirrors.functions.testMirrorFn import test_mirror_pool
 
 def build_mirror_list(self, limit: int) -> None:
     """
-    Fast-track the mirrorlist by filtering only up-to-date mirrors
-    The function takes into account the branch selected by the user
-      either on commandline or in pacman-mirrors.conf.
-    The function returns a filtered list consisting of a number of mirrors
-    Only mirrors from the active mirror file is used
-      either mirrors.json or custom-mirrors.json
+    Build and update the mirror list by probing and sorting available mirrors.
+
+    Attributes
+    ----------
+    None
+
+    Parameters
+    ----------
+    limit : int
+        The maximum number of mirrors to be processed. If the value is less than or equal
+        to 0, or exceeds the total number of available mirrors, the entire list is used.
+
+    Raises
+    ------
+    IndexError
+        Raised if work_pool is empty during mirror processing, which could occur if no
+        mirrors pass the test stage.
     """
     work_pool = build_pool(self)
     shuffle(work_pool)

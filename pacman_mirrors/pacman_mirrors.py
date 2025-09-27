@@ -50,12 +50,12 @@ _ = i18n.language.gettext
 
 class PacmanMirrors:
     def __init__(self):
+        self.arm = False
         self.config = {"config_file": conf.CONFIG_FILE}
         self.continent = False
         self.custom = False
         self.default = False
         self.fasttrack = None
-        self.tz = False
         self.interactive = False
         self.max_wait_time = 2
         self.mirrors = Mirror()
@@ -66,7 +66,7 @@ class PacmanMirrors:
         self.quiet = False
         self.selected_countries = []
         self.tty = False
-        self.arm = False
+        self.use_timezone = False
 
     def run(self):
         """

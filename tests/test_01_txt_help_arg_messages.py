@@ -62,9 +62,9 @@ class TestTextHelpArgMessages(unittest.TestCase):
         """TEST: txt HELP ARG GENERATE"""
         assert txt.HLP_ARG_GENERATE is not None
 
-    def test_txt_help_arg_geoip(self):
-        """TEST: txt HELP ARG GEOIP"""
-        assert txt.HLP_ARG_GEOIP is not None
+    def test_txt_help_arg_timezone(self):
+        """TEST: txt HELP ARG TIMEZONE"""
+        assert txt.HLP_ARG_TIMEZONE is not None
 
     def test_txt_help_arg_list(self):
         """TEST: txt HELP ARG LIST"""

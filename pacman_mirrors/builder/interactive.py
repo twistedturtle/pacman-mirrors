@@ -39,9 +39,14 @@ from pacman_mirrors.functions.outputFn import (
 
 def build_mirror_list(self) -> None:
     """
-    Prompt the user to select the mirrors with an interface.
-    Outputs a "custom" mirror file
-    Outputs a pacman mirrorlist,
+    Builds a mirror list for the system based on the provided configuration and user
+    interactions. This method involves preparation of a work list, optional ranking
+    or shuffling, invoking appropriate user interfaces for interaction, processing
+    user selections, and optionally writing the results back to the system's mirror
+    configuration.
+
+    Raises:
+        IndexError: When working on selections or mirror lists that may be empty.
     """
     worklist = build_pool(self)
 

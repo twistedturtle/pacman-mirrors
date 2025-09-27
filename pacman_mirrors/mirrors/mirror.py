@@ -62,6 +62,10 @@ class Mirror:
         if country not in self.country_pool:
             self.country_pool.append(country)
 
+        continent = get_continent(country.replace("_", " "))
+        if continent is None:
+            continent = "CDN"
+
         # translate negative integer in status.json
         if last_sync == -1:
             last_sync = txt.SERVER_BAD  # "9999:99"
@@ -69,7 +73,6 @@ class Mirror:
 
         # sort protocols in reversed order https,http,ftps,ftp
         protocols = sorted(protocols, reverse=True)
-        continent = get_continent(country.replace("_", " "))
 
         # add to pool
         self.mirror_pool.append(

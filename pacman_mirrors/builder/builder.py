@@ -32,9 +32,19 @@ from pacman_mirrors.functions.filter_mirror_status_functions import (
 
 def build_pool(self) -> list:
     """
-    Build the pool
-    :param self:
-    :return: filtered list of available mirrors
+    Builds and returns a filtered list of mirrors based on several criteria.
+
+    The method processes a list of mirrors by applying various filters such as
+    removing bad and error-prone mirrors, filtering based on country, protocol,
+    and user configuration. It optionally considers factors like synchronization
+    interval and user branches in the filtering process.
+
+    Returns:
+        list: A list of mirrors that match the applied filters.
+
+    Raises:
+        IndexError: Raised when protocol configuration is accessed without any
+        available protocols.
     """
 
     # remove known bad mirrors - last sync 9999:99

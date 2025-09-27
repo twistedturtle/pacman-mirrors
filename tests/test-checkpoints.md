@@ -2,11 +2,11 @@
 
 ## Geoip
 
-* `--geoip -b stable -o geoip-stable-mirrorlist.txt`
-  * check `geoip-stable-mirrorlist.txt` Should contain mirrors/stable from geoip country
+* `--timezone -b stable -o timezone-stable-mirrorlist.txt`
+  * check `timezone-stable-mirrorlist.txt` Should contain mirrors/stable from geoip country
   * check `/etc/pacman-mirrors.conf` OnlyCountry should equal nothing
 
-* `--geoip -b testing -o geoip-testing-mirrorlist.txt`
+* `--timezone -b testing -o timezone-testing-mirrorlist.txt`
   * check `geoip-testing-mirrorlist.txt` Should contain mirrors/testing from geoip country
   * check `/etc/pacman-mirrors.conf` OnlyCountry should equal nothing
 

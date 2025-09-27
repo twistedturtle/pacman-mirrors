@@ -92,7 +92,7 @@ def test_mirror_pool(self, worklist: list, limit=None) -> list:
                 url=mirror_proto["url"],
                 config=self.config,
                 tty=self.tty,
-                maxwait=self.max_wait_time,
+                timeout=self.max_wait_time,
                 quiet=self.quiet,
                 ssl_verify=ssl_verify,
             )

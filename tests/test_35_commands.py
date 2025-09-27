@@ -35,17 +35,17 @@ class TestDefaultConfig(unittest.TestCase):
         res = _test_command_works_properly(args)
         raise_error(res[0], res[1])
 
-    def test_gioip(self):
+    def test_timezone(self):
         for i in branches:
-            args = f"--geoip --api -B {i}"
+            args = f"--timezone --api -B {i}"
             res = _test_command_works_properly(args)
             raise_error(res[0], res[1])
 
     def test_fasttrack(self):
         for i in branches:
             args = f"-f 5 --api -B {i}"
-        res = _test_command_works_properly(args)
-        raise_error(res[0], res[1])
+            res = _test_command_works_properly(args)
+            raise_error(res[0], res[1])
 
     def test_default(self):
         for i in branches:

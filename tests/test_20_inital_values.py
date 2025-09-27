@@ -48,7 +48,7 @@ class TestInitialValues(unittest.TestCase):
         cmd = mock.TEST_CMD + ARGS
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
-            assert app.tz is False
+            assert app.use_timezone is False
 
     @patch("os.getuid")
     def test_initial_interactive(self, mock_os_getuid):

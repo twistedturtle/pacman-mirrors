@@ -135,14 +135,14 @@ def download_mirrors(config: dict) -> tuple:
     return fetchmirrors, fetchstatus
 
 
-def get_ip_country(maxwait: int = 2) -> str:
+def get_ip_country(timeout: int = 2) -> str:
     """
     Get the user country from connection IP (might be VPN who knows)
     :return: country name
     """
     try:
         url = "https://get.geojs.io/v1/ip/country/full"
-        resp = requests.get(url, timeout=maxwait)
+        resp = requests.get(url, timeout=timeout)
         resp.raise_for_status()
 
     except requests.exceptions.ConnectionError:
@@ -151,14 +151,14 @@ def get_ip_country(maxwait: int = 2) -> str:
     return resp.text
 
 
-def get_http_response(url: str, maxwait: int) -> str:
+def get_http_response(url: str, timeout: int) -> str:
     """
     Used for http mirrors
     :return: bool
     """
     message = ""
     try:
-        resp = requests.get(url=url, headers=headers(), timeout=maxwait)
+        resp = requests.get(url=url, headers=headers(), timeout=timeout)
         resp.raise_for_status()
         # _ = resp.text
     except (requests.exceptions.ConnectionError,) as err:
@@ -170,14 +170,14 @@ def get_http_response(url: str, maxwait: int) -> str:
     return message
 
 
-def get_ftp_response(url: str, maxwait: int) -> str:
+def get_ftp_response(url: str, timeout: int) -> str:
     """
     Used for ftp response
     :return:
     """
     message = ""
     try:
-        with closing(request.urlopen(url, timeout=maxwait)) as ftpReq:
+        with closing(request.urlopen(url, timeout=timeout)) as ftpReq:
             with open(conf.WORK_DIR + "/.testresponse", "wb") as testFile:
                 shutil.copyfileobj(ftpReq, testFile)
 
@@ -196,7 +196,7 @@ def get_mirror_response(
     url: str,
     config: dict,
     tty: bool = False,
-    maxwait: int = 2,
+    timeout: int = 2,
     count: int = 1,
     quiet: bool = False,
     ssl_verify: bool = True,
@@ -206,7 +206,7 @@ def get_mirror_response(
     :param ssl_verify:
     :param tty:
     :param url:
-    :param maxwait:
+    :param timeout:
     :param count:
     :param quiet:
     :returns: always return a float value with response time
@@ -228,11 +228,11 @@ def get_mirror_response(
 
     probe_start = time.time()
     if probe_url.startswith("http"):
-        message = get_http_response(url=probe_url, maxwait=maxwait)
+        message = get_http_response(url=probe_url, timeout=timeout)
         probe_stop = time.time()
 
     if probe_url.startswith("ftp"):
-        message = get_ftp_response(url=probe_url, maxwait=maxwait)
+        message = get_ftp_response(url=probe_url, timeout=timeout)
         probe_stop = time.time()
 
     if message and not quiet:
@@ -244,9 +244,9 @@ def get_mirror_response(
     return response_time
 
 
-def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
+def check_internet_connection(tty: bool = False, timeout: int = 2) -> bool:
     """Check for internet connection
-    @param maxwait:
+    @param timeout:
     @param tty:
     """
 
@@ -258,7 +258,7 @@ def check_internet_connection(tty: bool = False, maxwait: int = 2) -> bool:
 
     for host in conf.INET_CONN_CHECK_URLS:
         try:
-            requests.get(host, headers=headers(), timeout=maxwait)
+            requests.get(host, headers=headers(), timeout=timeout)
             return True
         except (requests.exceptions.HTTPError, requests.exceptions.SSLError) as err:
             # this indicates an active internet connection

@@ -58,10 +58,14 @@ def wash_country_list(country_list: list):
 
 def build_country_list(self) -> list:
     """
-    Do a check on the user's country selection
-    :param self:
-    :return: list a of valid countries
-    :rtype: list
+    Builds and returns a list of countries based on the provided configuration,
+    such as selected countries, timezone, or continent. The method attempts
+    to determine appropriate countries for mirror usage by validating and
+    processing input data, and applying fallback mechanisms when necessary.
+
+    Returns:
+        list: A list of country names determined by the provided configuration
+        and mirror settings.
     """
     # Dear Fellow Manjaro Maintainer:
     # When I wrote this code, only I knew how it worked.
@@ -74,6 +78,7 @@ def build_country_list(self) -> list:
     # total_hours_wasted_here = 1
     result = []
     if self.selected_countries:
+        # this is passed in from the -c/--country commandline argument
         if self.selected_countries == ["all"]:
             result = self.mirrors.country_pool
         else:
@@ -84,18 +89,22 @@ def build_country_list(self) -> list:
                 tty=self.tty,
             ):
                 result = self.selected_countries
-    # this executes when geoip or continent is True
+
+    # this executes when timezone or continent is True
     if not result:
         # get country
-        if self.tz:
-            country = get_timezone_country()
+        if self.use_timezone:
+            country = get_mirror_country_from_zone(get_timezone())
             if country:
                 result.append(country)
+            else:
+                # fallback to continent
+                self.continent = True
 
         # get a country list for the continent
         if self.continent:
             continent_mirror_countries = get_continent_countries(
-                get_timezone_continent(), self.mirrors.mirror_pool
+                get_timezone_continent(get_timezone()), self.mirrors.mirror_pool
             )
             if continent_mirror_countries:
                 result = continent_mirror_countries
@@ -103,7 +112,15 @@ def build_country_list(self) -> list:
         # validate the result
         # but do not return an empty list
         if not result:
-            result = self.mirrors.country_pool
+            # Verify if we can fall back to using CDN.
+            # One or more CDN 'Global' mirrors can be found in the mirror pool
+            cdn = [x for x in self.mirrors.country_pool if x == "Global"]
+            if cdn:
+                result = cdn
+            else:
+                result = self.mirrors.country_pool
+
+    # return the final result
     return result
 
 
@@ -154,33 +171,52 @@ def get_mirror_country_from_zone(zone: str) -> str:
     import json
     from pacman_mirrors.functions.jsonFn import read_file_content
     from pacman_mirrors.config import configuration as config
+
     mirror_countries = json.loads(read_file_content(config.MIRROR_FILE, binary=False))
     country_zones = [x for x in countries if zone in x["timezones"]]
     if not country_zones:
         return ""
-    filtered_countries = [x for x in mirror_countries if country_zones[0]["name"] in x["country"]]
+    filtered_countries = [
+        x for x in mirror_countries if country_zones[0]["name"] in x["country"]
+    ]
     return filtered_countries[0]["country"] if filtered_countries else ""
 
 
-def get_timezone_country() -> str:
+def get_timezone() -> str:
     """
-    Gets the name of the country corresponding to the system's current timezone.
+    Provides a method to retrieve the system's current timezone.
 
-    The function retrieves the system's timezone based on the symbolic link `/etc/localtime`.
-    It then matches this timezone with a list of countries and their associated timezones,
-    returning the name of the country whose timezones include the system's timezone.
+    The function extracts the timezone information by reading the symbolic
+    link at "/etc/localtime" and parsing its path. The resulting timezone
+    string follows the format "<Region>/<City>".
 
     Returns:
-        str: The name of the country corresponding to the system's timezone, or an
-        empty string if no matching country is found.
+        str: The current timezone in the format "<Region>/<City>".
     """
     localtime = os.readlink("/etc/localtime").split("/")
-    timezone = "{}/{}".format(localtime[-2], localtime[-1])
+    return "{}/{}".format(localtime[-2], localtime[-1])
+
+
+def get_timezone_country(timezone: str) -> str:
+    """
+    Fetches the country name corresponding to the given timezone.
+
+    Given a timezone, this function matches it against a predefined list of
+    countries and their associated timezones to find the country name. If no
+    match is found, it returns an empty string.
+
+    Args:
+        timezone (str): The timezone string to find the corresponding country for.
+
+    Returns:
+        str: The name of the country corresponding to the given timezone.
+             Returns an empty string if no match is found.
+    """
     filtered_zones = [x for x in countries if timezone in x["timezones"]]
     return filtered_zones[0]["name"] if filtered_zones else ""
 
 
-def get_timezone_continent() -> str:
+def get_timezone_continent(timezone: str) -> str:
     """
     Determines the continent of the current timezone.
 
@@ -194,7 +230,7 @@ def get_timezone_continent() -> str:
         underscores replacing spaces. Returns an empty string if
         the continent cannot be determined.
     """
-    country = get_timezone_country()
+    country = get_timezone_country(timezone)
     continent = (x for x in countries if country in x["name"])
     for x in continent:
         return x["continent"].strip().replace(" ", "_")
