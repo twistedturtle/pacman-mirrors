@@ -65,10 +65,10 @@ HLP_ARG_FASTTRACK = _(
     "Generate mirrorlist with a number of up-to-date mirrors. Overrides"
 )
 HLP_ARG_GENERATE = _("Generate mirrorlist with defaults")
-HLP_ARG_GEOIP = _("Get current country using geolocation")
-HLP_ARG_TZ = _("Get mirror country using system timezone")
+HLP_ARG_TIMEZONE = _("Get mirror country using system timezone")
 HLP_ARG_LIST = _("List all available countries")
 HLP_ARG_INTERACTIVE = _("Generate custom mirrorlist")
+HLP_ARG_INTERVAL = _("Max. number of hours since last sync")
 HLP_ARG_METHOD = _("Generation method")
 HLP_ARG_NO_MIRRORLIST = _("Use to skip generation of mirrorlist")
 HLP_ARG_QUIET = _("Quiet mode - less verbose output")
@@ -76,6 +76,8 @@ HLP_ARG_STATUS = _("Ignore mirror branch status")
 HLP_ARG_SYNC = _("Syncronize pacman databases")
 HLP_ARG_TIMEOUT = _("Maximum waiting time for server response")
 HLP_ARG_VERSION = _("Print the pacman-mirrors version")
+HLP_ARG_MIRROR_STATUS = _("Status for the current mirror list.")
+HLP_ARG_LIST_COUNTRIES = _("Lists configured mirror countries")
 # GENERAL MESSAGES
 API_CONF_RE_BRANCH = _("Branch in config is changed")
 API_CONF_PROTOCOLS = _("Protocols in config is changed")
@@ -147,7 +149,7 @@ ARGUMENT_API = "-a/--api"
 ARGUMENT_DEFAULT = "-d/--default"
 ARGUMENT_INTERACTIVE = "-i/--interactive"
 HOUSTON = "Houston?! We have a problem."
-OVERRIDE_OPT = ": --geoip, --method"
+OVERRIDE_OPT = ": --timezone, --method"
 REPO_SERVER = "repo.manjaro.org"
 MODIFY_CUSTOM = "pacman-mirrors -id"
 MODIFY_DEFAULT = f"pacman-mirrors -f [{NUMBER}]"

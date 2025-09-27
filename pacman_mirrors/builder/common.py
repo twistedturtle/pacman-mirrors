@@ -33,18 +33,33 @@ from pacman_mirrors.functions.outputFn import (
 
 def build_mirror_list(self) -> None:
     """
-    Generate common mirrorlist
+    Builds a list of mirror servers based on the configuration and selected countries.
+
+    This function processes a pool of available mirrors, selects or ranks them based
+    on user preferences and configurations, and writes the finalized list to the appropriate
+    configuration file. When using custom methods, appropriate messages are displayed to inform
+    the user about required manual actions.
+
+    Raises:
+        IndexError: Raised if an empty list is accessed during processing steps.
+
+    Parameters:
+        None
+
+    Returns:
+        None
     """
     work_pool = build_pool(self)
 
-    # Check the length of selected_countries against the full countrylist
-    # If selected_countries is the lesser then we build a custom pool file
+    # Check selected_countries against the full country list
+    # If selected_countries is the lesser of the two, then we build a custom pool file
     if len(self.selected_countries) < len(self.mirrors.country_pool):
-        try:
-            _ = self.selected_countries[0]
-            write_custom_mirrors_json(self=self, selected_mirrors=work_pool)
-        except IndexError:
-            pass
+        if self.custom:
+            try:
+                _ = self.selected_countries[0]
+                write_custom_mirrors_json(self=self, selected_mirrors=work_pool)
+            except IndexError:
+                print("mirror pool is empty")
 
     if self.config["method"] == "rank":
         # TODO variables mirror function local and each other
@@ -55,7 +70,7 @@ def build_mirror_list(self) -> None:
     else:
         shuffle(work_pool)
 
-    # Write mirrorlist
+    # Write the mirror list
     try:
         _ = work_pool[0]
         write_pacman_mirror_list(self=self, selected_servers=work_pool)

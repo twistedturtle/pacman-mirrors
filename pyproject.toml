@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pacman_mirrors"
-version = "5.1"
+version = "5.2"
 description = "Mirrolist generator for Manjaro Linux."
 authors = ["Roland Singer, Esclapion, Philip Müller, Ramon Buldó, Hugo Posnic, Frede Hundewadt"]
 readme = "README.md"

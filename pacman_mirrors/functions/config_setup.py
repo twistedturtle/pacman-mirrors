@@ -35,6 +35,7 @@ def setup_config(self) -> tuple:
     custom = False
     # default config
     config: dict[str | Any, str | tuple[str, str, str] | list[Any] | bool | Any] = {
+        "arm": False,
         "branch": "stable",
         "branches": conf.BRANCHES,
         "config_file": conf.CONFIG_FILE,
@@ -42,7 +43,6 @@ def setup_config(self) -> tuple:
         "custom_file": conf.CUSTOM_FILE,
         "enterprise": False,
         "method": "rank",
-        "work_dir": conf.WORK_DIR,
         "mirror_file": conf.MIRROR_FILE,
         "mirror_list": conf.MIRROR_LIST,
         "no_update": False,
@@ -53,10 +53,10 @@ def setup_config(self) -> tuple:
         "statistic": False,
         "status_file": conf.STATUS_FILE,
         "test_file": conf.TEST_FILE,
+        "timeout": 2,
         "url_mirrors_json": conf.URL_MIRROR_JSON,
         "url_status_json": conf.URL_STATUS_JSON,
-        "arm": False,
-        "timeout": 2,
+        "work_dir": conf.WORK_DIR,
     }
     # try to replace default entries by reading conf file
     try:

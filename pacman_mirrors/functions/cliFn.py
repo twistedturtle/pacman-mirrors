@@ -39,7 +39,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
 
     args_summary = (
         f"[-h] [-f [{txt.NUMBER}]] [-i [-d]] [-m {txt.METHOD}] [--status]\n"
-        f"\t\t[-c {txt.COUNTRY} [{txt.COUNTRY}...] | [--geoip] | [--continent]]\n"
+        f"\t\t[-c {txt.COUNTRY} [{txt.COUNTRY}...] | [--timezone] | [--continent]]\n"
         f"\t\t[-l] [-lc] [-q] [-t {txt.SECONDS}] [-v] [-n]\n"
         f"\t\t[--api] [-S/-B {txt.BRANCH}] [-p {txt.PREFIX}]\n"
         f"\t\t\t[-P {txt.PROTO} [{txt.PROTO}...]] [-R] [-U {txt.URL}]"
@@ -79,11 +79,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
     )
 
     methods_exclusive.add_argument(
-        "--geoip", action="store_true", help=txt.HLP_ARG_GEOIP
-    )
-
-    methods_exclusive.add_argument(
-        "-tz", "--timezone", action="store_true", help=txt.HLP_ARG_TZ
+        "-z", "--timezone", action="store_true", help=txt.HLP_ARG_TIMEZONE
     )
 
     methods_exclusive.add_argument(
@@ -160,7 +156,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
         "-lc",
         "--country-config",
         action="store_true",
-        help="lists configured mirror countries",
+        help=txt.HLP_ARG_LIST_COUNTRIES,
     )
 
     misc.add_argument(
@@ -183,17 +179,11 @@ def parse_command_line(self, gtk_available: bool) -> None:
 
     misc.add_argument("--no-color", action="store_true")
 
-    misc.add_argument(
-        "--interval", type=int, help="Max. number of hours since last sync"
-    )
+    misc.add_argument("--interval", type=int, help=txt.HLP_ARG_INTERVAL)
 
-    misc.add_argument(
-        "-g", action="store_true", help="Create mirror list from active pool."
-    )
+    misc.add_argument("-g", action="store_true", help=txt.HLP_ARG_GENERATE)
 
-    misc.add_argument(
-        "--status", action="store_true", help="Status for the current mirror list."
-    )
+    misc.add_argument("--status", action="store_true", help=txt.HLP_ARG_MIRROR_STATUS)
 
     misc.add_argument("-fc", action="store_true")
 
@@ -262,15 +252,8 @@ def parse_command_line(self, gtk_available: bool) -> None:
     if args.continent:
         self.continent = True
 
-    if args.geoip:
-        print(
-            "'--geoip' argument is deprecated and will be removed in a future release."
-        )
-        print("Replace with '-tz/--timezone' argument.")
-        self.tz = True
-
     if args.timezone:
-        self.tz = True
+        self.use_timezone = True
 
     if args.method:
         self.config["method"] = args.method
@@ -295,7 +278,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
 
     # Generation methods
     if args.country:
-        self.tz = False
+        self.use_timezone = False
         if "," in args.country[0]:
             self.config["country_pool"] = args.country[0].split(",")
         else:
@@ -305,13 +288,13 @@ def parse_command_line(self, gtk_available: bool) -> None:
             customFn.delete_custom_pool(self)
 
     if args.fasttrack is not None:
+        self.use_timezone = False
         if args.no_status:
             print(f"Version {__version__}\nUSAGE:\n pacman-mirrors {args_summary}")
             print(f"{txt.FASTTRACK_ARGUMENTS_ERROR}")
             sys.exit(1)
 
         self.fasttrack = args.fasttrack
-        self.tz = False
         self.config["method"] = "rank"
 
     if args.interactive:

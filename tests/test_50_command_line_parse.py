@@ -88,7 +88,7 @@ class TestCommandLineParse(unittest.TestCase):
             app.config["config_file"] = mock.CONFIG_FILE
             app.config = config_setup.setup_config()
             cliFn.parse_command_line(app, True)
-            assert app.tz is True
+            assert app.use_timezone is True
 
     @patch("os.getuid")
     @patch.object(config_setup, "setup_config")

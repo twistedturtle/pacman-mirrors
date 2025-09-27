@@ -9,7 +9,7 @@ pacman-mirrors - generate pacman mirrorlist for Manjaro Linux
 # SYNOPSIS
 ```
  pacman-mirrors [-h] [-f [NUMBER]] [-i [-d]] [-m METHOD] [--status]
-                [-c COUNTRY [COUNTRY...] | [--geoip] | [--continent]]
+                [-c COUNTRY [COUNTRY...] | [--timezone] | [--continent]]
                 [-l] [-lc] [-q] [-t SECONDS] [-v] [-n]
                 [--api] [-S/-B BRANCH] [-p PREFIX]
                         [-P PROTO [PROTO...]] [-R] [-U URL]
@@ -107,7 +107,7 @@ The reason: You have limited your mirror pool too much and none of your selected
 
 Some options are mutual exclusive and will throw an argument error:
 
-- `--country`, `--fasttrack`, `--geoip`, `--continent`
+- `--country`, `--fasttrack`, `--timezone`, `--continent`
 - `--fasttrack`, `-no-status`
 
 Some arguments require another argument present to have effect.
@@ -148,7 +148,7 @@ the randomly selected mirrors are ranked by their current access time.
 The higher number the higher possibility of a fast mirror.
 If a number is given the resulting mirrorlist contains that number of servers.
 
-\--geoip
+\--timezone
 :   Use geolocation. If not possible use defined mirror pool. Custom pool if defined
 
 -i, \--interactive [--default]

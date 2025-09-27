@@ -26,7 +26,7 @@ from pacman_mirrors.functions import fileFn
 
 
 def load_config_mirror_pool(self) -> None:
-    if self.tz or self.continent:
+    if self.use_timezone or self.continent:
         customFn.delete_custom_pool(self)
     if customFn.check_custom_pool(self) and not self.config["country_pool"]:
         customFn.load_custom_pool(self)
