@@ -61,9 +61,13 @@ def download_mirrors(config: dict) -> tuple:
     :returns: tuple with bool for mirrors.json and status.json
     :rtype: tuple
     """
-    fetchmirrors = True
-    fetchstatus = True
+    # assume all went well
+    got_mirrors = True
+    got_status = True
     message = ""
+
+    # -----------------------------------------------------------
+    # try to fetch mirrors.json
     try:
         util.msg(
             message=f"=> Mirror pool: {config['url_mirrors_json']}", urgency=txt.INF_CLR
@@ -77,18 +81,18 @@ def download_mirrors(config: dict) -> tuple:
             )
 
             resp.raise_for_status()
-            mirrorlist = resp.json()
-            tempfile = config["work_dir"] + "/.temp.file"
-            jsonFn.json_dump_file(mirrorlist, tempfile)
+            mirrors_json = resp.json()
+            temp_file = config["work_dir"] + "/.temp.file"
+            jsonFn.json_dump_file(mirrors_json, temp_file)
             filecmp.clear_cache()
-
+            # check if the file was downloaded and parsed correct
             if fileFn.check_file(conf.WORK_DIR, folder=True):
                 if not fileFn.check_file(config["mirror_file"]):
-                    jsonFn.json_dump_file(mirrorlist, config["mirror_file"])
-                elif not filecmp.cmp(tempfile, config["mirror_file"]):
-                    jsonFn.json_dump_file(mirrorlist, config["mirror_file"])
+                    jsonFn.json_dump_file(mirrors_json, config["mirror_file"])
+                elif not filecmp.cmp(temp_file, config["mirror_file"]):
+                    jsonFn.json_dump_file(mirrors_json, config["mirror_file"])
 
-            os.remove(tempfile)
+            os.remove(temp_file)
 
     except (json.JSONDecodeError,) as err:
         message = f"Invalid JSON data: {err}"
@@ -100,11 +104,13 @@ def download_mirrors(config: dict) -> tuple:
         message = f"Connection {err}"
 
     if message != "":
-        fetchmirrors = False
+        # mirrors.json failed
+        got_mirrors = False
         util.msg(message=message, urgency=txt.ERR_CLR, newline=True)
         message = ""
 
-    # fetch status.json
+    # -----------------------------------------------------------
+    # try to fetch status.json
     try:
         util.msg(
             message=f"=> Mirror status: {config['url_status_json']}",
@@ -116,8 +122,8 @@ def download_mirrors(config: dict) -> tuple:
             timeout=config["timeout"],
         )
 
-        statuslist = resp.json()
-        jsonFn.write_json_file(statuslist, config["status_file"])
+        status_json = resp.json()
+        jsonFn.write_json_file(status_json, config["status_file"])
 
     except (json.JSONDecodeError,) as err:
         message = f"Invalid JSON data: {err}"
@@ -129,10 +135,11 @@ def download_mirrors(config: dict) -> tuple:
         message = f"Connection {err}"
 
     if message != "":
-        fetchstatus = False
+        # status.json failed
+        got_status = False
         util.msg(message=message, urgency=txt.ERR_CLR, newline=True)
 
-    return fetchmirrors, fetchstatus
+    return got_mirrors, got_status
 
 
 def get_ip_country(timeout: int = 2) -> str:
@@ -250,21 +257,14 @@ def check_internet_connection(tty: bool = False, timeout: int = 2) -> bool:
     @param tty:
     """
 
-    def output_err(hostname, error, emit: bool = True):
-        if emit:
-            print("")
-            util.msg(f"{hostname} '{error}'", urgency=txt.WRN_CLR, tty=tty)
-            print("")
-
+    error_msg = ""
     for host in conf.INET_CONN_CHECK_URLS:
         try:
             requests.get(host, headers=headers(), timeout=timeout)
             return True
         except (requests.exceptions.HTTPError, requests.exceptions.SSLError) as err:
             # this indicates an active internet connection
-            # otherwilse http errors would not be possible
-            # this can return true
-            # an internet connection is available
+            # otherwise http errors would not be possible
             # the host didn't respond well to https request
             return True
         except (
@@ -275,11 +275,20 @@ def check_internet_connection(tty: bool = False, timeout: int = 2) -> bool:
             # until the configuration of
             # the ping server is corrected
             # we could neglect the error
-            return False
+            # don't return False as it will cause a premature exit
+            # return False
+            # collect error message(s)
+            error_msg = error_msg + "\n" + f"Connection: '{host}' => '{err}'"
         except Exception as err:
-            output_err(host, err, emit=True)
-            return False
+            # don't return False as it will cause a premature exit
+            # return False
+            # collect error message(s)
+            error_msg = error_msg + "\n" + f"Connection: '{host}' => '{err}'"
 
+    if error_msg:
+        util.msg(error_msg, urgency=txt.WRN_CLR, tty=tty)
+
+    # the only valid result at this point is False
     return False
 
 
@@ -302,38 +311,34 @@ def download_mirror_pool(config: dict, tty: bool = False, quiet: bool = False) -
     :returns: tuple with True/False for mirrors.json and status.json
     :rtype: tuple
     """
-    result = None
-    connected = check_internet_connection(tty=tty)
-    if connected:
+    if not quiet:
+        util.msg(
+            message=f"{txt.DOWNLOADING_MIRROR_FILE} Manjaro",
+            urgency=txt.INF_CLR,
+            tty=tty,
+        )
+
+    result = download_mirrors(config)
+
+    if not fileFn.check_file(config["status_file"]):
         if not quiet:
             util.msg(
-                message=f"{txt.DOWNLOADING_MIRROR_FILE} Manjaro",
-                urgency=txt.INF_CLR,
+                message=f"{txt.MIRROR_FILE} {config['status_file']} {txt.IS_MISSING}",
+                urgency=txt.WRN_CLR,
                 tty=tty,
             )
 
-        result = download_mirrors(config)
-    else:
-        if not fileFn.check_file(config["status_file"]):
-            if not quiet:
-                util.msg(
-                    message=f"{txt.MIRROR_FILE} {config['status_file']} {txt.IS_MISSING}",
-                    urgency=txt.WRN_CLR,
-                    tty=tty,
-                )
+            util.msg(
+                message=f"{txt.FALLING_BACK} {conf.MIRROR_FILE}",
+                urgency=txt.WRN_CLR,
+                tty=tty,
+            )
+        result = (True, False)
 
-                util.msg(
-                    message=f"{txt.FALLING_BACK} {conf.MIRROR_FILE}",
-                    urgency=txt.WRN_CLR,
-                    tty=tty,
-                )
+    if not fileFn.check_file(config["mirror_file"]):
+        if not quiet:
+            util.msg(message=f"{txt.HOUSTON}", urgency=txt.HOUSTON, tty=tty)
 
-            result = (True, False)
-
-        if not fileFn.check_file(config["mirror_file"]):
-            if not quiet:
-                util.msg(message=f"{txt.HOUSTON}", urgency=txt.HOUSTON, tty=tty)
-
-            result = (False, False)
+        result = (False, False)
 
     return result
