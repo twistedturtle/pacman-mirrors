@@ -96,7 +96,9 @@ def validate_selected_countries(self) -> list:
         if self.config["selected_countries"] == ["all"]:
             result = self.mirrors.country_pool
         else:
-            self.config["selected_countries"] = wash_country_list(self.config["selected_countries"])
+            self.config["selected_countries"] = wash_country_list(
+                self.config["selected_countries"]
+            )
             if country_list_is_valid(
                 onlycountry=self.config["selected_countries"],
                 countrylist=self.mirrors.country_pool,
