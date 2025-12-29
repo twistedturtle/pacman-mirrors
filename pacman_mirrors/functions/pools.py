@@ -67,28 +67,19 @@ def build_country_list(self) -> list:
         list: A list of country names determined by the provided configuration
         and mirror settings.
     """
-    # Dear Fellow Manjaro Maintainer:
-    # When I wrote this code, only I knew how it worked.
-    # Now, no one knows!
-    #
-    # If you are trying to optimize
-    # this function it fails (most surely),
-    # please increase this counter as a warning for the next maintainer.
-    #
-    # total_hours_wasted_here = 1
+    # print("build_country_list::self.selected_countries is ", self.selected_countries)
+    # print("build_country_list::self.config['country_pool']", self.config["country_pool"])
     result = []
-    if self.selected_countries:
-        # this is passed in from the -c/--country commandline argument
-        if self.selected_countries == ["all"]:
-            result = self.mirrors.country_pool
-        else:
-            self.selected_countries = wash_country_list(self.selected_countries)
-            if country_list_is_valid(
-                onlycountry=self.selected_countries,
-                countrylist=self.mirrors.country_pool,
-                tty=self.tty,
-            ):
-                result = self.selected_countries
+    if not self.config["country_pool"]:
+        result = self.mirrors.country_pool
+    else:
+        self.selected_countries = wash_country_list(self.selected_countries)
+        if country_list_is_valid(
+            onlycountry=self.selected_countries,
+            countrylist=self.mirrors.country_pool,
+            tty=self.tty,
+        ):
+            result = self.selected_countries
 
     # this executes when timezone or continent is True
     if not result:

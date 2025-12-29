@@ -25,7 +25,6 @@
 
 import importlib.util
 import sys
-import logging
 
 from pacman_mirrors.functions import util
 from pacman_mirrors.builder import common, fasttrack, interactive
