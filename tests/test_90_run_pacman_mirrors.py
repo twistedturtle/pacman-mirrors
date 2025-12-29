@@ -36,6 +36,9 @@ test_conf = {
     "url_status_json": mock.URL_STATUS_JSON,
     "arm": False,
     "timeout": 2,
+    "timezone": False,
+    "continent": False,
+    "selected_countries": [],
 }
 
 
@@ -55,7 +58,7 @@ class TestPacmanMirrors(unittest.TestCase):
         cmd = mock.TEST_CMD + args
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
-            app.config = config_setup.setup_config()
+            app.config = config_setup.setup_config(app)
             fileFn.create_dir(test_conf["work_dir"])
             cliFn.parse_command_line(app, True)
             httpFn.download_mirror_pool(app.config)
@@ -72,7 +75,7 @@ class TestPacmanMirrors(unittest.TestCase):
         cmd = mock.TEST_CMD + args
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
-            app.config = config_setup.setup_config()
+            app.config = config_setup.setup_config(app)
             fileFn.create_dir(test_conf["work_dir"])
             cliFn.parse_command_line(app, True)
             httpFn.download_mirror_pool(app.config)
@@ -89,7 +92,7 @@ class TestPacmanMirrors(unittest.TestCase):
         cmd = mock.TEST_CMD + args
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
-            app.config = config_setup.setup_config()
+            app.config = config_setup.setup_config(app)
             fileFn.create_dir(test_conf["work_dir"])
             cliFn.parse_command_line(app, True)
             httpFn.download_mirror_pool(app.config)

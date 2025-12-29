@@ -111,7 +111,7 @@ class TestInitialValues(unittest.TestCase):
         cmd = mock.TEST_CMD + ARGS
         with unittest.mock.patch("sys.argv", cmd.split()):
             app = PacmanMirrors()
-            assert app.selected_countries == []
+            assert app.config["selected_countries"] == []
 
     def tearDown(self):
         pass
