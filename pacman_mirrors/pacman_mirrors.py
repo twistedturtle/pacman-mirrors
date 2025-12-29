@@ -25,7 +25,6 @@
 
 import importlib.util
 import sys
-import logging
 
 from pacman_mirrors.functions import util
 from pacman_mirrors.builder import common, fasttrack, interactive
@@ -64,7 +63,7 @@ class PacmanMirrors:
         self.no_mirrorList = False
         self.no_status = False
         self.quiet = False
-        self.selected_countries = []
+        self.config["selected_countries"] = []
         self.tty = False
         self.use_timezone = False
 

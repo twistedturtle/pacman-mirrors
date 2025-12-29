@@ -30,14 +30,16 @@ def load_config_mirror_pool(self) -> None:
         customFn.delete_custom_pool(self)
     if customFn.check_custom_pool(self) and not self.config["country_pool"]:
         customFn.load_custom_pool(self)
-        self.selected_countries = self.mirrors.country_pool
+        self.config["selected_countries"] = self.mirrors.country_pool
     else:
         if self.config["country_pool"]:
-            self.selected_countries = self.config["country_pool"]
-
+            self.config["selected_countries"] = self.config["country_pool"]
+        else:
+            self.config["selected_countries"] = ["all"]
         load_default_mirror_pool(self)
+
     # Validate the list of selected countries
-    self.selected_countries = pools.build_country_list(self)
+    self.config["selected_countries"] = pools.validate_selected_countries(self)
 
 
 def load_default_mirror_pool(self) -> None:

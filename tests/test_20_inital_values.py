@@ -106,7 +106,7 @@ class TestInitialValues(unittest.TestCase):
 
     @patch("os.getuid")
     def test_initial_selected_countries(self, mock_os_getuid):
-        """TEST: self.selected_countries = []"""
+        """TEST: self.config["selected_countries"] = []"""
         mock_os_getuid.return_value = 0
         cmd = mock.TEST_CMD + ARGS
         with unittest.mock.patch("sys.argv", cmd.split()):
