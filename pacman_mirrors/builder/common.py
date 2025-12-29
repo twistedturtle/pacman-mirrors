@@ -53,10 +53,10 @@ def build_mirror_list(self) -> None:
 
     # Check selected_countries against the full country list
     # If selected_countries is the lesser of the two, then we build a custom pool file
-    if len(self.selected_countries) < len(self.mirrors.country_pool):
+    if len(self.config["selected_countries"]) < len(self.mirrors.country_pool):
         if self.custom:
             try:
-                _ = self.selected_countries[0]
+                _ = self.config["selected_countries"][0]
                 write_custom_mirrors_json(self=self, selected_mirrors=work_pool)
             except IndexError:
                 print("mirror pool is empty")

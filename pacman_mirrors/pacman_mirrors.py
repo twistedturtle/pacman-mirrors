@@ -63,7 +63,7 @@ class PacmanMirrors:
         self.no_mirrorList = False
         self.no_status = False
         self.quiet = False
-        self.selected_countries = []
+        self.config["selected_countries"] = []
         self.tty = False
         self.use_timezone = False
 

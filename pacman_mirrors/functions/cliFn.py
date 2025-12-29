@@ -79,7 +79,7 @@ def parse_command_line(self, gtk_available: bool) -> None:
     )
 
     methods_exclusive.add_argument(
-        "-z", "--timezone", action="store_true", help=txt.HLP_ARG_TIMEZONE
+        "-z", "-zone", "--timezone", action="store_true", help=txt.HLP_ARG_TIMEZONE
     )
 
     methods_exclusive.add_argument(
@@ -251,9 +251,11 @@ def parse_command_line(self, gtk_available: bool) -> None:
 
     if args.continent:
         self.continent = True
+        self.config["continent"] = True
 
     if args.timezone:
         self.use_timezone = True
+        self.config["timezone"] = True
 
     if args.method:
         self.config["method"] = args.method

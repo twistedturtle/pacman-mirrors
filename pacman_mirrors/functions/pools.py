@@ -56,7 +56,7 @@ def wash_country_list(country_list: list):
     return washed
 
 
-def build_country_list(self) -> list:
+def validate_selected_countries(self) -> list:
     """
     Builds and returns a list of countries based on the provided configuration,
     such as selected countries, timezone, or continent. The method attempts
@@ -67,24 +67,17 @@ def build_country_list(self) -> list:
         list: A list of country names determined by the provided configuration
         and mirror settings.
     """
-    # print("build_country_list::self.selected_countries is ", self.selected_countries)
+    # print("build_country_list::self.config['selected_countries']", self.config["selected_countries"])
     # print("build_country_list::self.config['country_pool']", self.config["country_pool"])
+    # print("build_country_list::self.config['timezone']", self.config["timezone"])
+    # print("build_country_list::self.config['continent']", self.config["continent"])
     result = []
-    if not self.config["country_pool"]:
-        result = self.mirrors.country_pool
-    else:
-        self.selected_countries = wash_country_list(self.selected_countries)
-        if country_list_is_valid(
-            onlycountry=self.selected_countries,
-            countrylist=self.mirrors.country_pool,
-            tty=self.tty,
-        ):
-            result = self.selected_countries
-
-    # this executes when timezone or continent is True
-    if not result:
-        # get country
-        if self.use_timezone:
+    # build country list from user arguments or known pool
+    if self.config["timezone"] or self.config["continent"]:
+        # build country list from timezone or continent
+        # and gracefully fall back
+        # - to continent
+        if self.config["timezone"]:
             country = get_mirror_country_from_zone(get_timezone())
             if country:
                 result.append(country)
@@ -93,23 +86,37 @@ def build_country_list(self) -> list:
                 self.continent = True
 
         # get a country list for the continent
-        if self.continent:
+        if self.config["continent"]:
             continent_mirror_countries = get_continent_countries(
                 get_timezone_continent(get_timezone()), self.mirrors.mirror_pool
             )
             if continent_mirror_countries:
                 result = continent_mirror_countries
+    else:
+        if self.config["selected_countries"] == ["all"]:
+            result = self.mirrors.country_pool
+        else:
+            self.config["selected_countries"] = wash_country_list(
+                self.config["selected_countries"]
+            )
+            if country_list_is_valid(
+                onlycountry=self.config["selected_countries"],
+                countrylist=self.mirrors.country_pool,
+                tty=self.tty,
+            ):
+                result = self.config["selected_countries"]
 
-        # validate the result
-        # but do not return an empty list
-        if not result:
-            # Verify if we can fall back to using CDN.
-            # One or more CDN 'Global' mirrors can be found in the mirror pool
-            cdn = [x for x in self.mirrors.country_pool if x == "Global"]
-            if cdn:
-                result = cdn
-            else:
-                result = self.mirrors.country_pool
+    # validate the result and fall back if necessary
+    # - to cdn
+    # - to worldwide
+    if not result:
+        # Verify if we can fall back to using CDN.
+        # We can fall back to CDN if one or more mirrors are labeled 'Global' in the mirror pool
+        cdn = [x for x in self.mirrors.country_pool if x == "Global"]
+        if cdn:
+            result = cdn
+        else:
+            result = self.mirrors.country_pool
 
     # return the final result
     return result

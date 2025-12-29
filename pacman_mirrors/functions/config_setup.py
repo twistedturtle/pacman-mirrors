@@ -40,6 +40,7 @@ def setup_config(self) -> tuple:
         "branches": conf.BRANCHES,
         "config_file": conf.CONFIG_FILE,
         "country_pool": [],
+        "selected_countries": [],
         "custom_file": conf.CUSTOM_FILE,
         "enterprise": False,
         "method": "rank",
@@ -57,6 +58,8 @@ def setup_config(self) -> tuple:
         "url_mirrors_json": conf.URL_MIRROR_JSON,
         "url_status_json": conf.URL_STATUS_JSON,
         "work_dir": conf.WORK_DIR,
+        "timezone": False,
+        "continent": False,
     }
     # try to replace default entries by reading conf file
     try:
