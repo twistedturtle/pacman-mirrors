@@ -56,7 +56,7 @@ def build_pool(self) -> list:
     # Apply country filter if not fasttrack
     if not self.fasttrack:
         work_pool = filter_mirror_country(
-            mirror_pool=work_pool, country_pool=self.selected_countries
+            mirror_pool=work_pool, country_pool=self.config["selected_countries"]
         )
 
     # Apply protocol filter

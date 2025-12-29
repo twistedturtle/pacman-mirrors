@@ -56,7 +56,7 @@ def check_custom_pool(self) -> bool:
     """
     self.custom = validFn.custom_config_is_valid()
     if not self.custom:
-        self.selected_countries = self.config["country_pool"]
+        self.config["selected_countries"] = self.config["country_pool"]
 
     return self.custom
 
