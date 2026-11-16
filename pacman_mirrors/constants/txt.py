@@ -112,8 +112,8 @@ MIRROR_POOL_EMPTY = _("The mirror pool is empty")
 MIRROR_RANKING_NA = _("Mirror ranking is not available")
 MISSING_ARGUMENT = _("argument is missing")
 MUST_BE_ROOT = _("Must have root privileges")
-NO_CHANGE = _("The mirrors has not changed")
-NO_SELECTION = _("No mirrors in selection")
+NO_CHANGE = _("The mirror list has not been modified")
+NO_SELECTION = _("There are no up-to-date mirrors in the chosen mirror pool for your branch - Please extend the pool or try again later")
 OPTION = _("Option")
 OVERRIDE_STATUS_CHOICE = _(
     "You have chosen to override the status for your system branch."
