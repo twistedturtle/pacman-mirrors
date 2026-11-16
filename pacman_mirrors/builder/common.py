@@ -99,5 +99,8 @@ def build_mirror_list(self) -> None:
             )
 
     except IndexError:
-        util.msg(message=f"{txt.NO_SELECTION}", urgency=txt.WRN_CLR, tty=self.tty)
+        if self.no_status:
+            util.msg(message=f"{txt.NO_SELECTION}", urgency=txt.WRN_CLR, tty=self.tty)
+        else:
+            util.msg(message=f"{txt.NO_SELECTION_BRANCH}", urgency=txt.WRN_CLR, tty=self.tty)
         util.msg(message=f"{txt.NO_CHANGE}", urgency=txt.INF_CLR, tty=self.tty)

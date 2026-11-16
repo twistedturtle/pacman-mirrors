@@ -65,5 +65,5 @@ def build_mirror_list(self, limit: int) -> None:
 
         write_pacman_mirror_list(self=self, selected_servers=work_pool)
     except IndexError:
-        util.msg(message=f"{txt.NO_SELECTION}", urgency=txt.WRN_CLR, tty=self.tty)
+        util.msg(message=f"{txt.NO_SELECTION_BRANCH}", urgency=txt.WRN_CLR, tty=self.tty)
         util.msg(message=f"{txt.NO_CHANGE}", urgency=txt.INF_CLR, tty=self.tty)
