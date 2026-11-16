@@ -80,7 +80,5 @@ def filter_user_branch(mirror_pool: list, config: dict) -> list:
                 except IndexError:
                     pass
 
-            if len(filtered) > 0:
-                return filtered
+            return filtered
 
-    return mirror_pool
