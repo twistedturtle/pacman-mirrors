@@ -92,7 +92,13 @@ entry in the configuration file.
 If you are stunned by this message
 ```
 .: WARNING No mirrors in selection
-.: INFO The mirrors has not changed
+.: INFO The mirror list has not been modified
+```
+
+or this message
+```
+::WARNING There are no up-to-date mirrors for your branch in the chosen mirror pool - Please extend the pool or try again later
+.: INFO The mirror list has not been modified
 ```
 
 This is not an error, it is a feature.
