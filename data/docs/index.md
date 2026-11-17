@@ -97,7 +97,7 @@ If you are stunned by this message
 
 or this message
 ```
-::WARNING There are no up-to-date mirrors for your branch in the chosen mirror pool - Please extend the pool or try again later
+:: WARNING There are no up-to-date mirrors for your branch in the chosen mirror pool - Please extend the pool or try again later
 .: INFO The mirror list has not been modified
 ```
 
